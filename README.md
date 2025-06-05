@@ -18,7 +18,7 @@
 ## 👨‍💼 Meet Your Instructor
 
 <div align="center">
-<img src="cayman-seagraves-wide.png" alt="Dr. Cayman Seagraves" width="800" style="border-radius: 10px; margin: 20px 0;">
+<img src="Images/cayman-seagraves-wide.png" alt="Dr. Cayman Seagraves" width="800" style="border-radius: 10px; margin: 20px 0;">
 
 **Dr. Cayman Seagraves**  
 *Founder & CEO, [Caiyman AI LLC](https://www.caiyman.ai/)*  
