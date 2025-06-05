@@ -1,5 +1,5 @@
 .cursor/
-_pycache/
+_pycache_/
 Cursor_prompt_logs/
 MCP/
 Mermaid/
