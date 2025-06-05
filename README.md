@@ -1,8 +1,15 @@
 # AI Agent Automation for Real Estate Professionals: Hands-On n8n Workshop
 
 **Instructor:** Dr. Cayman Seagraves  
-**Learn more about:** [Caiyman AI - AI Solutions & Services](https://www.caiyman.ai/) | [Academic Profile & Research](https://www.caymanseagraves.com/)
-[![Website Preview](https://caiyman.ai/api/og)](https://caiyman.ai)
+
+<div style="display: flex; align-items: center; gap: 20px;">
+<div>
+<strong>Learn more about:</strong> <a href="https://www.caiyman.ai/">Caiyman AI - AI Solutions & Services</a> | <a href="https://www.caymanseagraves.com/">Academic Profile & Research</a>
+</div>
+<div>
+<a href="https://caiyman.ai"><img src="https://caiyman.ai/api/og" alt="Caiyman AI Website Preview" width="300" style="border-radius: 8px; border: 1px solid #ddd;"></a>
+</div>
+</div>
 
 ---
 
