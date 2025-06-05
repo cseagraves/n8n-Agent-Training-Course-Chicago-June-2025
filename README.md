@@ -28,16 +28,27 @@
 #### Technical Setup Checklist
 1. **Create n8n cloud account** - [Sign up here](https://app.n8n.cloud/register)
 2. **Add course instructor as admin user** (detailed instructions will be provided)
-3. **Obtain required API keys:**
-   - ✅ [OpenRouter](https://openrouter.ai/) (for LLM access)
-   - ✅ [Pinecone](https://www.pinecone.io/) (vector database for RAG)
-   - ✅ [Google Cloud Console](https://console.cloud.google.com/) (Drive, Gmail, Sheets, Docs)
-   - ✅ [Tavily](https://tavily.com/) / [Perplexity](https://www.perplexity.ai/) (web search)
+3. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
+   - ✅ [OpenRouter](https://openrouter.ai/) - Create account → Get API key
+   - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key
+   - ✅ [Google Cloud Console](https://console.cloud.google.com/) - Enable APIs for: Drive, Gmail, Sheets, Docs, Calendar, Tasks
+   - ✅ [Tavily](https://tavily.com/) - Create account → Get API key
+   - ✅ [Perplexity](https://www.perplexity.ai/) - Create account → Get API key
+   - ✅ [Firecrawl](https://www.firecrawl.dev/) - Create account → Get API key
+   - ✅ [Telegram](https://web.telegram.org/) - Create account only (no API key needed)
 
 #### Resource Package
 - 📄 "AI Agents in Real Estate: Primer" (5-page PDF)
 - 🎥 n8n interface familiarization video (10-minute walkthrough)
 - 📊 Real estate AI use case examples document
+
+#### Pre-Course Learning Resources
+- **[n8n Blog](https://blog.n8n.io/)** - Latest updates and tutorials
+- **[n8n LLM Agents Guide](https://blog.n8n.io/llm-agents/)** - Deep dive into AI agents
+- **[How to Build AI Agent](https://blog.n8n.io/how-to-build-ai-agent/)** - Step-by-step guide
+- **[RAG Chatbot Tutorial](https://blog.n8n.io/rag-chatbot/)** - Build intelligent chatbots
+- **[n8n Community Forum](https://community.n8n.io/)** - Get help and share ideas
+- **[Official n8n Beginner Course](https://www.youtube.com/playlist?list=PLlET0GsrLUL59YbxstZE71WszP3pVnZfI)** - **HIGHLY RECOMMENDED** foundational video series
 
 ### One Week Before
 - 📧 Reminder email with troubleshooting FAQ
@@ -50,76 +61,35 @@
 
 ### Morning Session (9:00 AM - 12:00 PM)
 
-#### Module 1: Foundation & Context (9:00-9:45 AM)
-
-**Welcome & Introductions** (10 min)
-- Course objectives and Caiyman AI introduction
-- Quick attendee survey: AI experience level
-
-**AI Agents for Real Estate** (20 min)
-- What makes AI agents different from basic AI tools
+**Module 1: Foundation & Context (45 min)**
+- Welcome, introductions, and AI agents overview
+- Understanding AI agents vs. basic AI tools
 - Real estate transformation opportunities
-- ROI examples from actual implementations
 
-**n8n Platform Overview** (15 min)
-- Interface walkthrough
-- Core concepts: workflows, nodes, connections
-- Real estate workflow demonstrations
+**Module 2: Hands-On Foundation (60 min)**
+- Build your first workflow: Personal Real Estate Assistant
+- Core concepts: Variables, data types, connections
 
-#### Module 2: Hands-On Foundation (9:45-10:45 AM)
+**Break (15 min)**
 
-**Build Together: Personal Real Estate Assistant** (60 min)
-- Start simple: Email summarizer for property inquiries
-- Add complexity: Auto-response with property details
-- Integrate: Connect to Google Sheets for lead tracking
-- Key concepts covered: Variables, data types, HTTP requests
-
-**☕ Break (10:45-11:00 AM)**
-
-#### Module 3: Advanced Workflows (11:00 AM-12:00 PM)
-
-**Template Walkthrough: Lead Generation System** (30 min)
-- Pre-built template analysis
-- Customization for specific markets
-- Integration with existing CRM systems
-
-**Build Together: Market Analysis Agent** (30 min)
-- Connect to real estate APIs (simplified approach)
-- Generate automated market reports
-- Schedule and distribute insights
+**Module 3: Advanced Workflows (60 min)**
+- Lead Generation System template walkthrough
+- Build a Market Analysis Agent
 
 ### 🍽️ Lunch Break (12:00-2:00 PM)
 
 ### Afternoon Session (2:00-4:00 PM)
 
-#### Module 4: RAG & Advanced Applications (2:00-3:00 PM)
+**Module 4: RAG & Advanced Applications (60 min)**
+- Contract Analysis Agent with vector databases
+- Social Media Automation for listings
 
-**RAG Implementation: Contract Analysis Agent** (45 min)
-- Understanding vector databases ([Pinecone](https://www.pinecone.io/))
-- Building a real estate document knowledge base
-- Query and retrieval workflows
+**Module 5: Multi-Agent Systems & Scaling (45 min)**
+- Multi-agent architecture demonstration
+- Implementation planning for your business
 
-**Quick Wins: Social Media Automation** (15 min)
-- Listing promotion workflows
-- Content generation for real estate marketing
-
-#### Module 5: Multi-Agent Systems & Scaling (3:00-3:45 PM)
-
-**Multi-Agent Architecture Demo** (20 min)
-- Coordinator agent managing specialized agents
-- Real estate team simulation
-
-**Implementation Planning** (25 min)
-- Choosing first automation projects
-- Resource requirements and timelines
-- Common pitfalls and solutions
-
-#### Module 6: Wrap-Up & Next Steps (3:45-4:00 PM)
-- **Q&A and Troubleshooting** (10 min)
-- **Resources and Community** (5 min)
-  - Access to template library
-  - Follow-up support options
-  - Advanced training opportunities
+**Module 6: Wrap-Up & Next Steps (15 min)**
+- Q&A, resources, and continued learning paths
 
 ---
 
@@ -224,13 +194,9 @@
 ### n8n Resources
 - **n8n Homepage:** [https://n8n.io/](https://n8n.io/)
 - **n8n Documentation:** [https://docs.n8n.io/](https://docs.n8n.io/)
-- **n8n Blog:** [https://blog.n8n.io/](https://blog.n8n.io/)
-- **LLM Agents Guide:** [https://blog.n8n.io/llm-agents/](https://blog.n8n.io/llm-agents/)
-- **How to Build AI Agent:** [https://blog.n8n.io/how-to-build-ai-agent/](https://blog.n8n.io/how-to-build-ai-agent/)
-- **RAG Chatbot Tutorial:** [https://blog.n8n.io/rag-chatbot/](https://blog.n8n.io/rag-chatbot/)
-- **n8n Community Forum:** [https://community.n8n.io/](https://community.n8n.io/)
 - **n8n Cloud Sign Up:** [https://app.n8n.cloud/register](https://app.n8n.cloud/register)
 - **n8n GitHub Repository:** [https://github.com/n8n-io/n8n](https://github.com/n8n-io/n8n)
+- **Official n8n Beginner Course:** [https://www.youtube.com/playlist?list=PLlET0GsrLUL59YbxstZE71WszP3pVnZfI](https://www.youtube.com/playlist?list=PLlET0GsrLUL59YbxstZE71WszP3pVnZfI)
 
 ### Additional Resources
 - **Caiyman AI Website:** [https://www.caiyman.ai/](https://www.caiyman.ai/)
@@ -263,13 +229,14 @@
 
 ## 📝 Notes for Attendees
 
-### What We'll Cover
-- ✅ What is AI (prompting, system prompt)
-- ✅ Chaining LLMs
-- ✅ AI agents simplified: autonomous decision makers with access to tools, internet, memory, data
-- ✅ Multi-agent architectures
-- ✅ API connections, webhooks, self-hosting basics
-- ✅ MCP on n8n cloud – connecting Claude and other AI interfaces to your n8n MCP
+### Core Topics Covered
+- ✅ AI agents simplified: What they are and how they differ from basic AI
+- ✅ Building workflows with n8n (no coding required)
+- ✅ Real estate-specific automation templates
+- ✅ RAG (Retrieval Augmented Generation) for contract analysis
+- ✅ Multi-agent architectures for complex workflows
+- ✅ API connections and integrations
+- ✅ Implementation strategies for your business
 
 ### Homework Reminder
 ⚠️ **IMPORTANT:** Complete all pre-course setup to avoid falling behind during hands-on sessions!
