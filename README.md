@@ -26,16 +26,34 @@
 ### Two Weeks Before Course
 
 #### Technical Setup Checklist
+
+**Step 1: n8n Account & Project Setup**
 1. **Create n8n cloud account** - [Sign up here](https://app.n8n.cloud/register)
-2. **Add course instructor as admin user** (detailed instructions will be provided)
-3. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
+2. **Create a dedicated project for the course:**
+   - Once logged in, create a new project specifically for this workshop
+   - Name it something like "Real Estate AI Workshop" or "AI Agent Training"
+   - **Important:** This keeps your course work separate from personal workflows
+   - The instructor will NOT have access to your personal workflows - only this dedicated project
+3. **Add course instructor as admin user** to your workshop project (detailed instructions will be provided)
+
+![n8n Project and Credentials Setup](Images/n8n%20project%20and%20credentials.png)
+
+**Step 2: API Keys & Credentials Setup**
+4. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
    - ✅ [OpenRouter](https://openrouter.ai/) - Create account → Get API key
-   - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key
+   - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key  
    - ✅ [Google Cloud Console](https://console.cloud.google.com/) - Enable APIs for: Drive, Gmail, Sheets, Docs, Calendar, Tasks
    - ✅ [Tavily](https://tavily.com/) - Create account → Get API key
    - ✅ [Perplexity](https://www.perplexity.ai/) - Create account → Get API key
    - ✅ [Firecrawl](https://www.firecrawl.dev/) - Create account → Get API key
    - ✅ [Telegram](https://web.telegram.org/) - Create account only (no API key needed)
+
+5. **Add all credentials to your workshop project:**
+   - Navigate to the "Credentials" tab in your workshop project
+   - Add each API key as a separate credential with descriptive names
+   - Test each credential to ensure proper connectivity
+   - **Security Note:** Credentials are project-specific and encrypted by n8n
+   
 
 #### Resource Package
 - 📄 "AI Agents in Real Estate: Primer" (5-page PDF)
