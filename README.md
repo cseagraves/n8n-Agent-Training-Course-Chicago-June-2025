@@ -13,6 +13,24 @@
 **Platform:** [n8n Cloud Platform](https://n8n.io/)  
 **Target Audience:** Experienced real estate agents and real estate professionals
 
+---
+
+## 👨‍💼 Meet Your Instructor
+
+<div align="center">
+<img src="Images/@230908 Cayman Seagraves 001 - Small.jpg" alt="Dr. Cayman Seagraves" width="300" style="border-radius: 10px; margin: 20px 0;">
+
+**Dr. Cayman Seagraves**  
+*Founder & CEO, [Caiyman AI LLC](https://www.caiyman.ai/)*  
+*Assistant Professor of Finance, The University of Tulsa*
+
+Specializing in AI transformation for real estate and finance industries, with expertise in multi-agent systems, automation, and strategic AI implementation. Dr. Seagraves brings both academic rigor and practical industry experience to help real estate professionals leverage cutting-edge AI technology for competitive advantage.
+
+[Academic Profile & Research](https://www.caymanseagraves.com/) | [Caiyman AI Solutions](https://www.caiyman.ai/)
+</div>
+
+---
+
 ### Key Learning Outcomes & What You'll Achieve
 
 By the end of this intensive workshop, you will:
@@ -240,17 +258,17 @@ By the end of this intensive workshop, you will:
 - **Team Training:** Bring AI automation to your entire brokerage
 - **Enterprise Solutions:** Custom implementation and ongoing support
 
-### Professional Certification
+### Professional Certification *(Coming Soon)*
 - Earn your "Caiyman AI Certified n8n Practitioner" credential
 - Join an exclusive network of AI-powered real estate professionals
 - Access to advanced templates and continuous learning resources
 
-### Join Our Growing Community
+### Join Our Growing Community *(Coming Soon)*
 - Monthly virtual meetups with fellow graduates
 - Share success stories and best practices
 - Collaborate on new automation ideas and templates
 
-### Industry Partnership Benefits
+### Industry Partnership Benefits *(Coming Soon)*
 - Access to exclusive integrations with leading real estate platforms
 - Direct connections with MLS providers and CRM vendors
 - Early access to new AI tools and capabilities
