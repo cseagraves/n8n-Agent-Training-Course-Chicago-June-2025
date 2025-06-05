@@ -9,7 +9,7 @@
 
 **Date:** June 14th, 2025  
 **Time:** 9:00 AM - 12:00 PM & 2:00 PM - 4:00 PM (5 hours total)  
-**Location:** Chicago, IL  
+**Location:** Virtual Training via Zoom ([Download Zoom](https://zoom.us/download)) - Zoom ID link to be determined  
 **Platform:** [n8n Cloud Platform](https://n8n.io/)  
 **Target Audience:** Experienced real estate agents and real estate professionals
 
