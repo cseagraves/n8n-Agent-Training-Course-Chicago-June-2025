@@ -1,0 +1,939 @@
+{
+  "name": "Enrich Property Inventory Survey with Image Recognition and AI Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "0adf5917-78a7-43bd-b952-be07e4f08214",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -860,
+        280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "d7c7aa18-0614-4e9a-a34d-771d5b90f157",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        40,
+        420
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appbgxPBurOmQK3E7",
+          "cachedResultUrl": "https://airtable.com/appbgxPBurOmQK3E7",
+          "cachedResultName": "Building Inventory Survey Example"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "tblEHkoTvKpa4Aa0Q"
+        },
+        "filterByFormula": "AND(Image!=\"\", AI_status=FALSE())",
+        "returnAll": false,
+        "options": {}
+      },
+      "id": "dc8a435d-f1d9-4240-adbc-36cfbe703b86",
+      "name": "Get Applicable Rows",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -680,
+        280
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {},
+      "id": "3e1d9f98-219a-467e-8377-b27480c024e2",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        80,
+        980
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7263764b-8409-4cea-8db3-3278dd7ef9d8",
+              "name": "=route",
+              "type": "string",
+              "value": "={{ $json.route }}"
+            },
+            {
+              "id": "55c3b207-2e98-4137-8413-f72cbff17986",
+              "name": "query",
+              "type": "string",
+              "value": "={{ $json.query }}"
+            },
+            {
+              "id": "6eb873de-3c3a-4135-9dc0-1d441c63647c",
+              "name": "",
+              "type": "string",
+              "value": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "95a2f47f-f066-4efb-8ad4-f0dbcbbbc20b",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        240,
+        980
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"response\": {\n    \"ok\": false,\n    \"error\": \"The requested tool was not found or the service may be unavailable. Do not retry.\"\n  }\n}\n",
+        "options": {}
+      },
+      "id": "34d1bf3a-7328-4fe3-9e35-a8ba03343eaa",
+      "name": "Fallback Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        400,
+        1120
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serpApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "engine",
+              "value": "google_reverse_image"
+            },
+            {
+              "name": "image_url",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e72404e6-5bc8-4e39-8068-221731044d19",
+      "name": "SERP Google Reverse Image API",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        680,
+        800
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "de99a504-713f-4c78-8679-08139b2def31",
+              "name": "response",
+              "type": "string",
+              "value": "={{ JSON.stringify($json.image_results.map(x => ({ position: x.position, title: x.title, link: x.link, description: x.snippet }))) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4c54e77e-2e9b-447a-aabf-2226f6071537",
+      "name": "Reverse Image Search Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        860,
+        800
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "name": "reverse_image_search",
+        "description": "Call this tool to perform a reverse image search. Reverse image searches return urls where similar looking products exists. Fetch the returned urls to gather more information. This tool requires the following object request body.\n```\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"image_url\": { \"type\": \"string\" },\n   }\n}\n```\nimage_url should be an absolute URL to the image.",
+        "workflowId": "={{ $workflow.id }}",
+        "fields": {
+          "values": [
+            {
+              "name": "route",
+              "stringValue": "serp.google_reverse_image"
+            }
+          ]
+        }
+      },
+      "id": "cdec44cc-a6aa-4bba-9f5f-2d876df6d03f",
+      "name": "Reverse Image Search Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        120,
+        580
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v0/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "953b2768-f4b5-4398-a3f5-e6dd897f5e95",
+      "name": "Firecrawl Scrape API",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        680,
+        1140
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "a15a164f-d0c5-478f-8b27-f3d51746c214",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.success }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "daaaf0e6-bcbb-4b1a-8aa2-ae09f6b75346",
+      "name": "Scrape Success?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        840,
+        1140
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7db5c81f-de90-40e1-8086-3f13d40451c7",
+              "name": "response",
+              "type": "string",
+              "value": "={{ $json.data.markdown.substring(0, 3000) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ffe9d351-d4f6-45c0-a19f-295a91bfc65e",
+      "name": "Firecrawl Scrape Success Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1000,
+        1140
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e691d86a-d366-44a2-baa6-3dba42527f6e",
+              "name": "response",
+              "type": "string",
+              "value": "{ error: \"Unable to scrape website due to unknown error. Do not retry.\" }"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b0cfd6c2-e9a6-4dcf-8e55-efd5a65ad3e5",
+      "name": "Firecrawl scrape Error Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1000,
+        1300
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "name": "webpage_url_scraper_tool",
+        "description": "Call this tool to retrieve page contents of a url.\n```\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"url\": { \"type\": \"string\" },\n   }\n}\n```\nurl should be an absolute URL.",
+        "workflowId": "={{ $workflow.id }}",
+        "fields": {
+          "values": [
+            {
+              "name": "route",
+              "stringValue": "firecrawl.scrape"
+            }
+          ]
+        }
+      },
+      "id": "ecd12230-a232-46e5-b927-14fc0dc2be99",
+      "name": "Firecrawl Web Scaper Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        260,
+        580
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": { \"type\": \"string\" },\n    \"description\": { \"type\": \"string\" },\n    \"model\": { \"type\": \"string\" },\n    \"material\": { \"type\": \"string\" },\n    \"color\": { \"type\": \"string\" },\n    \"condition\": { \"type\": \"string\" }\n  }\n}"
+      },
+      "id": "468f7f5c-705e-4639-a7fe-c01e7dd86b1d",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        320,
+        420
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## 1. Use Airtable to Capture Survey Photos\n[Read more about AirTable](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.airtable)\n\nTo enable this workflow, we need a database where we can retreive the title and photo to analyse and write the generate values back to. Airtable is perfect for this since it has a robust API we can work with.\n\nFor this demo, we'll manually trigger but this can be changed for forms or other triggers.",
+        "height": 495.4071184783251,
+        "width": 402.5984702109446,
+        "color": 7
+      },
+      "id": "642defd5-2cf1-46e6-974e-48794f76d30b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -920,
+        -20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Use AI Vision Model to Analyse the Photo.\n[Read more about OpenAI Vision](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-langchain.openai)\n\nWe'll use OpenAi vision model to create a detailed description of the product in the photo. We split this step from the agent because it uses an image model rather than the usual text-based one.",
+        "height": 428.4787925736586,
+        "width": 359.40869874940336,
+        "color": 7
+      },
+      "id": "7d2b6ca1-7605-4bc4-b9d5-dc6a5705164f",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -480,
+        80
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Build an AI Agent who Searches the Internet\n[Read more about OpenAI Agents](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-langchain.openai)\n\nThis AI Agent has the ability to perform reverse image searches using our captured photos as well visit external webpages in order to obtain accurate product names and attributes. The Agent along with the tools might mimic what the average human user would carry out the same task.\n\n* For reverse image search, we're using SERP API service however we won't use the built-in SERP node as we need to specify custom parameters. \n* For scraping, we'll use [Firecrawl](https://www.firecrawl.dev/) as this service also helps to parse and return the page as markdown which is more efficient.",
+        "height": 803.956942672397,
+        "width": 593.0683948010671,
+        "color": 7
+      },
+      "id": "b14bf8f4-abf8-4a10-a09c-2a6003eabd36",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        -60
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 4. Overwrite our Rows with Enriched Results\n\nAnd Viola! Our AI agent has potentially saved hours of manual data entry work for our surveyor. This technique can be used for many other usecases.",
+        "height": 397.7168664109706,
+        "width": 373.3601237414979,
+        "color": 7
+      },
+      "id": "293f6d2a-ab1b-47d5-abd3-e772cfdd41d7",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 5. Using the Custom Workflow Tool\n[Read more about Workflow Tools](https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolworkflow)\n\nAI Agents rely on Tools to make decisions and become exponentially more powerful the more tools they have. A common pattern to manage multiple tools is to create a routing system for tools using the API pattern.",
+        "height": 490.7010880746526,
+        "width": 554.6092633638649,
+        "color": 7
+      },
+      "id": "ad98b731-6987-4ed0-bcf8-eb4d10266f6e",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        800
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appbgxPBurOmQK3E7",
+          "cachedResultUrl": "https://airtable.com/appbgxPBurOmQK3E7",
+          "cachedResultName": "Building Inventory Survey Example"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "tblEHkoTvKpa4Aa0Q"
+        },
+        "columns": {
+          "value": {
+            "id": "={{ $('Get Applicable Rows').item.json.id }}",
+            "Color": "={{ $json.output.output.color }}",
+            "Model": "={{ $json.output.output.model }}",
+            "Title": "={{ $json.output.output.title }}",
+            "Material": "={{ $json.output.output.material }}",
+            "AI_status": true,
+            "Condition": "={{ $json.output.output.condition }}",
+            "Description": "={{ $json.output.output.description }}"
+          },
+          "schema": [
+            {
+              "id": "id",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": true,
+              "required": false,
+              "displayName": "id",
+              "defaultMatch": true
+            },
+            {
+              "id": "Title",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Title",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Image",
+              "type": "array",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Image",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Description",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Model",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Material",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Material",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Color",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Color",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Condition",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Condition",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI_status",
+              "type": "boolean",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "AI_status",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "id"
+          ]
+        },
+        "options": {}
+      },
+      "id": "eba11336-c64b-402c-b61c-4cb42a578471",
+      "name": "Enrich Product Rows",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        700,
+        300
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## Try It Out!\n### This workflow does the following:\n* Scans an Airtable spreadsheet for rows with product photo images.\n* Uses an AI vision model to attempt to identify the product.\n* Uses an AI Agent to research the product on the internet to enrich the product data.\n* Overwrites our Airtable spreadsheet with the enriched data.\n\n### Need Help?\nJoin the [Discord](https://discord.com/invite/XPKeKXeB7d) or ask in the [Forum](https://community.n8n.io/)!\n\nHappy Hacking!",
+        "height": 381.0536322713287,
+        "width": 359.6648027457353
+      },
+      "id": "cab48c81-0027-459e-9e0f-5826b74836d2",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1300,
+        -20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "text": "=Focus on the {{ $json.Title }} in the image - we'll refer to this as the \"object\". Identify the following attributes of the object. If you cannot determine confidently, then leave blank and move to next attribute.\n* Decription of the object.\n* The model/make of the object.\n* The material(s) used in the construction of the object.\n* The color(s) of the object\n* The condition of the object. Use one of poor, good, excellent.\n",
+        "imageUrls": "={{ $json.Image[0].thumbnails.large.url }}",
+        "options": {}
+      },
+      "id": "9cbb1c66-2993-4ff8-b801-ec79cb83b8c0",
+      "name": "Analyse Image",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        -360,
+        320
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "agent": "openAiFunctionsAgent",
+        "promptType": "define",
+        "text": "=system: Your role is to help an building surveyor perform a object classification and data collection task whereby the surveyor will take photos of various objects and your job is to try and identify accurately certain product attributes of the objects as detailed below.\n\nThe surveyor has given you the following:\n1) photo url ```{{ $('Get Applicable Rows').item.json.Image[0].thumbnails.large.url }}```.\n2) photo description ```{{ $json.content }}```.\n\nFor each product attribute the surveyor is unable to determine, you may:\n1) use the reverse image search tool to search the product on the internet via the provided image url.\n2) use the web scraper tool to read webpages on the internet which may be relevant to the product.\n3) If after using these tools, you are still unable to determine the required product attributes then leave the data blank.\n\nUse all the information provided and gathered, to extract the following product attributes: title, description, model, material, color and condition.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "id": "4f63743d-d6b8-4632-b481-a13844de3826",
+      "name": "Object Identifier Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        80,
+        260
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "serp.google_reverse_image"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "serp.google_reverse_image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "0a1f54ae-39f1-468d-ba6e-1376d13e4ee8",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "firecrawl.scrape"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "firecrawl.scrape"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "fcb64bac-032a-41c3-90f1-6955c715aab8",
+      "name": "Actions Router",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        400,
+        980
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n🚨**Required**\n* Set Airtable Base and Table IDs here.",
+        "height": 297.0159375852115,
+        "width": 181.2788838920522
+      },
+      "id": "21a8de77-0081-4bd7-bdfc-6440666afb0f",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n🚨**Required**\n* Set Airtable Base and Table IDs here.",
+        "height": 297.0159375852115,
+        "width": 181.2788838920522
+      },
+      "id": "ddf77d1c-1d1a-47e5-ac13-3a1a28d830e3",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        660,
+        280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 5.1 Google Reverse Image Tool\nThis tool uses Google's reverse image API to return websites where similar images are found.",
+        "height": 298.81538450684064,
+        "width": 460.3301604548244,
+        "color": 7
+      },
+      "id": "86697ae9-19e7-4448-a754-ea9f4ed42e71",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        680
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 5.2 Webscraper Tool\nThis tool uses Firecrawl.dev API to crawl webpages and returns those pages in markdown format.",
+        "height": 463.34699288922565,
+        "width": 575.3216480295998,
+        "color": 7
+      },
+      "id": "2f8c08b9-2f8c-487d-812b-079479a03cc6",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        1020
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Actions Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyse Image": {
+      "main": [
+        [
+          {
+            "node": "Object Identifier Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actions Router": {
+      "main": [
+        [
+          {
+            "node": "SERP Google Reverse Image API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Firecrawl Scrape API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Success?": {
+      "main": [
+        [
+          {
+            "node": "Firecrawl Scrape Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Firecrawl scrape Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Object Identifier Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Applicable Rows": {
+      "main": [
+        [
+          {
+            "node": "Analyse Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl Scrape API": {
+      "main": [
+        [
+          {
+            "node": "Scrape Success?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Object Identifier Agent": {
+      "main": [
+        [
+          {
+            "node": "Enrich Product Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Object Identifier Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl Web Scaper Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Object Identifier Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reverse Image Search Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Object Identifier Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SERP Google Reverse Image API": {
+      "main": [
+        [
+          {
+            "node": "Reverse Image Search Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Get Applicable Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "92bb277c-24b7-438d-a06c-699dd4c0034d",
+  "meta": {
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  },
+  "id": "tpg4Mlgir5Ryhf3o",
+  "tags": [
+    {
+      "createdAt": "2025-03-02T21:23:50.840Z",
+      "updatedAt": "2025-03-02T21:23:50.840Z",
+      "id": "5Llryqf7Bskg8Dj1",
+      "name": "Real Estate"
+    }
+  ]
+}

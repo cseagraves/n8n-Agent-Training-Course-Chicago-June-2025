@@ -1,0 +1,451 @@
+{
+  "name": "Automated Property Lead Generation with BatchData and CRM Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "4d54dc1d-faf8-4005-aa28-345e79341a59",
+      "name": "Schedule Market Scan",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -120,
+        460
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f44f6a90-6de5-4c02-909d-73cfce0c0c9a",
+              "name": "apiKey",
+              "type": "string",
+              "value": "YOUR_BATCHDATA_API_KEY"
+            },
+            {
+              "id": "9356ff74-9783-40cf-a8af-94e45f1ac83e",
+              "name": "searchParameters",
+              "type": "object",
+              "value": "={\n  \"city\": \"Austin\",\n  \"state\": \"TX\",\n  \"minimumMarketValue\": 250000,\n  \"maximumMarketValue\": 600000,\n  \"minimumEquity\": 30,\n  \"propertyType\": [\"SFR\"],\n  \"limit\": 100\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4d0df9a1-df11-4889-82bc-972c5f5f15cb",
+      "name": "BatchData API Configuration",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        80,
+        460
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.batchdata.com/api/v1/properties/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "city",
+              "value": "={{ $json.searchParameters.city }}"
+            },
+            {
+              "name": "state",
+              "value": "={{ $json.searchParameters.state }}"
+            },
+            {
+              "name": "minimumMarketValue",
+              "value": "={{ $json.searchParameters.minimumMarketValue }}"
+            },
+            {
+              "name": "maximumMarketValue",
+              "value": "={{ $json.searchParameters.maximumMarketValue }}"
+            },
+            {
+              "name": "minimumEquity",
+              "value": "={{ $json.searchParameters.minimumEquity }}"
+            },
+            {
+              "name": "propertyType",
+              "value": "={{ $json.searchParameters.propertyType }}"
+            },
+            {
+              "name": "limit",
+              "value": "={{ $json.searchParameters.limit }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "69df1566-f580-4e97-ad39-03c6daeb0620",
+      "name": "Query BatchData Properties",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        280,
+        460
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the stored data from previous runs\nconst workflowStaticData = getWorkflowStaticData('global');\n\n// If no previous data exists, initialize it\nif (!workflowStaticData.hasOwnProperty('previousProperties')) {\n  workflowStaticData.previousProperties = [];\n}\n\n// Add the previous properties data to the current item\nreturn [\n  {\n    json: {\n      ...items[0].json,\n      previousProperties: workflowStaticData.previousProperties,\n      currentProperties: items[0].json.data.properties || [],\n    }\n  }\n];"
+      },
+      "id": "c5515aff-db65-4b4b-8369-d2a029c6b284",
+      "name": "Get Previous Results",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        480,
+        460
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the current and previous property lists\nconst currentProperties = items[0].json.currentProperties;\nconst previousProperties = items[0].json.previousProperties;\n\n// Create a map of previous properties by their ID for easier comparison\nconst previousPropertiesMap = {};\nfor (const property of previousProperties) {\n  previousPropertiesMap[property.id] = property;\n}\n\n// Find new properties (those in current but not in previous)\nconst newProperties = currentProperties.filter(property => \n  !previousPropertiesMap[property.id]\n);\n\n// Find changed properties (those in both but with different values)\nconst changedProperties = currentProperties.filter(property => {\n  const previousProperty = previousPropertiesMap[property.id];\n  if (!previousProperty) return false;\n  \n  // Check if important values changed (price, status, etc.)\n  return (\n    property.marketValue !== previousProperty.marketValue ||\n    property.status !== previousProperty.status ||\n    property.ownerStatus !== previousProperty.ownerStatus ||\n    property.lastSaleDate !== previousProperty.lastSaleDate\n  );\n});\n\n// Update the static data for the next run\nconst workflowStaticData = getWorkflowStaticData('global');\nworkflowStaticData.previousProperties = currentProperties;\n\n// Return the combined results\nreturn [\n  {\n    json: {\n      ...items[0].json,\n      newProperties,\n      changedProperties,\n      allChanges: [...newProperties, ...changedProperties]\n    }\n  }\n];"
+      },
+      "id": "1eaa8969-f160-48ad-bbc3-439005a4e451",
+      "name": "Compare Results",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        680,
+        460
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "allChanges",
+        "options": {}
+      },
+      "id": "ad2e2846-c16a-4452-95ec-9c76d6dce9b1",
+      "name": "Split Properties",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        900,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "83c15f54-20d9-460c-a3f5-82f6c98d3d63",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "leftValue": "={{ $json.equityPercentage || 0 }}",
+              "rightValue": 40
+            },
+            {
+              "id": "53bf77b8-4c78-4f87-a518-0e9a56c77a70",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              },
+              "leftValue": "={{ $json.ownerStatus || '' }}",
+              "rightValue": "absentee"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "56d59a52-4a81-4821-8435-ffa08920299f",
+      "name": "Filter High Potential",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        1080,
+        460
+      ],
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "url": "=https://api.batchdata.com/api/v1/properties/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "91065693-75c0-4091-bbee-569f5440a9de",
+      "name": "Get Property Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1280,
+        460
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad37cef8-0359-4fb8-8c54-e5a5a0aa1082",
+              "name": "emailSubject",
+              "type": "string",
+              "value": "=New Property Opportunity: {{ $json.address.street }}, {{ $json.address.city }}, {{ $json.address.state }}"
+            },
+            {
+              "id": "9c1b6e34-b31e-4e46-a6b3-ea7c34b4456a",
+              "name": "emailContent",
+              "type": "string",
+              "value": "=<h2>High Potential Property Opportunity</h2>\n\n<p><strong>Address:</strong> {{ $json.address.street }}, {{ $json.address.city }}, {{ $json.address.state }} {{ $json.address.zip }}</p>\n\n<p><strong>Property Details:</strong></p>\n<ul>\n  <li>Market Value: ${{ $json.marketValue }}</li>\n  <li>Equity: {{ $json.equityPercentage }}%</li>\n  <li>Owner Status: {{ $json.ownerStatus }}</li>\n  <li>Square Feet: {{ $json.squareFeet }}</li>\n  <li>Bedrooms: {{ $json.bedrooms }}</li>\n  <li>Bathrooms: {{ $json.bathrooms }}</li>\n  <li>Year Built: {{ $json.yearBuilt }}</li>\n  <li>Last Sale Date: {{ $json.lastSaleDate }}</li>\n  <li>Last Sale Price: ${{ $json.lastSalePrice }}</li>\n</ul>\n\n<p><strong>Owner Information:</strong></p>\n<ul>\n  <li>Owner Name: {{ $json.owner.name }}</li>\n  <li>Mailing Address: {{ $json.owner.mailingAddress }}</li>\n  <li>Phone Numbers: {{ $json.owner.phoneNumbers ? $json.owner.phoneNumbers.join(', ') : 'N/A' }}</li>\n  <li>Email: {{ $json.owner.email || 'N/A' }}</li>\n</ul>\n\n<p>This property appears to be a high-potential opportunity based on:</p>\n<ul>\n  <li>High equity percentage</li>\n  <li>Absentee owner</li>\n</ul>\n\n<p><a href=\"https://maps.google.com/?q={{ $json.address.street }}, {{ $json.address.city }}, {{ $json.address.state }} {{ $json.address.zip }}\">View on Google Maps</a></p>"
+            },
+            {
+              "id": "eac4a51e-edfe-457a-9b38-a6c6f9e17ffd",
+              "name": "slackMessage",
+              "type": "string",
+              "value": "=*New High Potential Property Lead*\n\n*Address:* {{ $json.address.street }}, {{ $json.address.city }}, {{ $json.address.state }} {{ $json.address.zip }}\n*Market Value:* ${{ $json.marketValue }}\n*Equity:* {{ $json.equityPercentage }}%\n*Owner Status:* {{ $json.ownerStatus }}\n\n<https://maps.google.com/?q={{ $json.address.street }}, {{ $json.address.city }}, {{ $json.address.state }} {{ $json.address.zip }}|View on Google Maps>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d1e77ab8-4285-49c7-a84a-35d1e572d19a",
+      "name": "Format Email Content",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1480,
+        460
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@yourcompany.com",
+        "toEmail": "salesteam@yourcompany.com",
+        "subject": "={{ $json.emailSubject }}",
+        "options": {}
+      },
+      "id": "c41de2c4-a254-4629-af68-a5f12939e17c",
+      "name": "Send Email Alert",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [
+        1860,
+        380
+      ],
+      "webhookId": "efb002e7-21e3-483c-9a4f-f95f400ad203",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.slackMessage }}",
+        "otherOptions": {}
+      },
+      "id": "a9090a07-9c51-466c-9729-79e2f49a2be8",
+      "name": "Post to Slack",
+      "type": "n8n-nodes-base.slack",
+      "position": [
+        1740,
+        520
+      ],
+      "webhookId": "b50cadef-1223-47fa-bf5f-1512b4c323f0",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## Main Workflow Flow\nThis part of the workflow handles the regular scanning and processing of property data. It runs on a schedule to detect new properties or changes to existing ones, then passes the filtered results along for detailed analysis.",
+        "height": 340,
+        "width": 1040
+      },
+      "id": "c46b9ccb-f168-46d7-8c5b-facef95cacdf",
+      "name": "Sticky Note Main Flow",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -200,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Property Filtering & Analysis\nHere we filter the properties based on criteria for high-potential leads (high equity %, absentee owners, etc.) and fetch detailed information about each property to prepare comprehensive reports for the sales team.",
+        "height": 340,
+        "width": 760
+      },
+      "id": "14154339-e3b4-4840-aa88-616fe4bce0ab",
+      "name": "Sticky Note Filter & Analyze",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        860,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Notifications\nThis section delivers the property leads to the sales team through multiple channels:\n\n1. Email alerts with detailed property and owner information\n2. Slack notifications for quick updates\n\nBoth include Google Maps links to quickly view the property location.",
+        "height": 500,
+        "width": 440
+      },
+      "id": "d59f9313-98e0-4768-a6af-4a1af9cfc505",
+      "name": "Sticky Note Notifications",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1640,
+        160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Setup Instructions\n\n1. **API Keys & Credentials**:\n   - Add your BatchData API Key to the BatchData API Configuration node\n   - Set up SMTP credentials for email delivery\n   - Configure Slack API credentials for team notifications\n\n2. **Customize Search Parameters**:\n   - Adjust property search criteria in the BatchData API Configuration node\n   - Modify the filtering conditions in the Filter High Potential node\n\n3. **Notification Recipients**:\n   - Update email recipients in the Send Email Alert node\n   - Set appropriate Slack channel in the Post to Slack node",
+        "height": 300,
+        "width": 1040
+      },
+      "id": "6dc3226c-f6b0-4cab-8b37-873785504b07",
+      "name": "Sticky Note Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -200,
+        -20
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Compare Results": {
+      "main": [
+        [
+          {
+            "node": "Split Properties",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Properties": {
+      "main": [
+        [
+          {
+            "node": "Filter High Potential",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Email Content": {
+      "main": [
+        [
+          {
+            "node": "Send Email Alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Previous Results": {
+      "main": [
+        [
+          {
+            "node": "Compare Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Property Details": {
+      "main": [
+        [
+          {
+            "node": "Format Email Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Market Scan": {
+      "main": [
+        [
+          {
+            "node": "BatchData API Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter High Potential": {
+      "main": [
+        [
+          {
+            "node": "Get Property Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query BatchData Properties": {
+      "main": [
+        [
+          {
+            "node": "Get Previous Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BatchData API Configuration": {
+      "main": [
+        [
+          {
+            "node": "Query BatchData Properties",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f899ce3b-6a0f-4acf-9570-6f74df53f62e",
+  "meta": {
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  },
+  "id": "AdtqB9uIb4tzFzwa",
+  "tags": [
+    {
+      "createdAt": "2025-03-02T21:23:50.840Z",
+      "updatedAt": "2025-03-02T21:23:50.840Z",
+      "id": "5Llryqf7Bskg8Dj1",
+      "name": "Real Estate"
+    }
+  ]
+}
