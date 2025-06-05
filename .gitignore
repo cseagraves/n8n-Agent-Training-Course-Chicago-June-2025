@@ -1,8 +1,51 @@
+# Cursor and IDE files
 .cursor/
+
+# Python cache files
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Private business files
+Caiyman AI Private/
+
+# Log files
 Cursor_prompt_logs/
+
+# MCP and other development folders
 MCP/
 Mermaid/
+
+# Specific course files
 Course Materials\n8n workflow templates
 workflows/real-estate/Redfin_Market_Expert___Real_Estate_Intelligence_Tracker_with_Firecrawl___OpenAI.json
 Chicago_n8n_Training_Outline_Simplified_Schedule.docx
@@ -10,3 +53,17 @@ Claude Organized - One-day n8n Agent Training - Plan and Notes .docx
 Oneday n8n Agent Training - Plan and Notes.docx
 README How to use the Cursor tools and functionality.md
 Course details o4-mini-high.md
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+~$*
