@@ -59,6 +59,11 @@ By the end of this intensive workshop, you will:
 
 ## 🚀 Pre-Course Preparation
 
+### Technical Requirements
+- **Laptop** with Chrome/Firefox browser
+- **Stable internet connection**
+- **Zoom** installed ([Download Zoom](https://zoom.us/download)) for the virtual workshop
+
 ### Technical Setup Checklist
 
 **Step 1: n8n Account & Project Setup**
@@ -205,22 +210,6 @@ By the end of this intensive workshop, you will:
 
 ---
 
-## 🛠️ What You Need for Success
-
-### Required Setup
-- Laptop with Chrome/Firefox browser
-- Stable internet connection
-- n8n cloud account (free trial available)
-- API keys (detailed setup instructions provided above)
-
-### We've Got You Covered
-- Pre-recorded demonstrations if live demos encounter issues
-- Alternative setup methods for different technical environments
-- Dedicated technical support during the workshop
-- Offline reference materials and guides
-
----
-
 ## 📊 Your Success Journey
 
 ### What You'll Accomplish During the Workshop
@@ -251,33 +240,25 @@ By the end of this intensive workshop, you will:
 
 ---
 
-## 🚀 Next Steps & Advanced Learning Opportunities
+## 🚀 Beyond the Workshop: Let's Continue Your AI Journey
 
-### Continue Your AI Journey
-- **Advanced Workshop:** 2-day intensive with custom solution development
-- **Team Training:** Bring AI automation to your entire brokerage
-- **Enterprise Solutions:** Custom implementation and ongoing support
+After completing this intensive workshop, you'll have built a strong foundation in AI automation for real estate. But this is just the beginning!
 
-### Professional Certification *(Coming Soon)*
-- Earn your "Caiyman AI Certified n8n Practitioner" credential
-- Join an exclusive network of AI-powered real estate professionals
-- Access to advanced templates and continuous learning resources
+### Ongoing Support & Collaboration Opportunities
 
-### Join Our Growing Community *(Coming Soon)*
-- Monthly virtual meetups with fellow graduates
-- Share success stories and best practices
-- Collaborate on new automation ideas and templates
+**I'm available for additional assistance and consulting** to help you expand and optimize your AI automation systems. Whether you need help with advanced workflows, custom implementations, or strategic AI planning for your business, I'm here to support your continued success.
 
-### Industry Partnership Benefits *(Coming Soon)*
-- Access to exclusive integrations with leading real estate platforms
-- Direct connections with MLS providers and CRM vendors
-- Early access to new AI tools and capabilities
+**Open to Partnership & Innovation:** I welcome opportunities to collaborate on new AI projects, real estate technology ventures, and innovative automation solutions. If you have ideas for improving real estate processes through AI, let's explore them together.
+
+**Flexible Engagement Options:** From quick consulting calls to comprehensive business transformations, I offer a variety of support options tailored to your specific needs and goals.
+
+**Ready to take your AI automation to the next level?** Let's discuss how we can work together to revolutionize your real estate business through intelligent automation.
 
 ---
 
-## 📝 Notes for Attendees
+## 📝 Pre-Workshop Preparation Reminder
 
-### Core Topics Covered
+### Core Topics We'll Cover
 - ✅ AI agents simplified: What they are and how they differ from basic AI
 - ✅ Building workflows with n8n (no coding required)
 - ✅ Real estate-specific automation templates
@@ -286,19 +267,7 @@ By the end of this intensive workshop, you will:
 - ✅ API connections and integrations
 - ✅ Implementation strategies for your business
 
-### Pre-Workshop Preparation
 ⚠️ **IMPORTANT:** Complete all technical setup before the workshop to maximize your hands-on learning time!
-
----
-
-## 👤 About the Instructor
-
-**Dr. Cayman Seagraves**  
-Founder & CEO, [Caiyman AI LLC](https://www.caiyman.ai/)  
-Assistant Professor of Finance, The University of Tulsa  
-[Academic Profile & Research](https://www.caymanseagraves.com/)
-
-Specializing in AI transformation for real estate and finance industries, with expertise in multi-agent systems, automation, and strategic AI implementation.
 
 ---
 
