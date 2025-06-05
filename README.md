@@ -2,6 +2,7 @@
 
 **Instructor:** Dr. Cayman Seagraves  
 **Learn more about:** [Caiyman AI - AI Solutions & Services](https://www.caiyman.ai/) | [Academic Profile & Research](https://www.caymanseagraves.com/)
+[![Website Preview](https://caiyman.ai/api/og)](https://caiyman.ai)
 
 ---
 
