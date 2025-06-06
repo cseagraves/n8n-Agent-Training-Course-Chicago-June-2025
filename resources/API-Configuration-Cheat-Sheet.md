@@ -1,476 +1,381 @@
 # API Configuration Cheat Sheet
 
-**n8n AI Agent Training Course - Real Estate Automation**  
-*Quick Reference for Setting Up Required API Keys and Services*
+**n8n AI Agent Training Course - June 14th, 2025**  
+**Quick Reference Guide for Service Setup**
 
 ---
 
 ## Table of Contents
 
-1. [OpenRouter Configuration](#openrouter-configuration)
-2. [Pinecone Vector Database Setup](#pinecone-vector-database-setup)
-3. [Google Cloud Console APIs](#google-cloud-console-apis)
-4. [Tavily Search API](#tavily-search-api)
-5. [Perplexity AI API](#perplexity-ai-api)
-6. [Firecrawl API](#firecrawl-api)
-7. [Telegram Bot Setup](#telegram-bot-setup)
-8. [n8n Credential Configuration](#n8n-credential-configuration)
-9. [Troubleshooting Common Issues](#troubleshooting-common-issues)
+1. [OpenRouter (AI Models)](#openrouter-ai-models)
+2. [Pinecone (Vector Database)](#pinecone-vector-database)
+3. [Google Cloud APIs](#google-cloud-apis)
+4. [Tavily Search](#tavily-search)
+5. [Perplexity AI](#perplexity-ai)
+6. [Firecrawl](#firecrawl)
+7. [Telegram Bot](#telegram-bot)
+8. [n8n Credential Setup](#n8n-credential-setup)
+9. [Troubleshooting](#troubleshooting)
 
 ---
 
-## OpenRouter Configuration
+## OpenRouter (AI Models)
 
-**Purpose:** Access to multiple AI models through a single API  
-**Use Case:** LLM integration for AI agents and chat models
+**Purpose:** Access to multiple AI models (GPT-4, Claude, Gemini, etc.) through a single API  
+**Cost:** Pay-per-use, typically $0.002-0.06 per 1K tokens  
+**Website:** https://openrouter.ai/
 
-### Account Setup
-1. **Sign Up:** Go to [openrouter.ai](https://openrouter.ai/)
-2. **Email Verification:** Check your email and verify account
-3. **Account Dashboard:** Navigate to your dashboard after login
+### Setup Steps:
 
-### API Key Generation
-1. **Navigate to API Keys:** Click on "API Keys" in the left sidebar
-2. **Create New Key:** Click "Create API Key"
-3. **Name Your Key:** Use descriptive name like "n8n-real-estate-course"
-4. **Copy Key:** Save the key immediately (starts with `sk-or-v1-`)
+1. **Create Account**
+   - Go to https://openrouter.ai/
+   - Click "Sign Up" and create account
+   - Verify email address
 
-### n8n Configuration
+2. **Get API Key**
+   - Navigate to "Keys" section in dashboard
+   - Click "Create Key"
+   - Name it "n8n-training" 
+   - Copy the API key (starts with `sk-or-v1-...`)
+
+3. **Add Credits**
+   - Go to "Credits" section
+   - Add $10-20 for training (should last months)
+   - Choose payment method
+
+### n8n Configuration:
 ```
-Credential Type: OpenRouter
-API Key: sk-or-v1-[your-key-here]
+Credential Type: OpenAI
+API Key: [Your OpenRouter API key]
 Base URL: https://openrouter.ai/api/v1
 ```
 
-### Available Models for Real Estate
-- **GPT-4o Mini:** `openai/gpt-4o-mini` (Cost-effective, fast)
-- **Claude 3.5 Sonnet:** `anthropic/claude-3.5-sonnet` (Excellent reasoning)
-- **Llama 3.1 8B:** `meta-llama/llama-3.1-8b-instruct:free` (Free option)
-
-### Cost Considerations
-- **GPT-4o Mini:** ~$0.15/1M input tokens, $0.60/1M output tokens
-- **Claude 3.5 Sonnet:** ~$3.00/1M input tokens, $15.00/1M output tokens
-- **Free Models:** Rate limited but good for testing
+### Recommended Models:
+- **GPT-4o Mini:** `openai/gpt-4o-mini` (fast, cheap)
+- **Claude 3.5 Sonnet:** `anthropic/claude-3.5-sonnet` (high quality)
+- **GPT-4o:** `openai/gpt-4o` (balanced performance)
 
 ---
 
-## Pinecone Vector Database Setup
+## Pinecone (Vector Database)
 
-**Purpose:** Vector storage for RAG (Retrieval Augmented Generation)  
-**Use Case:** Contract analysis, property information retrieval
+**Purpose:** Store and search document embeddings for RAG (Retrieval Augmented Generation)  
+**Cost:** Free tier: 1 index, 100K vectors  
+**Website:** https://www.pinecone.io/
 
-### Account Creation
-1. **Sign Up:** Visit [pinecone.io](https://www.pinecone.io/)
-2. **Choose Plan:** Start with free tier (includes 1 project, 1 index)
-3. **Email Verification:** Complete email verification process
+### Setup Steps:
 
-### API Key Generation
-1. **Access Console:** Log into Pinecone console
-2. **Navigate to API Keys:** Click "API Keys" in left sidebar
-3. **Create Key:** Click "Create API Key"
-4. **Save Credentials:** Copy both API key and environment name
+1. **Create Account**
+   - Go to https://www.pinecone.io/
+   - Click "Sign Up Free"
+   - Complete registration
 
-### n8n Configuration
+2. **Create Index**
+   - In dashboard, click "Create Index"
+   - Name: `real-estate-docs`
+   - Dimensions: `1536` (for OpenAI embeddings)
+   - Metric: `cosine`
+   - Environment: Choose closest region
+
+3. **Get API Key**
+   - Go to "API Keys" section
+   - Copy the API key
+   - Note your environment (e.g., `us-east-1-aws`)
+
+### n8n Configuration:
 ```
 Credential Type: Pinecone
-API Key: [your-pinecone-api-key]
-Environment: [your-environment] (e.g., us-east1-gcp)
+API Key: [Your Pinecone API key]
+Environment: [Your environment, e.g., us-east-1-aws]
 ```
-
-### Index Configuration for Real Estate
-```json
-{
-  "name": "real-estate-docs",
-  "dimension": 1536,
-  "metric": "cosine",
-  "pods": 1,
-  "replicas": 1,
-  "pod_type": "p1.x1"
-}
-```
-
-### Best Practices
-- **Naming Convention:** Use descriptive index names
-- **Dimensions:** 1536 for OpenAI embeddings, 768 for sentence-transformers
-- **Metric:** Cosine similarity for text embeddings
 
 ---
 
-## Google Cloud Console APIs
+## Google Cloud APIs
 
-**Purpose:** Access to Gmail, Drive, Sheets, Docs, Calendar, Tasks  
-**Use Case:** Document management, email automation, calendar integration
+**Purpose:** Access Gmail, Drive, Sheets, Docs, Calendar, Tasks  
+**Cost:** Free tier covers most training needs  
+**Website:** https://console.cloud.google.com/
 
-### Initial Setup
-1. **Google Cloud Console:** Go to [console.cloud.google.com](https://console.cloud.google.com/)
-2. **Create Project:** Click "New Project" and name it "n8n-real-estate"
-3. **Enable Billing:** Required for API access (some have free quotas)
+### Setup Steps:
 
-### Required APIs to Enable
-Navigate to "APIs & Services" → "Library" and enable:
+1. **Create Project**
+   - Go to Google Cloud Console
+   - Click "New Project"
+   - Name: "n8n-real-estate-training"
+   - Create project
 
-#### Core APIs
-- **Gmail API:** Email automation and management
-- **Google Drive API:** Document storage and retrieval
-- **Google Sheets API:** Spreadsheet integration
-- **Google Docs API:** Document creation and editing
-- **Google Calendar API:** Appointment scheduling
-- **Google Tasks API:** Task management
+2. **Enable APIs**
+   Navigate to "APIs & Services" > "Library" and enable:
+   - Gmail API
+   - Google Drive API
+   - Google Sheets API
+   - Google Docs API
+   - Google Calendar API
+   - Google Tasks API
 
-#### Enable Each API
-1. Search for API name in the library
-2. Click on the API
-3. Click "Enable"
-4. Wait for activation (usually 1-2 minutes)
+3. **Create Service Account**
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "Service Account"
+   - Name: "n8n-service-account"
+   - Create and continue
 
-### Service Account Creation
-1. **Navigate:** APIs & Services → Credentials
-2. **Create Credentials:** Click "Create Credentials" → "Service Account"
-3. **Account Details:**
-   - Name: `n8n-real-estate-service`
-   - Description: `Service account for n8n real estate automation`
-4. **Download JSON:** After creation, download the JSON key file
+4. **Generate Key**
+   - Click on created service account
+   - Go to "Keys" tab
+   - Click "Add Key" > "Create New Key"
+   - Choose JSON format
+   - Download the JSON file
 
-### OAuth 2.0 Setup (Alternative)
-1. **Create OAuth Client:** APIs & Services → Credentials → Create Credentials → OAuth client ID
-2. **Application Type:** Web application
-3. **Authorized Redirect URIs:** Add your n8n webhook URL
-4. **Download Credentials:** Save client ID and secret
+5. **Share Resources** (Important!)
+   - Share Google Sheets/Docs with service account email
+   - Email format: `service-account-name@project-id.iam.gserviceaccount.com`
+   - Give "Editor" permissions
 
-### n8n Configuration Options
-
-#### Option 1: Service Account (Recommended)
+### n8n Configuration:
 ```
 Credential Type: Google Service Account
-Email: [service-account-email]
-Private Key: [paste-private-key-from-json]
+Service Account Email: [From JSON file]
+Private Key: [From JSON file - the entire key including headers]
 ```
-
-#### Option 2: OAuth2
-```
-Credential Type: Google OAuth2
-Client ID: [your-client-id]
-Client Secret: [your-client-secret]
-```
-
-### Scope Requirements
-Ensure your credentials have these scopes:
-- `https://www.googleapis.com/auth/gmail.modify`
-- `https://www.googleapis.com/auth/drive`
-- `https://www.googleapis.com/auth/spreadsheets`
-- `https://www.googleapis.com/auth/documents`
-- `https://www.googleapis.com/auth/calendar`
-- `https://www.googleapis.com/auth/tasks`
 
 ---
 
-## Tavily Search API
+## Tavily Search
 
 **Purpose:** Real-time web search for AI agents  
-**Use Case:** Market research, property information gathering
+**Cost:** Free tier: 1,000 searches/month  
+**Website:** https://tavily.com/
 
-### Account Setup
-1. **Visit Tavily:** Go to [tavily.com](https://tavily.com/)
-2. **Sign Up:** Create account with email
-3. **Email Verification:** Check email and verify
+### Setup Steps:
 
-### API Key Generation
-1. **Dashboard Access:** Log into your Tavily dashboard
-2. **API Section:** Navigate to "API Keys" or "Developers" section
-3. **Generate Key:** Click "Generate API Key"
-4. **Copy Key:** Save the API key securely
+1. **Create Account**
+   - Go to https://tavily.com/
+   - Click "Get Started"
+   - Sign up with email
 
-### n8n Configuration
+2. **Get API Key**
+   - Complete onboarding
+   - Go to dashboard
+   - Copy API key from main page
+
+### n8n Configuration:
 ```
-Credential Type: HTTP Request Node
-Header Name: Authorization
-Header Value: Bearer [your-tavily-api-key]
+Credential Type: HTTP Request (Generic)
+Authentication: None
+Headers: 
+  - Name: Authorization
+  - Value: Bearer [Your Tavily API key]
 ```
 
-### Usage Limits
-- **Free Tier:** 1,000 searches per month
-- **Rate Limits:** 100 requests per minute
-- **Upgrade Options:** Available for higher usage
-
-### Search Parameters
-```json
-{
+### Usage Example:
+```
+POST https://api.tavily.com/search
+Body: {
   "api_key": "your-api-key",
-  "query": "real estate market trends Chicago 2025",
-  "search_depth": "advanced",
-  "include_answer": true,
-  "include_raw_content": false,
-  "max_results": 10
+  "query": "real estate market trends 2025",
+  "search_depth": "basic"
 }
 ```
 
 ---
 
-## Perplexity AI API
+## Perplexity AI
 
-**Purpose:** AI-powered search and analysis  
-**Use Case:** Market analysis, research summaries
+**Purpose:** AI-powered search and research  
+**Cost:** Free tier: 5 searches/day, Pro: $20/month  
+**Website:** https://www.perplexity.ai/
 
-### Account Setup
-1. **Perplexity Console:** Visit [perplexity.ai](https://www.perplexity.ai/)
-2. **Sign Up:** Create account
-3. **Pro Subscription:** May be required for API access
+### Setup Steps:
 
-### API Access
-1. **Settings:** Navigate to account settings
-2. **API Section:** Look for "API" or "Developer" options
-3. **Generate Key:** Create new API key
-4. **Documentation:** Review API documentation for endpoints
+1. **Create Account**
+   - Go to https://www.perplexity.ai/
+   - Sign up with email or Google
 
-### n8n Configuration
+2. **Get API Key**
+   - Go to https://www.perplexity.ai/settings/api
+   - Click "Generate" to create API key
+   - Copy the key
+
+### n8n Configuration:
 ```
-Credential Type: HTTP Request Node
-URL: https://api.perplexity.ai/chat/completions
+Credential Type: HTTP Request (Generic)
+Authentication: None
 Headers:
-  Authorization: Bearer [your-api-key]
-  Content-Type: application/json
-```
-
-### Sample Request Format
-```json
-{
-  "model": "llama-3.1-sonar-small-128k-online",
-  "messages": [
-    {
-      "role": "system",
-      "content": "You are a real estate market analyst."
-    },
-    {
-      "role": "user",
-      "content": "Analyze current market trends in Chicago real estate"
-    }
-  ]
-}
+  - Name: Authorization
+  - Value: Bearer [Your Perplexity API key]
+  - Name: Content-Type
+  - Value: application/json
 ```
 
 ---
 
-## Firecrawl API
+## Firecrawl
 
 **Purpose:** Web scraping and content extraction  
-**Use Case:** Property listing scraping, market data collection
+**Cost:** Free tier: 500 pages/month  
+**Website:** https://www.firecrawl.dev/
 
-### Account Setup
-1. **Firecrawl Website:** Go to [firecrawl.dev](https://www.firecrawl.dev/)
-2. **Sign Up:** Create account with email
-3. **Plan Selection:** Choose appropriate plan (free tier available)
+### Setup Steps:
 
-### API Key Generation
-1. **Dashboard:** Access your Firecrawl dashboard
-2. **API Keys:** Navigate to API keys section
-3. **Create Key:** Generate new API key
-4. **Save Key:** Store securely for n8n configuration
+1. **Create Account**
+   - Go to https://www.firecrawl.dev/
+   - Click "Get Started"
+   - Sign up with GitHub or email
 
-### n8n Configuration
+2. **Get API Key**
+   - Go to dashboard
+   - Navigate to "API Keys"
+   - Copy the API key
+
+### n8n Configuration:
 ```
-Credential Type: HTTP Request Node
-URL: https://api.firecrawl.dev/v0/
+Credential Type: HTTP Request (Generic)
+Authentication: None
 Headers:
-  Authorization: Bearer [your-firecrawl-api-key]
-  Content-Type: application/json
-```
-
-### Common Endpoints
-- **Scrape:** `/scrape` - Extract content from single URL
-- **Crawl:** `/crawl` - Crawl entire website
-- **Search:** `/search` - Search web and extract results
-
-### Usage Examples
-```json
-{
-  "url": "https://example-real-estate-site.com",
-  "formats": ["markdown", "html"],
-  "onlyMainContent": true,
-  "includeTags": ["title", "meta", "price"]
-}
+  - Name: Authorization
+  - Value: Bearer [Your Firecrawl API key]
+  - Name: Content-Type
+  - Value: application/json
 ```
 
 ---
 
-## Telegram Bot Setup
+## Telegram Bot
 
-**Purpose:** Notifications and communication interface  
-**Use Case:** Instant notifications, client communication
+**Purpose:** Create chatbots and notifications  
+**Cost:** Free  
+**Setup:** Through Telegram app
 
-### Bot Creation
-1. **Start BotFather:** Open Telegram and search for @BotFather
-2. **Create Bot:** Send `/newbot` command
-3. **Bot Name:** Choose a name (e.g., "Real Estate Assistant")
-4. **Username:** Choose username (must end with 'bot')
-5. **Save Token:** Copy the bot token provided
+### Setup Steps:
 
-### Bot Configuration
-1. **Bot Settings:** Use BotFather to configure:
-   - Description
-   - About text
-   - Profile picture
-   - Commands menu
+1. **Create Bot**
+   - Open Telegram app
+   - Search for "@BotFather"
+   - Send `/newbot` command
+   - Follow prompts to name your bot
+   - Save the bot token
 
-### n8n Configuration
+2. **Get Chat ID** (for notifications)
+   - Send a message to your bot
+   - Visit: `https://api.telegram.org/bot[BOT_TOKEN]/getUpdates`
+   - Find your chat ID in the response
+
+### n8n Configuration:
 ```
 Credential Type: Telegram
-Bot Token: [your-bot-token]
+Access Token: [Your bot token from BotFather]
 ```
-
-### Useful Bot Commands Setup
-Send these to BotFather using `/setcommands`:
-```
-start - Start the bot
-help - Get help information
-status - Check system status
-notify - Toggle notifications
-```
-
-### Getting Chat ID
-1. **Add Bot:** Add your bot to a chat or group
-2. **Send Message:** Send any message to the bot
-3. **Get Updates:** Visit `https://api.telegram.org/bot[BOT_TOKEN]/getUpdates`
-4. **Find ID:** Look for "chat":{"id": in the response
 
 ---
 
-## n8n Credential Configuration
+## n8n Credential Setup
 
-### General Best Practices
-1. **Descriptive Names:** Use clear, descriptive credential names
-2. **Test Credentials:** Always test after setup
-3. **Environment Separation:** Use different credentials for development/production
-4. **Regular Rotation:** Update API keys periodically
+### Adding Credentials to n8n:
 
-### Common Credential Types
+1. **Navigate to Credentials**
+   - In n8n, click "Credentials" in left sidebar
+   - Click "Add Credential"
 
-#### HTTP Request Authentication
-```
-Type: Predefined Credential Type
-Credential: HTTP Request Node
-Authentication: Bearer Token
-Token: [your-api-key]
-```
+2. **Select Credential Type**
+   - Choose appropriate type from list
+   - Fill in required fields
+   - Test connection if available
 
-#### OAuth2 Services
-```
-Type: OAuth2 API
-Client ID: [your-client-id]
-Client Secret: [your-client-secret]
-Authorization URL: [service-specific]
-Access Token URL: [service-specific]
-Scope: [required-scopes]
-```
+3. **Name Your Credentials**
+   - Use descriptive names like:
+     - "OpenRouter-Training"
+     - "Google-Service-Account"
+     - "Pinecone-RealEstate"
 
-### Credential Testing
-1. **Test Button:** Use the "Test" button in credential setup
-2. **Simple Workflow:** Create test workflow to verify connectivity
-3. **Error Handling:** Check error messages for configuration issues
+### Security Best Practices:
 
-### Security Considerations
-1. **Least Privilege:** Only grant necessary permissions
-2. **Regular Audits:** Review and remove unused credentials
-3. **Secure Storage:** n8n encrypts credentials automatically
-4. **Access Control:** Limit who can view/edit credentials
+- ✅ **Never share API keys in screenshots or public forums**
+- ✅ **Use separate credentials for training vs. production**
+- ✅ **Regularly rotate API keys**
+- ✅ **Monitor usage and costs**
+- ✅ **Set up billing alerts**
 
 ---
 
-## Troubleshooting Common Issues
+## Troubleshooting
 
-### OpenRouter Issues
-**Problem:** `Invalid API key` error  
+### Common Issues and Solutions:
+
+#### OpenRouter Issues:
+**Problem:** "Invalid API key" error  
 **Solution:** 
-- Verify key starts with `sk-or-v1-`
-- Check for extra spaces or characters
-- Regenerate key if needed
+- Ensure you're using the full key including `sk-or-v1-` prefix
+- Check that base URL is set to `https://openrouter.ai/api/v1`
+- Verify you have credits in your account
 
-**Problem:** Model not available  
+#### Google APIs Issues:
+**Problem:** "Access denied" or "File not found"  
 **Solution:**
-- Check model name spelling
-- Verify model is active on OpenRouter
-- Try alternative model
+- Share Google Sheets/Docs with service account email
+- Ensure all required APIs are enabled
+- Check service account has correct permissions
 
-### Google APIs Issues
-**Problem:** `403 Forbidden` error  
+#### Pinecone Issues:
+**Problem:** "Index not found"  
 **Solution:**
-- Ensure APIs are enabled in Google Cloud Console
-- Check service account permissions
-- Verify billing is enabled
+- Verify index name matches exactly (case-sensitive)
+- Check environment setting matches your Pinecone dashboard
+- Ensure index is in "Ready" state
 
-**Problem:** OAuth2 authorization fails  
+#### General API Issues:
+**Problem:** Rate limiting or quota exceeded  
 **Solution:**
-- Check redirect URI configuration
-- Verify OAuth consent screen setup
-- Ensure proper scopes are requested
+- Check your usage in service dashboards
+- Upgrade to paid tiers if needed
+- Implement delays between requests
+- Use error handling in workflows
 
-### Pinecone Issues
-**Problem:** `Index not found` error  
-**Solution:**
-- Verify index name spelling
-- Check if index exists in dashboard
-- Ensure proper environment configuration
+### Testing Your Setup:
 
-**Problem:** Dimension mismatch  
-**Solution:**
-- Verify embedding model dimensions
-- Check index configuration
-- Recreate index with correct dimensions
+1. **Create Test Workflow**
+   - Add Manual Trigger
+   - Add HTTP Request node
+   - Test each API connection
 
-### General API Issues
-**Problem:** Rate limiting errors  
-**Solution:**
-- Implement exponential backoff
-- Check rate limits in API documentation
-- Consider upgrading plan
+2. **Verify Credentials**
+   - Use "Test" button in credential setup
+   - Check for successful responses
+   - Monitor error logs
 
-**Problem:** Timeout errors  
-**Solution:**
-- Increase timeout settings in n8n
-- Check API endpoint status
-- Implement retry logic
+3. **Check Permissions**
+   - Ensure all required scopes are granted
+   - Verify service account permissions
+   - Test with minimal data first
 
-### Network Issues
-**Problem:** Connection timeouts  
-**Solution:**
-- Check internet connectivity
-- Verify firewall settings
-- Test with different endpoints
+### Getting Help:
 
-**Problem:** SSL certificate errors  
-**Solution:**
-- Check system time and date
-- Update certificates if self-hosted
-- Verify API endpoint URLs
-
-### Authentication Debugging Steps
-1. **Check API Key Format:** Ensure correct prefix/format
-2. **Test with Curl:** Use command line to test API
-3. **Review Documentation:** Check for recent API changes
-4. **Check Quotas:** Verify usage limits not exceeded
-5. **Contact Support:** Reach out to API provider if needed
-
-### Common Error Codes
-- **400 Bad Request:** Check request format and required parameters
-- **401 Unauthorized:** Verify API key and authentication
-- **403 Forbidden:** Check permissions and enabled features
-- **404 Not Found:** Verify endpoint URL and resource existence
-- **429 Too Many Requests:** Implement rate limiting and retry logic
-- **500 Internal Server Error:** Check API status page and retry
+- **n8n Community:** https://community.n8n.io/
+- **Documentation:** https://docs.n8n.io/
+- **Course Support:** cayman@caiyman.ai
 
 ---
 
 ## Quick Reference Summary
 
-| Service | Purpose | Key Format | Monthly Limits |
-|---------|---------|------------|----------------|
-| OpenRouter | AI Models | `sk-or-v1-...` | Pay per use |
-| Pinecone | Vector DB | Standard key | 1 free index |
-| Google Cloud | Productivity APIs | JSON/OAuth2 | Varies by API |
-| Tavily | Web Search | Standard key | 1,000 free searches |
-| Perplexity | AI Search | `Bearer ...` | Subscription based |
-| Firecrawl | Web Scraping | Standard key | 500 free credits |
-| Telegram | Messaging | Bot token | Unlimited |
+| Service | Purpose | Free Tier | API Key Location |
+|---------|---------|-----------|------------------|
+| OpenRouter | AI Models | Pay-per-use | Dashboard > Keys |
+| Pinecone | Vector DB | 100K vectors | Dashboard > API Keys |
+| Google Cloud | Workspace APIs | Generous limits | Service Account JSON |
+| Tavily | Web Search | 1K searches/month | Dashboard |
+| Perplexity | AI Search | 5 searches/day | Settings > API |
+| Firecrawl | Web Scraping | 500 pages/month | Dashboard > API Keys |
+| Telegram | Bot Platform | Free | @BotFather |
+
+### Essential URLs:
+- **OpenRouter:** https://openrouter.ai/keys
+- **Pinecone:** https://app.pinecone.io/
+- **Google Cloud:** https://console.cloud.google.com/
+- **Tavily:** https://app.tavily.com/
+- **Perplexity:** https://www.perplexity.ai/settings/api
+- **Firecrawl:** https://www.firecrawl.dev/app
 
 ---
 
-*Keep this cheat sheet handy during the workshop for quick reference. All credentials should be configured before the course begins to maximize hands-on learning time.* 
+*Keep this cheat sheet handy during the workshop! We'll be using all these services to build powerful AI workflows for real estate automation.* 

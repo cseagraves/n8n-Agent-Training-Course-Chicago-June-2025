@@ -211,6 +211,7 @@ By the end of this intensive workshop, you will:
 
 ---
 
+
 ## 🔗 Important Links
 
 ### n8n Resources
