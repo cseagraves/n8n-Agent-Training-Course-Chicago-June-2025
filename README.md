@@ -189,29 +189,10 @@ By the end of this intensive workshop, you will:
 3. **"ROI Case Studies in Real Estate AI"** (10 slides)
 
 ### Hands-On Resources
-- 📝 Step-by-step workflow building guides (PDF)
+- 📝 Step-by-step workflow building guides
 - 🔧 Troubleshooting quick reference card
 - 🔑 API configuration cheat sheet
 - 💡 Real estate prompting best practices
-
----
-
-## 🎯 Engagement & Support
-
-### During the Course
-- 🗳️ Live polling for workflow preferences
-- 👥 Pair programming exercises
-- 🏆 Real-world challenge scenarios
-
-### Post-Course Support
-- 💬 30-day access to private Slack channel
-- 📅 Weekly office hours (2 sessions)
-- 🔔 Template update notifications
-
-### Certification & Recognition
-- 🎓 "Caiyman AI Certified n8n Practitioner" certificates
-- 🔗 LinkedIn badge graphics
-- 🌟 Success story showcase opportunities
 
 ---
 
