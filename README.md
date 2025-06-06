@@ -22,7 +22,8 @@
 
 **Dr. Cayman Seagraves**  
 *Founder & CEO, [Caiyman AI LLC](https://www.caiyman.ai/)*  
-*Assistant Professor of Finance, The University of Tulsa*
+*Assistant Professor of Finance, The University of Tulsa*  
+📧 **Contact:** cayman@caiyman.ai
 
 Specializing in AI transformation for real estate and finance industries, with expertise in multi-agent systems, automation, and strategic AI implementation. Dr. Seagraves brings both academic rigor and practical industry experience to help real estate professionals leverage cutting-edge AI technology for competitive advantage.
 
