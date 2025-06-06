@@ -13,6 +13,8 @@
 **Platform:** [n8n Cloud Platform](https://n8n.io/)  
 **Target Audience:** Experienced real estate agents and real estate professionals
 
+This intensive workshop is designed to be your launchpad into the world of AI-powered automation. You will leave with a strong foundational understanding and practical skills to begin transforming your business. While you won't become an expert overnight, you will gain the confidence and core knowledge to build, test, and deploy effective AI agents. This course provides the essential starting point for your automation journey.
+
 ---
 
 ## 👨‍💼 Meet Your Instructor
@@ -36,25 +38,25 @@ Specializing in AI transformation for real estate and finance industries, with e
 
 By the end of this intensive workshop, you will:
 
-#### 🎯 **Master AI Agent Fundamentals**
-- Understand the difference between AI agents and basic AI tools
+#### 🎯 **Build a Strong Foundation in AI Agents**
+- Understand the critical difference between AI agents and basic AI tools
 - Build confidence in no-code automation using the n8n platform
 - Create your first functional AI workflow within the first hour
 
-#### 🏠 **Deploy Real Estate-Specific Solutions**
-- Launch 3-5 working AI workflows directly applicable to your business
-- Automate lead generation, market analysis, and contract review
-- Implement an agentic personal assistant and client communication systems
+#### 🏠 **Deploy Your First Real Estate Solutions**
+- Launch your first 3-5 working AI workflows to serve as a model for future development
+- Learn the patterns to automate lead generation, market analysis, and contract review
+- Implement a foundational agentic personal assistant and client communication systems
 
 #### 💡 **Gain Competitive Advantage**
 - Significantly reduce manual tasks in key business processes
 - Improve client response times and follow-up consistency
-- Access advanced AI capabilities without technical expertise
+- Access advanced AI capabilities without deep technical expertise
 
-#### 🚀 **Build Scalable Business Systems**
-- Design multi-agent workflows for complex real estate operations
+#### 🚀 **Develop a Framework for Scalable Business Systems**
+- Understand how to design multi-agent workflows for complex real estate operations
 - Plan implementation strategies tailored to your business size and goals
-- Establish foundation for continued AI automation expansion
+- Establish the foundation for continued AI automation expansion
 
 ---
 
@@ -129,17 +131,17 @@ By the end of this intensive workshop, you will:
 
 **Break (15 min)**
 
-**Module 3: Advanced Workflows (60 min)**
-- Lead Generation System template walkthrough
-- Build a Market Analysis Agent
+**Module 3: Building Core Automation Systems (60 min)**
+- Applying AI to Core Business Processes (e.g., Lead Management)
+- Developing Automated Intelligence Workflows
 
 ### 🍽️ Lunch Break (12:00-2:00 PM)
 
 ### Afternoon Session (2:00-4:00 PM)
 
-**Module 4: RAG & Advanced Applications (60 min)**
-- Contract Analysis Agent with vector databases
-- Social Media Automation for listings
+**Module 4: Advanced Data Handling & Applications (60 min)**
+- Working with Documents and Custom Knowledge (RAG)
+- Automating Marketing and Client Outreach
 
 **Module 5: Multi-Agent Systems & Scaling (45 min)**
 - Multi-agent architecture demonstration
@@ -152,32 +154,14 @@ By the end of this intensive workshop, you will:
 
 ## 🏠 Real Estate-Specific Workflow Templates
 
-### Core Templates Included
+### Core Templates (To Be Determined)
 
-#### 1. Lead Nurture Assistant
-- Automated follow-up sequences
-- Personalized property recommendations
-- Appointment scheduling integration
+This workshop will include several hands-on sessions where we build practical, real estate-specific workflow templates from scratch. The final list of templates will be curated to provide maximum value and will be announced closer to the course date. Examples of potential areas we'll cover include:
 
-#### 2. Listing Optimizer
-- MLS description enhancement
-- Competitive analysis automation
-- Pricing recommendation engine
-
-#### 3. Transaction Coordinator Bot
-- Document checklist management
-- Deadline reminders
-- Status update automation
-
-#### 4. Market Intelligence Agent
-- Daily market report generation
-- Comparative market analysis (CMA)
-- Trend identification and alerts
-
-#### 5. Client Communication Hub
-- Multi-channel response system
-- FAQ automation
-- Showing feedback collection
+- Lead Nurturing & Follow-Up
+- Automated Market Analysis
+- Client Communication & Support
+- Transaction & Document Coordination
 
 ---
 
@@ -199,12 +183,12 @@ By the end of this intensive workshop, you will:
 ## 📊 Your Success Journey
 
 ### What You'll Accomplish During the Workshop
-- ✅ Complete hands-on exercises building real workflows
-- ⭐ Deploy 3-5 working AI automation systems
-- 🚀 Gain confidence in no-code AI development
+- ✅ Complete hands-on exercises to build foundational workflows
+- ⭐ Deploy your first 3-5 working AI automation systems
+- 🚀 Gain confidence in no-code AI development and a framework for future projects
 
 ### Continued Growth After the Workshop
-- 📈 Implement learned systems in your daily business operations
+- 📈 Implement the systems and patterns learned in your daily business operations. Building robust, production-ready workflows is an iterative process that requires tinkering and refinement, and this course will give you the perfect starting point.
 - 💰 Track efficiency gains and ROI from your new AI workflows
 - 🎓 Qualify for advanced training and certification programs
 - 👥 Connect with fellow real estate professionals in our community
@@ -267,6 +251,6 @@ For questions or technical support before the course:
 
 ---
 
-*This course is designed to transform how real estate professionals leverage AI for competitive advantage. Join us to build the future of real estate automation!*
+*This course is designed to be the launchpad that transforms how real estate professionals leverage AI for competitive advantage. Join us to build the future of your real estate business!*
 
 © 2025 Caiyman AI LLC. All rights reserved.
