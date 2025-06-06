@@ -246,7 +246,6 @@ After completing this intensive workshop, you'll have built a strong foundation 
 
 For questions or technical support before the course:  
 **Email:** cayman@caiymanai.com  
-**Course Support:** support@caiymanai.com  
 **Website:** [https://www.caiyman.ai/](https://www.caiyman.ai/)
 
 ---
