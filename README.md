@@ -46,7 +46,7 @@ By the end of this intensive workshop, you will:
 - Implement market intelligence gathering and client communication systems
 
 #### 💡 **Gain Competitive Advantage**
-- Reduce manual tasks by 60-80% in key business processes
+- Significantly reduce manual tasks by 60-80% in key business processes
 - Improve client response times and follow-up consistency
 - Access advanced AI capabilities without technical expertise
 
@@ -60,7 +60,7 @@ By the end of this intensive workshop, you will:
 ## 🚀 Pre-Course Preparation
 
 ### Technical Requirements
-- **Laptop** with Chrome/Firefox browser
+- **Laptop** with a web browser (Chrome, Safari, Firefox, etc.)
 - **Stable internet connection**
 - **Zoom** installed ([Download Zoom](https://zoom.us/download)) for the virtual workshop
 
@@ -70,12 +70,14 @@ By the end of this intensive workshop, you will:
 1. **Create n8n cloud account** - [Sign up here](https://app.n8n.cloud/register)
 2. **Create a dedicated project for the course:**
    - Once logged in, create a new project specifically for this workshop
-   - Name it something like "Real Estate AI Workshop" or "AI Agent Training"
+   - Name it something like "Real Estate AI Worksh op" or "AI Agent Training"
    - **Important:** This keeps your course work separate from personal workflows
    - The instructor will NOT have access to your personal workflows - only this dedicated project
-3. **Add course instructor as admin user** to your workshop project (detailed instructions will be provided)
+3. **Add course instructor as a user** to your workshop project:
+   - Click the three dots in the bottom left corner of the main n8n window → Settings
+   - Go to the Users tab, and invite me as a user using my email: cayman@caiymanai.com
 
-![n8n Project and Credentials Setup](Images/n8n%20project%20and%20credentials.png)
+![n8n Project and Credentials Setup](Images/n8n%20add%20user%20in%20settings.png)
 
 **Step 2: API Keys & Credentials Setup**
 4. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
@@ -92,7 +94,8 @@ By the end of this intensive workshop, you will:
    - Add each API key as a separate credential with descriptive names
    - Test each credential to ensure proper connectivity
    - **Security Note:** Credentials are project-specific and encrypted by n8n
-   
+
+![n8n Project and Credentials Setup](Images/n8n%20project%20and%20credentials.png)   
 
 ### Resource Package
 - 📄 "AI Agents in Real Estate: Primer" (5-page PDF)
