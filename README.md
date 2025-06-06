@@ -80,6 +80,7 @@ By the end of this intensive workshop, you will:
 ![n8n Project and Credentials Setup](Images/n8n%20add%20user%20in%20settings.png)
 
 **Step 2: API Keys & Credentials Setup**
+
 4. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
    - ✅ [OpenRouter](https://openrouter.ai/) - Create account → Get API key
    - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key  
