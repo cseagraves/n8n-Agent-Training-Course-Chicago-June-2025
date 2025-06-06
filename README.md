@@ -43,11 +43,11 @@ By the end of this intensive workshop, you will:
 
 #### 🏠 **Deploy Real Estate-Specific Solutions**
 - Launch 3-5 working AI workflows directly applicable to your business
-- Automate lead nurturing, listing optimization, and transaction coordination
-- Implement market intelligence gathering and client communication systems
+- Automate lead generation, market analysis, and contract review
+- Implement an agentic personal assistant and client communication systems
 
 #### 💡 **Gain Competitive Advantage**
-- Significantly reduce manual tasks by 60-80% in key business processes
+- Significantly reduce manual tasks in key business processes
 - Improve client response times and follow-up consistency
 - Access advanced AI capabilities without technical expertise
 
