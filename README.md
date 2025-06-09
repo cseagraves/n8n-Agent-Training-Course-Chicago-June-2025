@@ -41,7 +41,7 @@ By the end of this intensive workshop, you will:
 #### 🎯 **Build a Strong Foundation in AI Agents**
 - Understand the critical difference between AI agents and basic AI tools
 - Build confidence in no-code automation using the n8n platform
-- Create your first functional AI workflow within the first hour
+- Create your first functional AI workflow within the first two hours
 
 #### 🏠 **Deploy Your First Real Estate Solutions**
 - Launch your first 3-5 working AI workflows to serve as a model for future development
@@ -78,7 +78,7 @@ By the end of this intensive workshop, you will:
    - The instructor will NOT have access to your personal workflows - only this dedicated project
 3. **Add course instructor as a user** to your workshop project:
    - Click the three dots in the bottom left corner of the main n8n window → Settings
-   - Go to the Users tab, and invite me as a user using my email: cayman@caiymanai.com
+   - Go to the Users tab, and invite me as a user using my email: cayman@caiyman.ai
 
 ![n8n Project and Credentials Setup](Images/n8n%20add%20user%20in%20settings.png)
 
@@ -240,7 +240,7 @@ After completing this intensive workshop, you'll have built a strong foundation 
 ## 📧 Contact
 
 For questions or technical support before the course:  
-**Email:** cayman@caiymanai.com  
+**Email:** cayman@caiyman.ai  
 **Website:** [https://www.caiyman.ai/](https://www.caiyman.ai/)
 
 ---
