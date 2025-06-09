@@ -20,10 +20,10 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Pandoc and XeLaTeX
+    - name: Install necessary fonts
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended
+        sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended fonts-liberation
 
     - name: Convert README.md to PDF with Pandoc variables (XeLaTeX)
       run: |
@@ -33,7 +33,7 @@ jobs:
           --pdf-engine=xelatex \
           -V geometry:margin=1in \
           -V fontsize=12pt \
-          -V mainfont="Arial" \
+          -V mainfont="Liberation Sans" \
           --metadata title="" \
           --output AI-Agent-Real-Estate-Workshop-Guide.pdf
 
@@ -45,7 +45,6 @@ jobs:
         else
           echo "❌ PDF creation failed"
           exit 1
-        fi
 
     - name: Commit and push PDF
       run: |
@@ -61,7 +60,6 @@ jobs:
         else
           git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
           git push
-        fi
 
     - name: Upload PDF as artifact
       uses: actions/upload-artifact@v4
