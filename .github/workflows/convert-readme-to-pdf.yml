@@ -20,22 +20,31 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install necessary fonts
+    - name: Set up Pandoc and wkhtmltopdf
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended fonts-liberation
+        sudo apt-get install -y pandoc wkhtmltopdf
 
-    - name: Convert README.md to PDF with Pandoc variables (XeLaTeX)
+    - name: Download GitHub Markdown CSS
+      run: |
+        curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
+
+    - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
         pandoc README.md \
           --from gfm \
-          --to pdf \
-          --pdf-engine=xelatex \
-          -V geometry:margin=1in \
-          -V fontsize=12pt \
-          -V mainfont="Liberation Sans" \
+          --to html5 \
+          --standalone \
+          --css github-markdown.css \
           --metadata title="" \
-          --output AI-Agent-Real-Estate-Workshop-Guide.pdf
+          --output README.html
+
+    - name: Convert HTML to PDF
+      run: |
+        wkhtmltopdf \
+          --enable-local-file-access \
+          README.html \
+          AI-Agent-Real-Estate-Workshop-Guide.pdf
 
     - name: Check if PDF was created
       run: |
@@ -61,6 +70,7 @@ jobs:
         else
           git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
           git push
+        fi
 
     - name: Upload PDF as artifact
       uses: actions/upload-artifact@v4
