@@ -22,10 +22,9 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Install markdown-pdf
+    - name: Install dependencies
       run: |
-        npm install -g markdown-pdf
-        npm install -g puppeteer
+        npm install -g showdown puppeteer
 
     - name: Convert README to PDF
       run: |
@@ -115,17 +114,84 @@ jobs:
         }
         EOF
         
-        # Convert README.md to PDF with custom styling
-        markdown-pdf README.md \
-          --css-path temp-style.css \
-          --paper-format A4 \
-          --paper-orientation portrait \
-          --paper-border 20mm \
-          --render-delay 2000 \
-          --out "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+        # Convert README.md to HTML using showdown
+        showdown makehtml -i README.md -o temp-readme.html
+        
+        # Create complete HTML file with CSS styling
+        cat > temp-complete.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>AI Agent Real Estate Workshop Guide</title>
+          <style>
+        EOF
+        
+        # Add CSS content to HTML
+        cat temp-style.css >> temp-complete.html
+        
+        cat >> temp-complete.html << 'EOF'
+          </style>
+        </head>
+        <body>
+        EOF
+        
+        # Add HTML content
+        cat temp-readme.html >> temp-complete.html
+        
+        cat >> temp-complete.html << 'EOF'
+        </body>
+        </html>
+        EOF
+        
+        # Create PDF conversion script
+        cat > convert-to-pdf.js << 'EOF'
+        const puppeteer = require('puppeteer');
+        const fs = require('fs');
+        
+        (async () => {
+          try {
+            console.log('🚀 Starting PDF conversion...');
+            
+            const browser = await puppeteer.launch({
+              headless: true,
+              args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+            
+            const page = await browser.newPage();
+            
+            console.log('📄 Loading HTML content...');
+            const htmlContent = fs.readFileSync('temp-complete.html', 'utf8');
+            await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+            
+            console.log('🎨 Generating PDF...');
+            await page.pdf({
+              path: 'AI-Agent-Real-Estate-Workshop-Guide.pdf',
+              format: 'A4',
+              printBackground: true,
+              margin: {
+                top: '20mm',
+                right: '20mm',
+                bottom: '20mm',
+                left: '20mm'
+              }
+            });
+            
+            await browser.close();
+            console.log('✅ PDF successfully created!');
+            
+          } catch (error) {
+            console.error('❌ Error creating PDF:', error);
+            process.exit(1);
+          }
+        })();
+        EOF
+        
+        # Execute PDF conversion
+        node convert-to-pdf.js
         
         # Clean up temporary files
-        rm temp-style.css
+        rm temp-style.css temp-readme.html temp-complete.html convert-to-pdf.js
 
     - name: Check if PDF was created
       run: |

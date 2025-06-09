@@ -77,6 +77,9 @@ Thumbs.db
 
 # Temporary files
 temp-style.css
+temp-readme.html
+temp-complete.html
+convert-to-pdf.js
 *.tmp
 *.temp
 ~$*
