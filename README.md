@@ -167,11 +167,23 @@ This workshop will include several hands-on sessions where we build practical, r
 2. **"n8n Fundamentals for Real Estate"** (20 slides)
 3. **"ROI Case Studies in Real Estate AI"** (10 slides)
 
-### Hands-On Resources
-- 📝 Step-by-step workflow building guides
-- 🔧 Troubleshooting quick reference card
-- 🔑 API configuration cheat sheet
-- 💡 Real estate prompting best practices
+### Complete Resource Library
+**All resources are available in the `/resources/` folder:**
+
+#### 🎓 Learning Materials
+- 📄 **AI-Agents-Real-Estate-Primer.md** - Comprehensive introduction to AI agents in real estate
+- 📊 **Real-Estate-AI-Use-Cases.md** - 16 practical applications with demonstrable ROI
+- 💡 **Real-Estate-Prompting-Best-Practices.md** - Advanced prompting techniques using REAL framework
+- 📝 **Step-by-Step-Workflow-Building-Guide.md** - Hands-on guide for 5 core n8n projects
+
+#### 🔧 Setup & Configuration
+- 🔑 **API-Configuration-Cheat-Sheet.md** - Detailed setup guide for all required services
+- 📋 **Pre-Course-Setup-Checklist.md** - Complete preparation checklist for workshop success
+- 🔧 **Troubleshooting-Quick-Reference-Card.md** - Emergency fixes and common solutions
+
+#### 📈 Business Implementation
+- 📈 **ROI-Tracking-Template.md** - Comprehensive ROI measurement and optimization framework
+- 🔒 **Security-Compliance-Guidelines.md** - Essential security practices for real estate data protection
 
 ---
 
