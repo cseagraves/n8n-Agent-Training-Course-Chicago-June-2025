@@ -29,6 +29,16 @@ jobs:
       run: |
         curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
 
+    - name: Create print CSS for margins and print styling
+      run: |
+        cat <<EOF > readme-print.css
+        @media print {
+          body { margin: 0; }
+          .markdown-body { box-shadow: none; border: none; max-width: 100%; padding: 0; }
+          img { max-width: 100%; height: auto; }
+        }
+        EOF
+
     - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
         pandoc README.md \
@@ -36,6 +46,7 @@ jobs:
           --to html5 \
           --standalone \
           --css github-markdown.css \
+          --css readme-print.css \
           --metadata title="" \
           --output README.html
 
@@ -43,6 +54,11 @@ jobs:
       run: |
         wkhtmltopdf \
           --enable-local-file-access \
+          --margin-top 25mm \
+          --margin-bottom 25mm \
+          --margin-left 20mm \
+          --margin-right 20mm \
+          --page-size Letter \
           README.html \
           AI-Agent-Real-Estate-Workshop-Guide.pdf
 
