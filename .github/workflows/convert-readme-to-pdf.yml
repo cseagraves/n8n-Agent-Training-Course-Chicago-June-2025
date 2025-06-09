@@ -20,51 +20,176 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install necessary fonts
+    - name: Cache LaTeX packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          /tmp/texlive
+          ~/.texlive
+        key: texlive-${{ runner.os }}-v2
+        restore-keys: |
+          texlive-${{ runner.os }}-
+
+    - name: Install LaTeX dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended fonts-liberation
+        sudo apt-get install -y \
+          pandoc \
+          texlive-xetex \
+          texlive-fonts-recommended \
+          texlive-fonts-extra \
+          texlive-latex-extra \
+          texlive-latex-recommended \
+          fonts-liberation \
+          fonts-dejavu-core \
+          librsvg2-bin
 
-    - name: Convert README.md to PDF with Pandoc variables (XeLaTeX)
+    - name: Verify README.md exists
       run: |
+        if [ ! -f "README.md" ]; then
+          echo "❌ README.md not found"
+          exit 1
+        fi
+        echo "✅ README.md found ($(wc -l < README.md) lines)"
+
+    - name: Convert README.md to PDF
+      run: |
+        # Create a custom LaTeX template for better formatting
+        cat > custom-template.tex << 'EOF'
+        \documentclass[12pt,a4paper]{article}
+        \usepackage[utf8]{inputenc}
+        \usepackage[T1]{fontenc}
+        \usepackage{lmodern}
+        \usepackage[margin=1in]{geometry}
+        \usepackage{hyperref}
+        \usepackage{graphicx}
+        \usepackage{longtable}
+        \usepackage{booktabs}
+        \usepackage{array}
+        \usepackage{parskip}
+        \usepackage{fancyhdr}
+        \usepackage{xcolor}
+        \usepackage{listings}
+        \usepackage{courier}
+        
+        % Configure hyperlinks
+        \hypersetup{
+          colorlinks=true,
+          linkcolor=blue,
+          urlcolor=blue,
+          citecolor=blue
+        }
+        
+        % Configure code blocks
+        \lstset{
+          basicstyle=\ttfamily\small,
+          breaklines=true,
+          frame=single,
+          backgroundcolor=\color{gray!10}
+        }
+        
+        % Header and footer
+        \pagestyle{fancy}
+        \fancyhf{}
+        \rhead{\thepage}
+        \lhead{AI Agent Real Estate Workshop Guide}
+        
+        \begin{document}
+        $body$
+        \end{document}
+        EOF
+
+        # Convert with enhanced options
         pandoc README.md \
-          --from gfm \
-          --to pdf \
+          --from gfm+smart \
+          --to latex \
           --pdf-engine=xelatex \
-          -V geometry:margin=1in \
-          -V fontsize=12pt \
-          -V mainfont="Liberation Sans" \
-          --metadata title="" \
-          --output AI-Agent-Real-Estate-Workshop-Guide.pdf
+          --template=custom-template.tex \
+          --variable=fontsize:12pt \
+          --variable=documentclass:article \
+          --variable=classoption:oneside \
+          --table-of-contents \
+          --toc-depth=3 \
+          --number-sections \
+          --highlight-style=github \
+          --listings \
+          --standalone \
+          --metadata-file=<(echo 'title: "AI Agent Real Estate Workshop Guide"') \
+          --metadata-file=<(echo 'date: "'$(date '+%B %d, %Y')'"') \
+          --output "AI-Agent-Real-Estate-Workshop-Guide.pdf" \
+          --verbose
 
-    - name: Check if PDF was created
+    - name: Verify PDF creation and quality
       run: |
-        if [ -f "AI-Agent-Real-Estate-Workshop-Guide.pdf" ]; then
-          echo "✅ PDF successfully created"
-          ls -la "AI-Agent-Real-Estate-Workshop-Guide.pdf"
-        else
+        if [ ! -f "AI-Agent-Real-Estate-Workshop-Guide.pdf" ]; then
           echo "❌ PDF creation failed"
           exit 1
         fi
+        
+        # Check PDF file size (should be reasonable)
+        PDF_SIZE=$(stat -f%z "AI-Agent-Real-Estate-Workshop-Guide.pdf" 2>/dev/null || stat -c%s "AI-Agent-Real-Estate-Workshop-Guide.pdf" 2>/dev/null)
+        if [ "$PDF_SIZE" -lt 1024 ]; then
+          echo "❌ PDF seems too small ($PDF_SIZE bytes), likely corrupted"
+          exit 1
+        fi
+        
+        echo "✅ PDF successfully created"
+        echo "📄 File size: $(du -h 'AI-Agent-Real-Estate-Workshop-Guide.pdf' | cut -f1)"
+        echo "📋 File info:"
+        ls -la "AI-Agent-Real-Estate-Workshop-Guide.pdf"
 
-    - name: Commit and push PDF
+    - name: Commit and push PDF (if changed)
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
 
         # Add the PDF file
         git add "AI-Agent-Real-Estate-Workshop-Guide.pdf"
 
         # Check if there are changes to commit
         if git diff --staged --quiet; then
-          echo "No changes to commit"
+          echo "📝 No changes to commit - PDF is up to date"
         else
-          git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
-          git push
+          # Get the commit hash that triggered this workflow
+          COMMIT_HASH=$(echo "${{ github.sha }}" | cut -c1-7)
+          git commit -m "📄 Auto-update: Convert README to PDF
+          
+          Generated from README.md at commit $COMMIT_HASH
+          
+          [skip ci]"
+          
+          # Retry push with backoff in case of conflicts
+          for i in {1..3}; do
+            if git push; then
+              echo "✅ Successfully pushed PDF update"
+              break
+            else
+              echo "⚠️ Push failed, attempt $i/3. Retrying in 5 seconds..."
+              sleep 5
+              git pull --rebase origin main || git pull --rebase origin master
+            fi
+          done
+        fi
 
     - name: Upload PDF as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: workshop-guide-pdf
+        name: workshop-guide-pdf-${{ github.run_number }}
         path: "AI-Agent-Real-Estate-Workshop-Guide.pdf"
         retention-days: 90
+        if-no-files-found: error
+
+    - name: Create release asset (on workflow_dispatch)
+      if: github.event_name == 'workflow_dispatch'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: pdf-v${{ github.run_number }}
+        name: "Workshop Guide PDF v${{ github.run_number }}"
+        body: |
+          📄 Auto-generated PDF from README.md
+          
+          Generated on: ${{ steps.date.outputs.date }}
+          Source commit: ${{ github.sha }}
+        files: "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+        draft: false
+        prerelease: false
