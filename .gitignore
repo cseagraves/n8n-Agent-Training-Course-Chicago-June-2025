@@ -76,6 +76,23 @@ ehthumbs.db
 Thumbs.db
 
 # Temporary files
+temp-style.css
 *.tmp
 *.temp
 ~$*
+
+# Node modules (if any)
+node_modules/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# Allow the generated PDF
+!AI-Agent-Real-Estate-Workshop-Guide.pdf
