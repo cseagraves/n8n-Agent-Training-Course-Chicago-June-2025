@@ -101,11 +101,6 @@ By the end of this intensive workshop, you will:
 
 ![n8n Project and Credentials Setup](Images/n8n%20project%20and%20credentials.png)   
 
-### Resource Package
-- 📄 "AI Agents in Real Estate: Primer" (5-page PDF)
-- 🎥 n8n interface familiarization video (10-minute walkthrough)
-- 📊 Real estate AI use case examples document
-
 ### Pre-Course Learning Resources
 - **[n8n Blog](https://blog.n8n.io/)** - Latest updates and tutorials
 - **[n8n LLM Agents Guide](https://blog.n8n.io/llm-agents/)** - Deep dive into AI agents
