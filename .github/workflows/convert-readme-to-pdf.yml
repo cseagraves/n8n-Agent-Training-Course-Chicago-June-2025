@@ -45,6 +45,7 @@ jobs:
         else
           echo "❌ PDF creation failed"
           exit 1
+        fi
 
     - name: Commit and push PDF
       run: |
