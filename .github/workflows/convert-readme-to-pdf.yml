@@ -9,7 +9,7 @@ on:
 jobs:
   convert-to-pdf:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        npm install -g showdown puppeteer
+        npm install showdown puppeteer
 
     - name: Convert README to PDF
       run: |
@@ -38,74 +38,74 @@ jobs:
           margin: 0 auto;
           padding: 20px;
         }
-        
+
         h1, h2, h3, h4, h5, h6 {
           color: #2c3e50;
           margin-top: 24px;
           margin-bottom: 16px;
         }
-        
+
         h1 {
           border-bottom: 2px solid #eaecef;
           padding-bottom: 10px;
         }
-        
+
         h2 {
           border-bottom: 1px solid #eaecef;
           padding-bottom: 8px;
         }
-        
+
         code {
           background-color: #f6f8fa;
           border-radius: 3px;
           padding: 2px 4px;
           font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
         }
-        
+
         pre {
           background-color: #f6f8fa;
           border-radius: 6px;
           padding: 16px;
           overflow: auto;
         }
-        
+
         blockquote {
           border-left: 4px solid #dfe2e5;
           margin: 0;
           padding: 0 16px;
           color: #6a737d;
         }
-        
+
         table {
           border-collapse: collapse;
           width: 100%;
           margin: 16px 0;
         }
-        
+
         table th, table td {
           border: 1px solid #dfe2e5;
           padding: 8px 12px;
           text-align: left;
         }
-        
+
         table th {
           background-color: #f6f8fa;
           font-weight: 600;
         }
-        
+
         a {
           color: #0366d6;
           text-decoration: none;
         }
-        
+
         a:hover {
           text-decoration: underline;
         }
-        
+
         .page-break {
           page-break-before: always;
         }
-        
+
         @media print {
           body {
             margin: 0;
@@ -113,10 +113,10 @@ jobs:
           }
         }
         EOF
-        
+
         # Convert README.md to HTML using showdown
-        showdown makehtml -i README.md -o temp-readme.html
-        
+        npx showdown makehtml -i README.md -o temp-readme.html
+
         # Create complete HTML file with CSS styling
         cat > temp-complete.html << 'EOF'
         <!DOCTYPE html>
@@ -126,44 +126,44 @@ jobs:
           <title>AI Agent Real Estate Workshop Guide</title>
           <style>
         EOF
-        
+
         # Add CSS content to HTML
         cat temp-style.css >> temp-complete.html
-        
+
         cat >> temp-complete.html << 'EOF'
           </style>
         </head>
         <body>
         EOF
-        
+
         # Add HTML content
         cat temp-readme.html >> temp-complete.html
-        
+
         cat >> temp-complete.html << 'EOF'
         </body>
         </html>
         EOF
-        
+
         # Create PDF conversion script
         cat > convert-to-pdf.js << 'EOF'
         const puppeteer = require('puppeteer');
         const fs = require('fs');
-        
+
         (async () => {
           try {
             console.log('🚀 Starting PDF conversion...');
-            
+
             const browser = await puppeteer.launch({
               headless: true,
               args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
-            
+
             const page = await browser.newPage();
-            
+
             console.log('📄 Loading HTML content...');
             const htmlContent = fs.readFileSync('temp-complete.html', 'utf8');
             await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-            
+
             console.log('🎨 Generating PDF...');
             await page.pdf({
               path: 'AI-Agent-Real-Estate-Workshop-Guide.pdf',
@@ -176,20 +176,20 @@ jobs:
                 left: '20mm'
               }
             });
-            
+
             await browser.close();
             console.log('✅ PDF successfully created!');
-            
+
           } catch (error) {
             console.error('❌ Error creating PDF:', error);
             process.exit(1);
           }
         })();
         EOF
-        
+
         # Execute PDF conversion
-        node convert-to-pdf.js
-        
+        npx node convert-to-pdf.js
+
         # Clean up temporary files
         rm temp-style.css temp-readme.html temp-complete.html convert-to-pdf.js
 
@@ -207,10 +207,10 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        
+
         # Add the PDF file
         git add "AI-Agent-Real-Estate-Workshop-Guide.pdf"
-        
+
         # Check if there are changes to commit
         if git diff --staged --quiet; then
           echo "No changes to commit"
@@ -224,4 +224,4 @@ jobs:
       with:
         name: workshop-guide-pdf
         path: "AI-Agent-Real-Estate-Workshop-Guide.pdf"
-        retention-days: 90 
+        retention-days: 90
