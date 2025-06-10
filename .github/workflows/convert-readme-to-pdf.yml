@@ -29,6 +29,20 @@ jobs:
       run: |
         curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
 
+    - name: Download Twemoji library locally
+      run: |
+        # Download Twemoji from a reliable CDN
+        curl -sSL https://unpkg.com/twemoji@latest/dist/twemoji.min.js -o twemoji.min.js || \
+        curl -sSL https://cdn.jsdelivr.net/npm/twemoji@latest/dist/twemoji.min.js -o twemoji.min.js || \
+        curl -sSL https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js -o twemoji.min.js
+        
+        # Verify the file was downloaded
+        if [ ! -f "twemoji.min.js" ]; then
+          echo "Failed to download Twemoji, creating fallback..."
+          # Create a minimal fallback that won't break the PDF generation
+          echo "console.log('Twemoji not available');" > twemoji.min.js
+        fi
+
     - name: Create enhanced CSS with emoji support
       run: |
         cat <<EOF > readme-print.css
@@ -90,13 +104,15 @@ jobs:
         EOF
 
         cat <<'EOF' > temp_footer.html
-        <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+        <script src="twemoji.min.js"></script>
         <script>
           window.onload = function () {
-            twemoji.parse(document.body, {
-              folder: 'svg',
-              ext: '.svg'
-            });
+            if (typeof twemoji !== 'undefined') {
+              twemoji.parse(document.body, {
+                folder: 'svg',
+                ext: '.svg'
+              });
+            }
           }
         </script>
         </body>
@@ -116,7 +132,7 @@ jobs:
       run: |
         wkhtmltopdf \
           --enable-local-file-access \
-          --javascript-delay 2000 \
+          --javascript-delay 3000 \
           --load-error-handling ignore \
           --load-media-error-handling ignore \
           --margin-top 25mm \
@@ -125,6 +141,7 @@ jobs:
           --margin-right 20mm \
           --page-size Letter \
           --enable-javascript \
+          --no-stop-slow-scripts \
           README.html \
           AI-Agent-Real-Estate-Workshop-Guide.pdf
 
