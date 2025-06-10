@@ -20,160 +20,179 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Pandoc and wkhtmltopdf
+    - name: Set up Python and install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc wkhtmltopdf
+        sudo apt-get install -y pandoc python3-pip
+        pip3 install weasyprint
 
     - name: Download GitHub Markdown CSS
       run: |
         curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
 
-    - name: Download Twemoji library locally
-      run: |
-        # Download Twemoji from a reliable CDN
-        curl -sSL https://unpkg.com/twemoji@latest/dist/twemoji.min.js -o twemoji.min.js || \
-        curl -sSL https://cdn.jsdelivr.net/npm/twemoji@latest/dist/twemoji.min.js -o twemoji.min.js || \
-        curl -sSL https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js -o twemoji.min.js
-        
-        # Verify the file was downloaded
-        if [ ! -f "twemoji.min.js" ]; then
-          echo "Failed to download Twemoji, creating fallback..."
-          # Create a minimal fallback that won't break the PDF generation
-          echo "console.log('Twemoji not available');" > twemoji.min.js
-        fi
-
     - name: Create enhanced CSS with emoji support
       run: |
-        cat <<EOF > readme-print.css
-        @media print {
-          body { margin: 0; }
-          .markdown-body { box-shadow: none; border: none; max-width: 100%; padding: 0; }
-          img { max-width: 100%; height: auto; }
+        cat > enhanced-styles.css << 'EOF'
+        @import url('github-markdown.css');
+        
+        /* Enhanced emoji support */
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+          line-height: 1.6;
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 45px;
+          background: white;
         }
-
-        /* Emoji styling for Twemoji images */
-        img.emoji {
-          height: 1.2em;
-          width: 1.2em;
-          margin: 0 .05em 0 .1em;
-          vertical-align: -0.1em;
+        
+        /* Ensure emojis render properly */
+        .emoji,
+        [role="img"] {
+          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+          font-style: normal;
+          font-variant: normal;
+          font-weight: normal;
+          font-stretch: normal;
+          line-height: 1;
+          font-size: 1.2em;
           display: inline-block;
+          vertical-align: -0.1em;
         }
-
-        /* Enhanced emoji font support for Unicode emojis */
-        .markdown-body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+        
+        /* GitHub-style code blocks */
+        pre {
+          background-color: #f6f8fa;
+          border-radius: 6px;
+          padding: 16px;
+          overflow: auto;
+          font-size: 85%;
+          line-height: 1.45;
+        }
+        
+        code {
+          background-color: #f6f8fa;
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-size: 85%;
+        }
+        
+        /* GitHub-style tables */
+        table {
+          border-collapse: collapse;
+          margin: 25px 0;
+          width: 100%;
+        }
+        
+        th, td {
+          border: 1px solid #d0d7de;
+          padding: 6px 13px;
+          text-align: left;
+        }
+        
+        th {
+          background-color: #f6f8fa;
+          font-weight: 600;
+        }
+        
+        /* GitHub-style headings */
+        h1, h2, h3, h4, h5, h6 {
+          margin-top: 24px;
+          margin-bottom: 16px;
+          font-weight: 600;
+          line-height: 1.25;
+        }
+        
+        h1 {
+          font-size: 2em;
+          border-bottom: 1px solid #d0d7de;
+          padding-bottom: 0.3em;
+        }
+        
+        h2 {
+          font-size: 1.5em;
+          border-bottom: 1px solid #d0d7de;
+          padding-bottom: 0.3em;
+        }
+        
+        /* GitHub-style links */
+        a {
+          color: #0969da;
+          text-decoration: none;
+        }
+        
+        a:hover {
+          text-decoration: underline;
+        }
+        
+        /* Page break control */
+        @page {
+          margin: 2cm;
+          size: A4;
+        }
+        
+        /* Print optimizations */
+        @media print {
+          body {
+            padding: 0;
+            margin: 0;
+          }
         }
         EOF
 
-    - name: Convert README.md to HTML using Pandoc with GitHub style
+    - name: Convert README to HTML with Pandoc
       run: |
         pandoc README.md \
           --from gfm \
           --to html5 \
           --standalone \
-          --css github-markdown.css \
-          --css .github/workflows/emoji-font.css \
-          --css readme-print.css \
-          --metadata title="" \
+          --css enhanced-styles.css \
+          --metadata title="AI Agent Real Estate Workshop Guide" \
           --output README.html
 
-    - name: Add Twemoji support to HTML
+    - name: Convert HTML to PDF with WeasyPrint
       run: |
-        # Create a temporary HTML file with Twemoji support
-        cat <<'EOF' > temp_header.html
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <link rel="stylesheet" href="github-markdown.css">
-          <link rel="stylesheet" href=".github/workflows/emoji-font.css">
-          <link rel="stylesheet" href="readme-print.css">
-          <style>
-            img.emoji {
-              height: 1.2em;
-              width: 1.2em;
-              margin: 0 .05em 0 .1em;
-              vertical-align: -0.1em;
-              display: inline-block;
-            }
-          </style>
-        </head>
-        <body class="markdown-body">
-        EOF
-
-        cat <<'EOF' > temp_footer.html
-        <script src="twemoji.min.js"></script>
-        <script>
-          window.onload = function () {
-            if (typeof twemoji !== 'undefined') {
-              twemoji.parse(document.body, {
-                folder: 'svg',
-                ext: '.svg'
-              });
-            }
-          }
-        </script>
-        </body>
-        </html>
-        EOF
-
-        # Extract body content from pandoc output and wrap with Twemoji support
-        sed -n '/<body[^>]*>/,/<\/body>/p' README.html | sed '1d;$d' > temp_body.html
+        python3 -c "
+        import weasyprint
         
-        # Combine header, body, and footer
-        cat temp_header.html temp_body.html temp_footer.html > README.html
+        # Read the HTML file
+        with open('README.html', 'r', encoding='utf-8') as f:
+            html_content = f.read()
         
-        # Clean up temporary files
-        rm temp_header.html temp_body.html temp_footer.html
+        # Convert to PDF with emoji support
+        html = weasyprint.HTML(string=html_content, base_url='.')
+        css = weasyprint.CSS(filename='enhanced-styles.css')
+        
+        # Generate PDF with optimizations
+        html.write_pdf(
+            'AI-Agent-Real-Estate-Workshop-Guide.pdf',
+            stylesheets=[css],
+            optimize_images=True
+        )
+        print('PDF generated successfully with emoji support!')
+        "
 
-    - name: Convert HTML to PDF
-      run: |
-        wkhtmltopdf \
-          --enable-local-file-access \
-          --javascript-delay 3000 \
-          --load-error-handling ignore \
-          --load-media-error-handling ignore \
-          --margin-top 25mm \
-          --margin-bottom 25mm \
-          --margin-left 20mm \
-          --margin-right 20mm \
-          --page-size Letter \
-          --enable-javascript \
-          --no-stop-slow-scripts \
-          README.html \
-          AI-Agent-Real-Estate-Workshop-Guide.pdf
-
-    - name: Check if PDF was created
+    - name: Verify PDF was created
       run: |
         if [ -f "AI-Agent-Real-Estate-Workshop-Guide.pdf" ]; then
-          echo "✅ PDF successfully created"
-          ls -la "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+          echo "✅ PDF created successfully"
+          ls -la AI-Agent-Real-Estate-Workshop-Guide.pdf
         else
           echo "❌ PDF creation failed"
           exit 1
         fi
 
+    - name: Clean up temporary files
+      run: |
+        rm -f README.html github-markdown.css enhanced-styles.css
+
     - name: Commit and push PDF
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-
-        # Add the PDF file
-        git add "AI-Agent-Real-Estate-Workshop-Guide.pdf"
-
-        # Check if there are changes to commit
+        git add AI-Agent-Real-Estate-Workshop-Guide.pdf
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
+          git commit -m "📄 Auto-update PDF with emoji support [skip ci]"
           git push
         fi
-
-    - name: Upload PDF as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: workshop-guide-pdf
-        path: "AI-Agent-Real-Estate-Workshop-Guide.pdf"
-        retention-days: 90
