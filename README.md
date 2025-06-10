@@ -73,7 +73,7 @@ By the end of this intensive workshop, you will:
 1. **Create n8n cloud account** - [Sign up here](https://app.n8n.cloud/register)
 2. **Create a dedicated project for the course:**
    - Once logged in, create a new project specifically for this workshop
-   - Name it something like "Real Estate AI Worksh op" or "AI Agent Training"
+   - Name it something like "Real Estate AI Workshop" or "AI Agent Training"
    - **Important:** This keeps your course work separate from personal workflows
    - The instructor will NOT have access to your personal workflows - only this dedicated project
 3. **Add course instructor as a user** to your workshop project:
