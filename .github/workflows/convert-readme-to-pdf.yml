@@ -29,13 +29,27 @@ jobs:
       run: |
         curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
 
-    - name: Create print CSS for margins and print styling
+    - name: Create enhanced CSS with emoji support
       run: |
         cat <<EOF > readme-print.css
         @media print {
           body { margin: 0; }
           .markdown-body { box-shadow: none; border: none; max-width: 100%; padding: 0; }
           img { max-width: 100%; height: auto; }
+        }
+
+        /* Emoji styling for Twemoji images */
+        img.emoji {
+          height: 1.2em;
+          width: 1.2em;
+          margin: 0 .05em 0 .1em;
+          vertical-align: -0.1em;
+          display: inline-block;
+        }
+
+        /* Enhanced emoji font support for Unicode emojis */
+        .markdown-body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
         }
         EOF
 
@@ -46,19 +60,71 @@ jobs:
           --to html5 \
           --standalone \
           --css github-markdown.css \
+          --css .github/workflows/emoji-font.css \
           --css readme-print.css \
           --metadata title="" \
           --output README.html
+
+    - name: Add Twemoji support to HTML
+      run: |
+        # Create a temporary HTML file with Twemoji support
+        cat <<'EOF' > temp_header.html
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <link rel="stylesheet" href="github-markdown.css">
+          <link rel="stylesheet" href=".github/workflows/emoji-font.css">
+          <link rel="stylesheet" href="readme-print.css">
+          <style>
+            img.emoji {
+              height: 1.2em;
+              width: 1.2em;
+              margin: 0 .05em 0 .1em;
+              vertical-align: -0.1em;
+              display: inline-block;
+            }
+          </style>
+        </head>
+        <body class="markdown-body">
+        EOF
+
+        cat <<'EOF' > temp_footer.html
+        <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+        <script>
+          window.onload = function () {
+            twemoji.parse(document.body, {
+              folder: 'svg',
+              ext: '.svg'
+            });
+          }
+        </script>
+        </body>
+        </html>
+        EOF
+
+        # Extract body content from pandoc output and wrap with Twemoji support
+        sed -n '/<body[^>]*>/,/<\/body>/p' README.html | sed '1d;$d' > temp_body.html
+        
+        # Combine header, body, and footer
+        cat temp_header.html temp_body.html temp_footer.html > README.html
+        
+        # Clean up temporary files
+        rm temp_header.html temp_body.html temp_footer.html
 
     - name: Convert HTML to PDF
       run: |
         wkhtmltopdf \
           --enable-local-file-access \
+          --javascript-delay 2000 \
+          --load-error-handling ignore \
+          --load-media-error-handling ignore \
           --margin-top 25mm \
           --margin-bottom 25mm \
           --margin-left 20mm \
           --margin-right 20mm \
           --page-size Letter \
+          --enable-javascript \
           README.html \
           AI-Agent-Real-Estate-Workshop-Guide.pdf
 
