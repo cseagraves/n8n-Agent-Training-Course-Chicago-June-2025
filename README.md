@@ -20,7 +20,7 @@ This intensive workshop is designed to be your launchpad into the world of AI-po
 ## 👨‍💼 Meet Your Instructor
 
 <div align="center">
-<img src="Images/cayman-seagraves-wide.png" alt="Dr. Cayman Seagraves" width="800" style="border-radius: 10px; margin: 20px 0;">
+<img src="Images/cayman-seagraves-wide.png" alt="Dr. Cayman Seagraves" width="600" style="border-radius: 10px; margin: 20px 0;">
 
 **Dr. Cayman Seagraves**  
 *Founder & CEO, [Caiyman AI LLC](https://www.caiyman.ai/)*  
