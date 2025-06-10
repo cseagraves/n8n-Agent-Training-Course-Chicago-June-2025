@@ -260,3 +260,4 @@ For questions or technical support before the course:
 *This course is designed to be the launchpad that transforms how real estate professionals leverage AI for competitive advantage. Join us to build the future of your real estate business!*
 
 © 2025 Caiyman AI LLC. All rights reserved.
+
