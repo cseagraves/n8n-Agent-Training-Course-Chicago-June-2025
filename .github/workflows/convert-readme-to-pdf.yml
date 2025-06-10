@@ -20,319 +20,77 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Python and install dependencies
+    - name: Set up Pandoc and wkhtmltopdf
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc python3-pip
-        pip3 install weasyprint
+        sudo apt-get install -y pandoc wkhtmltopdf
 
     - name: Download GitHub Markdown CSS
       run: |
         curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
 
-    - name: Create enhanced CSS with emoji support
+    - name: Create print CSS for margins and print styling
       run: |
-        cat > enhanced-styles.css << 'EOF'
-        @import url('github-markdown.css');
-        
-        /* Reset and base styling to match GitHub exactly */
-        .markdown-body {
-          box-sizing: border-box;
-          min-width: 200px;
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 45px;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-          font-size: 16px;
-          line-height: 1.5;
-          word-wrap: break-word;
-        }
-        
-        /* For the body when not using markdown-body class */
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-          font-size: 16px;
-          line-height: 1.5;
-          color: #1f2328;
-          background-color: #ffffff;
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 45px;
-        }
-        
-        /* Emoji support */
-        .emoji {
-          font-style: normal;
-          font-weight: 400;
-          font-size: 1em;
-          vertical-align: -0.075em;
-        }
-        
-        /* Headings - exact GitHub sizes */
-        h1 {
-          padding-bottom: 0.3em;
-          font-size: 2em;
-          border-bottom: 1px solid #d1d9e0;
-          margin-top: 0;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-        
-        h2 {
-          padding-bottom: 0.3em;
-          font-size: 1.5em;
-          border-bottom: 1px solid #d1d9e0;
-          margin-top: 24px;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-        
-        h3 {
-          font-size: 1.25em;
-          margin-top: 24px;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-        
-        h4 {
-          font-size: 1em;
-          margin-top: 24px;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-        
-        h5 {
-          font-size: 0.875em;
-          margin-top: 24px;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-        
-        h6 {
-          font-size: 0.85em;
-          margin-top: 24px;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-          color: #656d76;
-        }
-        
-        /* Paragraphs */
-        p {
-          margin-top: 0;
-          margin-bottom: 16px;
-        }
-        
-        /* Lists - fix spacing issues */
-        ol, ul {
-          margin-top: 0;
-          margin-bottom: 16px;
-          padding-left: 2em;
-        }
-        
-        li {
-          margin: 0.25em 0;
-        }
-        
-        li > p {
-          margin-bottom: 0;
-          margin-top: 16px;
-        }
-        
-        li + li {
-          margin-top: 0.25em;
-        }
-        
-        /* Images - constrain to reasonable sizes */
-        img {
-          max-width: 100%;
-          height: auto;
-          box-sizing: content-box;
-        }
-        
-        /* Specific image size constraints for better PDF layout */
-        img[width] {
-          width: attr(width);
-          max-width: 800px;
-        }
-        
-        /* Code styling */
-        code {
-          padding: 0.2em 0.4em;
-          margin: 0;
-          font-size: 85%;
-          white-space: break-spaces;
-          background-color: rgba(175,184,193,0.2);
-          border-radius: 6px;
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-        
-        pre {
-          margin-top: 0;
-          margin-bottom: 16px;
-          padding: 16px;
-          overflow: auto;
-          font-size: 85%;
-          line-height: 1.45;
-          color: #1f2328;
-          background-color: #f6f8fa;
-          border-radius: 6px;
-          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-        
-        pre code {
-          padding: 0;
-          margin: 0;
-          font-size: 100%;
-          word-break: normal;
-          white-space: pre;
-          background: transparent;
-          border: 0;
-        }
-        
-        /* Tables */
-        table {
-          border-spacing: 0;
-          border-collapse: collapse;
-          margin-top: 0;
-          margin-bottom: 16px;
-          display: block;
-          width: max-content;
-          max-width: 100%;
-          overflow: auto;
-        }
-        
-        table th,
-        table td {
-          padding: 6px 13px;
-          border: 1px solid #d1d9e0;
-        }
-        
-        table th {
-          font-weight: 600;
-          background-color: #f6f8fa;
-        }
-        
-        table tr {
-          background-color: #ffffff;
-          border-top: 1px solid #d1d9e0;
-        }
-        
-        table tr:nth-child(2n) {
-          background-color: #f6f8fa;
-        }
-        
-        /* Links */
-        a {
-          color: #0969da;
-          text-decoration: none;
-        }
-        
-        a:hover {
-          text-decoration: underline;
-        }
-        
-        /* Blockquotes */
-        blockquote {
-          margin: 0;
-          padding: 0 1em;
-          color: #656d76;
-          border-left: 0.25em solid #d1d9e0;
-        }
-        
-        /* HR */
-        hr {
-          height: 0.25em;
-          padding: 0;
-          margin: 24px 0;
-          background-color: #d1d9e0;
-          border: 0;
-        }
-        
-        /* Strong/Bold */
-        strong, b {
-          font-weight: 600;
-        }
-        
-        /* Emphasis/Italic */
-        em, i {
-          font-style: italic;
-        }
-        
-        /* Page settings for PDF */
-        @page {
-          margin: 2cm;
-          size: A4;
-        }
-        
-        /* Print optimizations */
+        cat <<EOF > readme-print.css
         @media print {
-          body {
-            -webkit-print-color-adjust: exact;
-            color-adjust: exact;
-          }
+          body { margin: 0; }
+          .markdown-body { box-shadow: none; border: none; max-width: 100%; padding: 0; }
+          img { max-width: 100%; height: auto; }
         }
         EOF
 
-    - name: Convert README to HTML with Pandoc
+    - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
         pandoc README.md \
           --from gfm \
           --to html5 \
           --standalone \
-          --css enhanced-styles.css \
-          --metadata title="AI Agent Real Estate Workshop Guide" \
+          --css github-markdown.css \
+          --css readme-print.css \
+          --metadata title="" \
           --output README.html
 
-    - name: Convert HTML to PDF with WeasyPrint
+    - name: Convert HTML to PDF
       run: |
-        python3 -c "
-        import weasyprint
-        
-        # Read the HTML file
-        with open('README.html', 'r', encoding='utf-8') as f:
-            html_content = f.read()
-        
-        # Convert to PDF with emoji support
-        html = weasyprint.HTML(string=html_content, base_url='.')
-        css = weasyprint.CSS(filename='enhanced-styles.css')
-        
-        # Generate PDF with optimizations
-        html.write_pdf(
-            'AI-Agent-Real-Estate-Workshop-Guide.pdf',
-            stylesheets=[css],
-            optimize_images=True
-        )
-        print('PDF generated successfully with emoji support!')
-        "
+        wkhtmltopdf \
+          --enable-local-file-access \
+          --margin-top 25mm \
+          --margin-bottom 25mm \
+          --margin-left 20mm \
+          --margin-right 20mm \
+          --page-size Letter \
+          README.html \
+          AI-Agent-Real-Estate-Workshop-Guide.pdf
 
-    - name: Verify PDF was created
+    - name: Check if PDF was created
       run: |
         if [ -f "AI-Agent-Real-Estate-Workshop-Guide.pdf" ]; then
-          echo "✅ PDF created successfully"
-          ls -la AI-Agent-Real-Estate-Workshop-Guide.pdf
+          echo "✅ PDF successfully created"
+          ls -la "AI-Agent-Real-Estate-Workshop-Guide.pdf"
         else
           echo "❌ PDF creation failed"
           exit 1
         fi
 
-    - name: Clean up temporary files
-      run: |
-        rm -f README.html github-markdown.css enhanced-styles.css
-
     - name: Commit and push PDF
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add AI-Agent-Real-Estate-Workshop-Guide.pdf
+
+        # Add the PDF file
+        git add "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+
+        # Check if there are changes to commit
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "📄 Auto-update PDF with improved GitHub formatting [skip ci]"
+          git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
           git push
         fi
+
+    - name: Upload PDF as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: workshop-guide-pdf
+        path: "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+        retention-days: 90
