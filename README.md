@@ -101,7 +101,7 @@ By the end of this intensive workshop, you will:
 
 ![n8n Project and Credentials Setup](Images/n8n%20project%20and%20credentials.png)   
 
-### Pre-Course Learning Resources
+### Pre-Course Learning Resources (Optional)
 - **[n8n Blog](https://blog.n8n.io/)** - Latest updates and tutorials
 - **[n8n LLM Agents Guide](https://blog.n8n.io/llm-agents/)** - Deep dive into AI agents
 - **[How to Build AI Agent](https://blog.n8n.io/how-to-build-ai-agent/)** - Step-by-step guide

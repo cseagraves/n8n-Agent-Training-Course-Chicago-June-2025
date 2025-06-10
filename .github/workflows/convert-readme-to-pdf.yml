@@ -44,18 +44,51 @@ jobs:
         # Create a copy of README.md without emojis for PDF generation
         cp README.md README-clean.md
         
-        # Remove emojis using sed with comprehensive Unicode ranges
-        # This covers most common emoji ranges including:
-        # - Basic emojis (1F600-1F64F)
-        # - Transport and map symbols (1F680-1F6FF) 
-        # - Miscellaneous symbols (1F300-1F5FF)
-        # - Additional emoticons (1F900-1F9FF)
-        # - Symbols and pictographs (1F000-1F02F)
-        # - Playing cards (1F0A0-1F0FF)
-        sed -i 's/[\x{1F600}-\x{1F64F}]//g; s/[\x{1F300}-\x{1F5FF}]//g; s/[\x{1F680}-\x{1F6FF}]//g; s/[\x{1F1E0}-\x{1F1FF}]//g; s/[\x{1F900}-\x{1F9FF}]//g; s/[\x{1F000}-\x{1F02F}]//g; s/[\x{1F0A0}-\x{1F0FF}]//g; s/[\x{2600}-\x{26FF}]//g; s/[\x{2700}-\x{27BF}]//g' README-clean.md 2>/dev/null || true
-        
-        # Alternative approach using perl for better Unicode support
-        perl -C -pe 's/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{1F900}-\x{1F9FF}\x{1F000}-\x{1F02F}\x{1F0A0}-\x{1F0FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{FE00}-\x{FE0F}\x{1F191}-\x{1F251}]//g' README-clean.md > README-temp.md && mv README-temp.md README-clean.md
+        # Comprehensive emoji removal using perl with enhanced Unicode support
+        # This handles compound emojis, zero-width joiners, and variation selectors
+        perl -C -pe '
+          # Remove compound emojis with zero-width joiners (like 👨‍💼)
+          s/[\x{1F468}\x{1F469}][\x{200D}][\x{1F4BC}\x{1F4BB}\x{1F527}\x{1F52C}\x{1F680}\x{1F692}\x{1F373}\x{1F3A8}\x{1F3A4}\x{1F3EB}\x{2695}\x{2696}\x{1F33E}\x{1F3ED}\x{1F4A1}]//g;
+          
+          # Remove all emoji ranges comprehensively
+          s/[\x{1F600}-\x{1F64F}]//g;  # Emoticons
+          s/[\x{1F300}-\x{1F5FF}]//g;  # Misc Symbols and Pictographs
+          s/[\x{1F680}-\x{1F6FF}]//g;  # Transport and Map
+          s/[\x{1F1E0}-\x{1F1FF}]//g;  # Regional indicators (flags)
+          s/[\x{1F900}-\x{1F9FF}]//g;  # Supplemental Symbols
+          s/[\x{1F000}-\x{1F02F}]//g;  # Mahjong Tiles
+          s/[\x{1F0A0}-\x{1F0FF}]//g;  # Playing Cards
+          s/[\x{2600}-\x{26FF}]//g;    # Miscellaneous Symbols
+          s/[\x{2700}-\x{27BF}]//g;    # Dingbats
+          s/[\x{FE00}-\x{FE0F}]//g;    # Variation Selectors
+          s/[\x{1F191}-\x{1F251}]//g;  # Enclosed chars
+          s/[\x{1F004}\x{1F0CF}]//g;   # Mahjong/Playing cards
+          s/[\x{1F170}-\x{1F171}]//g;  # A/B blood types
+          s/[\x{1F17E}-\x{1F17F}]//g;  # O blood type, etc
+          s/[\x{1F18E}]//g;            # AB blood type
+          s/[\x{3030}\x{2B50}\x{2B55}]//g; # Wavy dash, star, circle
+          
+          # Remove zero-width joiners and other invisible characters
+          s/[\x{200D}]//g;             # Zero-width joiner
+          s/[\x{200C}]//g;             # Zero-width non-joiner
+          s/[\x{FEFF}]//g;             # Zero-width no-break space
+          s/[\x{202A}-\x{202E}]//g;    # Left-to-right/Right-to-left marks
+          
+          # Additional cleanup for any remaining emoji-like characters
+          s/[\x{203C}\x{2049}]//g;     # Double exclamation, exclamation question
+          s/[\x{2122}\x{2139}]//g;     # Trademark, information
+          s/[\x{2194}-\x{2199}]//g;    # Arrows
+          s/[\x{21A9}-\x{21AA}]//g;    # Arrows
+          s/[\x{231A}-\x{231B}]//g;    # Watch, hourglass
+          s/[\x{2328}]//g;             # Keyboard
+          s/[\x{23CF}]//g;             # Eject symbol
+          s/[\x{23E9}-\x{23F3}]//g;    # Play/pause buttons
+          s/[\x{25AA}-\x{25AB}]//g;    # Small squares
+          s/[\x{25B6}\x{25C0}]//g;     # Play buttons
+          s/[\x{25FB}-\x{25FE}]//g;    # Squares
+          s/[\x{2B05}-\x{2B07}]//g;    # Arrows
+          s/[\x{2B1B}-\x{2B1C}]//g;    # Large squares
+        ' README-clean.md > README-temp.md && mv README-temp.md README-clean.md
         
         # Clean up extra spaces left by emoji removal
         # Remove multiple consecutive spaces and replace with single space
@@ -64,10 +97,17 @@ jobs:
         # Remove spaces at the beginning of lines (leading whitespace after emoji removal)
         sed -i 's/^[[:space:]]\+//' README-clean.md
         
-        # Clean up any trailing spaces at end of lines
+        # Clean up any trailing spaces at end of lines  
         sed -i 's/[[:space:]]\+$//' README-clean.md
         
-        echo "✅ Created cleaned README without emojis"
+        # Final cleanup: remove any remaining orphaned spaces around removed emojis
+        # This specifically targets patterns like "## [space] Title" 
+        sed -i 's/^##[[:space:]]\+/## /g' README-clean.md
+        sed -i 's/^###[[:space:]]\+/### /g' README-clean.md
+        sed -i 's/^####[[:space:]]\+/#### /g' README-clean.md
+        sed -i 's/^#####[[:space:]]\+/##### /g' README-clean.md
+        
+        echo "✅ Created cleaned README without emojis and extra spaces"
 
     - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
