@@ -39,9 +39,39 @@ jobs:
         }
         EOF
 
+    - name: Remove emojis and clean spacing for PDF
+      run: |
+        # Create a copy of README.md without emojis for PDF generation
+        cp README.md README-clean.md
+        
+        # Remove emojis using sed with comprehensive Unicode ranges
+        # This covers most common emoji ranges including:
+        # - Basic emojis (1F600-1F64F)
+        # - Transport and map symbols (1F680-1F6FF) 
+        # - Miscellaneous symbols (1F300-1F5FF)
+        # - Additional emoticons (1F900-1F9FF)
+        # - Symbols and pictographs (1F000-1F02F)
+        # - Playing cards (1F0A0-1F0FF)
+        sed -i 's/[\x{1F600}-\x{1F64F}]//g; s/[\x{1F300}-\x{1F5FF}]//g; s/[\x{1F680}-\x{1F6FF}]//g; s/[\x{1F1E0}-\x{1F1FF}]//g; s/[\x{1F900}-\x{1F9FF}]//g; s/[\x{1F000}-\x{1F02F}]//g; s/[\x{1F0A0}-\x{1F0FF}]//g; s/[\x{2600}-\x{26FF}]//g; s/[\x{2700}-\x{27BF}]//g' README-clean.md 2>/dev/null || true
+        
+        # Alternative approach using perl for better Unicode support
+        perl -C -pe 's/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{1F900}-\x{1F9FF}\x{1F000}-\x{1F02F}\x{1F0A0}-\x{1F0FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{FE00}-\x{FE0F}\x{1F191}-\x{1F251}]//g' README-clean.md > README-temp.md && mv README-temp.md README-clean.md
+        
+        # Clean up extra spaces left by emoji removal
+        # Remove multiple consecutive spaces and replace with single space
+        sed -i 's/  \+/ /g' README-clean.md
+        
+        # Remove spaces at the beginning of lines (leading whitespace after emoji removal)
+        sed -i 's/^[[:space:]]\+//' README-clean.md
+        
+        # Clean up any trailing spaces at end of lines
+        sed -i 's/[[:space:]]\+$//' README-clean.md
+        
+        echo "✅ Created cleaned README without emojis"
+
     - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
-        pandoc README.md \
+        pandoc README-clean.md \
           --from gfm \
           --to html5 \
           --standalone \
@@ -71,6 +101,12 @@ jobs:
           echo "❌ PDF creation failed"
           exit 1
         fi
+
+    - name: Cleanup temporary files
+      run: |
+        # Remove temporary files created during PDF generation
+        rm -f README-clean.md README.html github-markdown.css readme-print.css README-temp.md
+        echo "🧹 Cleaned up temporary files"
 
     - name: Commit and push PDF
       run: |
