@@ -90,22 +90,31 @@ jobs:
           s/[\x{2B1B}-\x{2B1C}]//g;    # Large squares
         ' README-clean.md > README-temp.md && mv README-temp.md README-clean.md
         
-        # Clean up extra spaces left by emoji removal
-        # Remove multiple consecutive spaces and replace with single space
-        sed -i 's/  \+/ /g' README-clean.md
+        # Clean up extra spaces left by emoji removal - PRESERVE LINE BREAKS
+        # Only remove multiple consecutive spaces WITHIN lines (not line breaks)
+        sed -i 's/[[:blank:]]\{2,\}/ /g' README-clean.md
         
-        # Remove spaces at the beginning of lines (leading whitespace after emoji removal)
-        sed -i 's/^[[:space:]]\+//' README-clean.md
+        # Remove trailing spaces at end of lines (but preserve line breaks)
+        sed -i 's/[[:blank:]]\+$//g' README-clean.md
         
-        # Clean up any trailing spaces at end of lines  
-        sed -i 's/[[:space:]]\+$//' README-clean.md
+        # Generic header cleanup - remove leading spaces after emojis for ANY header level
+        # This preserves line structure while cleaning header formatting
+        sed -i 's/^#\+[[:blank:]]\+/#&/g; s/^#\+[[:blank:]]\{2,\}/#&/g' README-clean.md
         
-        # Final cleanup: remove any remaining orphaned spaces around removed emojis
-        # This specifically targets patterns like "## [space] Title" 
-        sed -i 's/^##[[:space:]]\+/## /g' README-clean.md
-        sed -i 's/^###[[:space:]]\+/### /g' README-clean.md
-        sed -i 's/^####[[:space:]]\+/#### /g' README-clean.md
-        sed -i 's/^#####[[:space:]]\+/##### /g' README-clean.md
+        # More precise header cleanup using substitution
+        sed -i 's/^\(#\+\)[[:blank:]]\+/\1 /g' README-clean.md
+        
+        # Clean up bullet points and list items (preserve structure)
+        sed -i 's/^-[[:blank:]]\+/- /g' README-clean.md
+        sed -i 's/^\*[[:blank:]]\+/* /g' README-clean.md
+        sed -i 's/^+[[:blank:]]\+/+ /g' README-clean.md
+        
+        # Clean up numbered lists
+        sed -i 's/^\([0-9]\+\.\)[[:blank:]]\+/\1 /g' README-clean.md
+        
+        # Clean up any line that starts with emoji space but preserve line breaks
+        # This targets lines like "📧 **Contact:**" but keeps them on separate lines
+        sed -i 's/^[[:blank:]]\+\([*_`#-]\)/\1/g' README-clean.md
         
         echo "✅ Created cleaned README without emojis and extra spaces"
 
@@ -117,7 +126,6 @@ jobs:
           --standalone \
           --css github-markdown.css \
           --css readme-print.css \
-          --metadata title="" \
           --output README.html
 
     - name: Convert HTML to PDF
