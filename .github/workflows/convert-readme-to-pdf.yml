@@ -20,10 +20,10 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Pandoc, wkhtmltopdf, and Emoji Font
+    - name: Set up Pandoc and wkhtmltopdf
       run: |
         sudo apt-get update
-        sudo apt-get install -y pandoc wkhtmltopdf fonts-noto-color-emoji
+        sudo apt-get install -y pandoc wkhtmltopdf
 
     - name: Download GitHub Markdown CSS
       run: |
@@ -39,15 +39,7 @@ jobs:
         }
         EOF
 
-    - name: Create emoji font CSS
-      run: |
-        cat <<EOF > emoji-font.css
-        body, .markdown-body {
-          font-family: "Noto Color Emoji", "Segoe UI Emoji", "Apple Color Emoji", "Twemoji Mozilla", "Android Emoji", "EmojiSymbols", "Symbola", sans-serif;
-        }
-        EOF
-
-    - name: Convert README.md to HTML using Pandoc with GitHub style and emoji font
+    - name: Convert README.md to HTML using Pandoc with GitHub style
       run: |
         pandoc README.md \
           --from gfm \
@@ -55,7 +47,6 @@ jobs:
           --standalone \
           --css github-markdown.css \
           --css readme-print.css \
-          --css emoji-font.css \
           --metadata title="" \
           --output README.html
 
