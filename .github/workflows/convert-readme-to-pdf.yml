@@ -35,86 +35,199 @@ jobs:
         cat > enhanced-styles.css << 'EOF'
         @import url('github-markdown.css');
         
-        /* Enhanced emoji support */
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
-          line-height: 1.6;
+        /* Reset and base styling to match GitHub exactly */
+        .markdown-body {
+          box-sizing: border-box;
+          min-width: 200px;
           max-width: 980px;
           margin: 0 auto;
           padding: 45px;
-          background: white;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+          font-size: 16px;
+          line-height: 1.5;
+          word-wrap: break-word;
         }
         
-        /* Ensure emojis render properly */
-        .emoji,
-        [role="img"] {
-          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+        /* For the body when not using markdown-body class */
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+          font-size: 16px;
+          line-height: 1.5;
+          color: #1f2328;
+          background-color: #ffffff;
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 45px;
+        }
+        
+        /* Emoji support */
+        .emoji {
           font-style: normal;
-          font-variant: normal;
-          font-weight: normal;
-          font-stretch: normal;
-          line-height: 1;
-          font-size: 1.2em;
-          display: inline-block;
-          vertical-align: -0.1em;
+          font-weight: 400;
+          font-size: 1em;
+          vertical-align: -0.075em;
         }
         
-        /* GitHub-style code blocks */
-        pre {
-          background-color: #f6f8fa;
-          border-radius: 6px;
-          padding: 16px;
-          overflow: auto;
-          font-size: 85%;
-          line-height: 1.45;
-        }
-        
-        code {
-          background-color: #f6f8fa;
-          padding: 0.2em 0.4em;
-          border-radius: 3px;
-          font-size: 85%;
-        }
-        
-        /* GitHub-style tables */
-        table {
-          border-collapse: collapse;
-          margin: 25px 0;
-          width: 100%;
-        }
-        
-        th, td {
-          border: 1px solid #d0d7de;
-          padding: 6px 13px;
-          text-align: left;
-        }
-        
-        th {
-          background-color: #f6f8fa;
+        /* Headings - exact GitHub sizes */
+        h1 {
+          padding-bottom: 0.3em;
+          font-size: 2em;
+          border-bottom: 1px solid #d1d9e0;
+          margin-top: 0;
+          margin-bottom: 16px;
           font-weight: 600;
+          line-height: 1.25;
         }
         
-        /* GitHub-style headings */
-        h1, h2, h3, h4, h5, h6 {
+        h2 {
+          padding-bottom: 0.3em;
+          font-size: 1.5em;
+          border-bottom: 1px solid #d1d9e0;
           margin-top: 24px;
           margin-bottom: 16px;
           font-weight: 600;
           line-height: 1.25;
         }
         
-        h1 {
-          font-size: 2em;
-          border-bottom: 1px solid #d0d7de;
-          padding-bottom: 0.3em;
+        h3 {
+          font-size: 1.25em;
+          margin-top: 24px;
+          margin-bottom: 16px;
+          font-weight: 600;
+          line-height: 1.25;
         }
         
-        h2 {
-          font-size: 1.5em;
-          border-bottom: 1px solid #d0d7de;
-          padding-bottom: 0.3em;
+        h4 {
+          font-size: 1em;
+          margin-top: 24px;
+          margin-bottom: 16px;
+          font-weight: 600;
+          line-height: 1.25;
         }
         
-        /* GitHub-style links */
+        h5 {
+          font-size: 0.875em;
+          margin-top: 24px;
+          margin-bottom: 16px;
+          font-weight: 600;
+          line-height: 1.25;
+        }
+        
+        h6 {
+          font-size: 0.85em;
+          margin-top: 24px;
+          margin-bottom: 16px;
+          font-weight: 600;
+          line-height: 1.25;
+          color: #656d76;
+        }
+        
+        /* Paragraphs */
+        p {
+          margin-top: 0;
+          margin-bottom: 16px;
+        }
+        
+        /* Lists - fix spacing issues */
+        ol, ul {
+          margin-top: 0;
+          margin-bottom: 16px;
+          padding-left: 2em;
+        }
+        
+        li {
+          margin: 0.25em 0;
+        }
+        
+        li > p {
+          margin-bottom: 0;
+          margin-top: 16px;
+        }
+        
+        li + li {
+          margin-top: 0.25em;
+        }
+        
+        /* Images - constrain to reasonable sizes */
+        img {
+          max-width: 100%;
+          height: auto;
+          box-sizing: content-box;
+        }
+        
+        /* Specific image size constraints for better PDF layout */
+        img[width] {
+          width: attr(width);
+          max-width: 800px;
+        }
+        
+        /* Code styling */
+        code {
+          padding: 0.2em 0.4em;
+          margin: 0;
+          font-size: 85%;
+          white-space: break-spaces;
+          background-color: rgba(175,184,193,0.2);
+          border-radius: 6px;
+          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        
+        pre {
+          margin-top: 0;
+          margin-bottom: 16px;
+          padding: 16px;
+          overflow: auto;
+          font-size: 85%;
+          line-height: 1.45;
+          color: #1f2328;
+          background-color: #f6f8fa;
+          border-radius: 6px;
+          font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        
+        pre code {
+          padding: 0;
+          margin: 0;
+          font-size: 100%;
+          word-break: normal;
+          white-space: pre;
+          background: transparent;
+          border: 0;
+        }
+        
+        /* Tables */
+        table {
+          border-spacing: 0;
+          border-collapse: collapse;
+          margin-top: 0;
+          margin-bottom: 16px;
+          display: block;
+          width: max-content;
+          max-width: 100%;
+          overflow: auto;
+        }
+        
+        table th,
+        table td {
+          padding: 6px 13px;
+          border: 1px solid #d1d9e0;
+        }
+        
+        table th {
+          font-weight: 600;
+          background-color: #f6f8fa;
+        }
+        
+        table tr {
+          background-color: #ffffff;
+          border-top: 1px solid #d1d9e0;
+        }
+        
+        table tr:nth-child(2n) {
+          background-color: #f6f8fa;
+        }
+        
+        /* Links */
         a {
           color: #0969da;
           text-decoration: none;
@@ -124,7 +237,34 @@ jobs:
           text-decoration: underline;
         }
         
-        /* Page break control */
+        /* Blockquotes */
+        blockquote {
+          margin: 0;
+          padding: 0 1em;
+          color: #656d76;
+          border-left: 0.25em solid #d1d9e0;
+        }
+        
+        /* HR */
+        hr {
+          height: 0.25em;
+          padding: 0;
+          margin: 24px 0;
+          background-color: #d1d9e0;
+          border: 0;
+        }
+        
+        /* Strong/Bold */
+        strong, b {
+          font-weight: 600;
+        }
+        
+        /* Emphasis/Italic */
+        em, i {
+          font-style: italic;
+        }
+        
+        /* Page settings for PDF */
         @page {
           margin: 2cm;
           size: A4;
@@ -133,8 +273,8 @@ jobs:
         /* Print optimizations */
         @media print {
           body {
-            padding: 0;
-            margin: 0;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
           }
         }
         EOF
@@ -193,6 +333,6 @@ jobs:
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "📄 Auto-update PDF with emoji support [skip ci]"
+          git commit -m "📄 Auto-update PDF with improved GitHub formatting [skip ci]"
           git push
         fi
