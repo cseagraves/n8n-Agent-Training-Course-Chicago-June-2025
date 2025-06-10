@@ -20,117 +20,186 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Pandoc and wkhtmltopdf
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y pandoc wkhtmltopdf
-
-    - name: Download GitHub Markdown CSS
-      run: |
-        curl -sSL https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css -o github-markdown.css
-
-    - name: Create print CSS for margins and print styling
-      run: |
-        cat <<EOF > readme-print.css
-        @media print {
-          body { margin: 0; padding: 0; }
-          .markdown-body { 
-            box-shadow: none; 
-            border: none; 
-            max-width: 100%; 
-            padding: 0; 
-            margin: 0;
+    - name: Convert README to PDF using markdown-to-pdf action
+      uses: baileyjm02/markdown-to-pdf@v1
+      with:
+        input_path: README.md
+        output_dir: ./
+        images_dir: Images
+        image_import: ./Images
+        build_html: false
+        build_pdf: true
+        theme: |
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #24292f;
+            background-color: #ffffff;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
           }
-          .markdown-body > *:first-child {
+          
+          /* Enhanced emoji support */
+          .emoji, span[role="img"] {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", "EmojiSymbols";
+            font-size: 1.1em;
+            vertical-align: baseline;
+          }
+          
+          /* Remove extra spacing at top */
+          body > *:first-child {
             margin-top: 0 !important;
             padding-top: 0 !important;
           }
-          img { max-width: 100%; height: auto; }
-        }
-        EOF
+          
+          h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+          }
+          
+          h1 { 
+            border-bottom: 1px solid #d0d7de; 
+            padding-bottom: .3em;
+            font-size: 2em;
+          }
+          
+          h2 { 
+            border-bottom: 1px solid #d0d7de; 
+            padding-bottom: .3em;
+            font-size: 1.5em;
+          }
+          
+          h3 { font-size: 1.25em; }
+          h4 { font-size: 1em; }
+          
+          /* Better spacing for instructor section */
+          div[align="center"] {
+            text-align: center;
+            margin: 20px 0;
+          }
+          
+          /* Image styling */
+          img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 10px 0;
+          }
+          
+          /* Code styling */
+          code {
+            padding: .2em .4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: rgba(175,184,193,0.2);
+            border-radius: 6px;
+          }
+          
+          pre {
+            padding: 16px;
+            overflow: auto;
+            font-size: 85%;
+            line-height: 1.45;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            margin: 16px 0;
+          }
+          
+          /* Quote styling */
+          blockquote {
+            padding: 0 1em;
+            color: #656d76;
+            border-left: .25em solid #d0d7de;
+            margin: 16px 0;
+          }
+          
+          /* Table styling */
+          table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+          }
+          
+          table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #d0d7de;
+          }
+          
+          table th {
+            font-weight: 600;
+            background-color: #f6f8fa;
+          }
+          
+          /* List styling */
+          ul, ol {
+            margin: 16px 0;
+            padding-left: 2em;
+          }
+          
+          li {
+            margin: 4px 0;
+          }
+          
+          /* Link styling */
+          a {
+            color: #0969da;
+            text-decoration: none;
+          }
+          
+          a:hover {
+            text-decoration: underline;
+          }
+          
+          /* Horizontal rule */
+          hr {
+            height: 2px;
+            background-color: #d0d7de;
+            border: 0;
+            margin: 24px 0;
+          }
+          
+          /* Paragraph spacing */
+          p {
+            margin: 16px 0;
+          }
+          
+          /* Strong text */
+          strong {
+            font-weight: 600;
+          }
+          
+          /* Emphasis */
+          em {
+            font-style: italic;
+          }
 
-    - name: Extract title and clean README for PDF
+    - name: Rename PDF to final name
       run: |
-        # Create a copy of README.md for processing
-        cp README.md README-clean.md
-        
-        # Extract the first line as the document title (remove # prefix)
-        TITLE=$(head -n 1 README.md | sed 's/^# *//' | sed 's/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{1F900}-\x{1F9FF}\x{1F000}-\x{1F02F}\x{1F0A0}-\x{1F0FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{FE00}-\x{FE0F}\x{1F191}-\x{1F251}]//g' 2>/dev/null || head -n 1 README.md | sed 's/^# *//')
-        echo "DOCUMENT_TITLE=$TITLE" >> $GITHUB_ENV
-        echo "📄 Extracted title: $TITLE"
-        
-        # Remove the first line (main title) from the content to avoid duplication
-        tail -n +2 README.md > README-clean.md
-        
-        # Remove any leading empty lines at the start of the document
-        sed -i '/./,$!d' README-clean.md
-        
-        # Remove emojis using sed with comprehensive Unicode ranges
-        # This covers most common emoji ranges including:
-        # - Basic emojis (1F600-1F64F)
-        # - Transport and map symbols (1F680-1F6FF) 
-        # - Miscellaneous symbols (1F300-1F5FF)
-        # - Additional emoticons (1F900-1F9FF)
-        # - Symbols and pictographs (1F000-1F02F)
-        # - Playing cards (1F0A0-1F0FF)
-        sed -i 's/[\x{1F600}-\x{1F64F}]//g; s/[\x{1F300}-\x{1F5FF}]//g; s/[\x{1F680}-\x{1F6FF}]//g; s/[\x{1F1E0}-\x{1F1FF}]//g; s/[\x{1F900}-\x{1F9FF}]//g; s/[\x{1F000}-\x{1F02F}]//g; s/[\x{1F0A0}-\x{1F0FF}]//g; s/[\x{2600}-\x{26FF}]//g; s/[\x{2700}-\x{27BF}]//g' README-clean.md 2>/dev/null || true
-        
-        # Alternative approach using perl for better Unicode support
-        perl -C -pe 's/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{1F900}-\x{1F9FF}\x{1F000}-\x{1F02F}\x{1F0A0}-\x{1F0FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{FE00}-\x{FE0F}\x{1F191}-\x{1F251}]//g' README-clean.md > README-temp.md && mv README-temp.md README-clean.md
-        
-        # Clean up extra spaces left by emoji removal, but preserve line break markers
-        # Remove multiple consecutive spaces in the middle of lines (but not at the end)
-        sed -i 's/\([^[:space:]]\)[[:space:]]\{3,\}/\1  /g' README-clean.md
-        
-        # Remove spaces at the beginning of lines (leading whitespace after emoji removal)
-        sed -i 's/^[[:space:]]\+//' README-clean.md
-        
-        # Clean up trailing spaces, but preserve exactly 2 spaces (Markdown line breaks)
-        # Remove 3+ trailing spaces, but keep exactly 2 spaces if they exist
-        sed -i 's/[[:space:]]\{3,\}$/  /' README-clean.md
-        # Remove single trailing space (but keep 2+ spaces for line breaks)
-        sed -i 's/\([^[:space:]]\)[[:space:]]$/\1/' README-clean.md
-        
-        echo "✅ Created cleaned README without emojis and extracted title"
+        if [ -f "README.pdf" ]; then
+          mv README.pdf AI-Agent-Real-Estate-Workshop-Guide.pdf
+          echo "✅ PDF renamed successfully"
+        else
+          echo "❌ README.pdf not found"
+          ls -la *.pdf || echo "No PDF files found"
+          exit 1
+        fi
 
-    - name: Convert README.md to HTML using Pandoc with GitHub style
-      run: |
-        pandoc README-clean.md \
-          --from gfm \
-          --to html5 \
-          --standalone \
-          --metadata title="$DOCUMENT_TITLE" \
-          --css github-markdown.css \
-          --css readme-print.css \
-          --output README.html
-
-    - name: Convert HTML to PDF
-      run: |
-        wkhtmltopdf \
-          --enable-local-file-access \
-          --margin-top 25mm \
-          --margin-bottom 25mm \
-          --margin-left 20mm \
-          --margin-right 20mm \
-          --page-size Letter \
-          README.html \
-          AI-Agent-Real-Estate-Workshop-Guide.pdf
-
-    - name: Check if PDF was created
+    - name: Check if PDF was created successfully
       run: |
         if [ -f "AI-Agent-Real-Estate-Workshop-Guide.pdf" ]; then
           echo "✅ PDF successfully created"
           ls -la "AI-Agent-Real-Estate-Workshop-Guide.pdf"
+          echo "📊 PDF file size: $(du -h AI-Agent-Real-Estate-Workshop-Guide.pdf | cut -f1)"
         else
           echo "❌ PDF creation failed"
+          echo "Available files:"
+          ls -la
           exit 1
         fi
-
-    - name: Cleanup temporary files
-      run: |
-        # Remove temporary files created during PDF generation
-        rm -f README-clean.md README.html github-markdown.css readme-print.css README-temp.md
-        echo "🧹 Cleaned up temporary files"
 
     - name: Commit and push PDF
       run: |
@@ -142,10 +211,11 @@ jobs:
 
         # Check if there are changes to commit
         if git diff --staged --quiet; then
-          echo "No changes to commit"
+          echo "No changes to commit - PDF is already up to date"
         else
           git commit -m "📄 Auto-update: Convert README to PDF [skip ci]"
           git push
+          echo "✅ PDF committed and pushed successfully"
         fi
 
     - name: Upload PDF as artifact

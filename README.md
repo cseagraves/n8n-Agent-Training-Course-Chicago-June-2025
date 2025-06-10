@@ -107,7 +107,7 @@ By the end of this intensive workshop, you will:
 - **[How to Build AI Agent](https://blog.n8n.io/how-to-build-ai-agent/)** - Step-by-step guide
 - **[RAG Chatbot Tutorial](https://blog.n8n.io/rag-chatbot/)** - Build intelligent chatbots
 - **[n8n Community Forum](https://community.n8n.io/)** - Get help and share ideas
-- **[Official n8n Beginner Course](https://www.youtube.com/playlist?list=PLlET0GsrLUL59YbxstZE71WszP3pVnZfI)** - **HIGHLY RECOMMENDED** foundational video series
+- **[Official n8n Beginner Course](https://www.youtube.com/playlist?list=PLlET0GsrLUL59YbxstZE71WszP3pVnZfI)** - Foundational video series
 
 ---
 
