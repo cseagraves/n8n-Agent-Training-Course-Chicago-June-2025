@@ -86,12 +86,19 @@ By the end of this intensive workshop, you will:
 
 4. **Obtain required API keys** (create accounts first if needed, then get API keys/tokens):
    - ✅ [OpenRouter](https://openrouter.ai/) - Create account → Get API key
-   - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key  
-   - ✅ [Google Cloud Console](https://console.cloud.google.com/) - Enable APIs for: Drive, Gmail, Sheets, Docs, Calendar, Tasks
-   - ✅ [Tavily](https://tavily.com/) - Create account → Get API key
-   - ✅ [Perplexity](https://www.perplexity.ai/) - Create account → Get API key
-   - ✅ [Firecrawl](https://www.firecrawl.dev/) - Create account → Get API key
    - ✅ [Telegram](https://web.telegram.org/) - Create account only (no API key needed)
+   - ✅ [Google Cloud Console](https://console.cloud.google.com/) - Enable APIs for: Drive, Gmail, Sheets, Docs, Calendar, Tasks
+   - ✅ [Pinecone](https://www.pinecone.io/) - Create account → Get API key  
+   - ✅ [Firecrawl](https://www.firecrawl.dev/) - Create account → Get API key
+
+   **Optional API Keys (for specific advanced workflows):**
+   - 🔄 [Tavily](https://tavily.com/) - Create account → Get API key (for advanced web search workflows)
+   - 🔄 [Perplexity](https://www.perplexity.ai/) - Create account → Get API key (for AI-powered research workflows)
+   - 🔄 [BatchData](https://batchdata.com/) - Create account → Get API key (for property data and lead generation workflows)
+   - 🔄 **Telegram Bot** - Contact [@BotFather](https://t.me/botfather) → Create bot → Get bot token (for Telegram notification workflows)
+   - 🔄 **Social Media APIs** - Platform-specific tokens (for social media automation workflows)
+   - 🔄 **CRM APIs** - Your existing CRM's API credentials (for CRM integration workflows)
+
 
 5. **Add all credentials to your workshop project:**
    - Navigate to the "Credentials" tab in your workshop project

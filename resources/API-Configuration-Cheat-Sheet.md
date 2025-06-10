@@ -13,9 +13,10 @@
 4. [Tavily Search](#tavily-search)
 5. [Perplexity AI](#perplexity-ai)
 6. [Firecrawl](#firecrawl)
-7. [Telegram Bot](#telegram-bot)
-8. [n8n Credential Setup](#n8n-credential-setup)
-9. [Troubleshooting](#troubleshooting)
+7. [BatchData](#batchdata)
+8. [Telegram Bot](#telegram-bot)
+9. [n8n Credential Setup](#n8n-credential-setup)
+10. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -23,7 +24,8 @@
 
 **Purpose:** Access to multiple AI models (GPT-4, Claude, Gemini, etc.) through a single API  
 **Cost:** Pay-per-use, typically $0.002-0.06 per 1K tokens  
-**Website:** https://openrouter.ai/
+**Website:** https://openrouter.ai/  
+**n8n Integration:** ✅ **Works with OpenAI credential** (supports compatible base URL)
 
 ### Setup Steps:
 
@@ -61,7 +63,8 @@ Base URL: https://openrouter.ai/api/v1
 
 **Purpose:** Store and search document embeddings for RAG (Retrieval Augmented Generation)  
 **Cost:** Free tier: 1 index, 100K vectors  
-**Website:** https://www.pinecone.io/
+**Website:** https://www.pinecone.io/  
+**n8n Integration:** ✅ **Official Vector Store nodes** (AI/LangChain integration)
 
 ### Setup Steps:
 
@@ -89,13 +92,20 @@ API Key: [Your Pinecone API key]
 Environment: [Your environment, e.g., us-east-1-aws]
 ```
 
+### Available as Vector Store:
+- **Vector Store Insert Node:** Add documents and embeddings to Pinecone index
+- **Vector Store Retriever Node:** Search for similar documents using vector similarity
+- **Memory Vector Store:** Use Pinecone as memory storage for AI agents
+- **LangChain Integration:** Works seamlessly with n8n's AI agent workflows
+
 ---
 
 ## Google Cloud APIs
 
 **Purpose:** Access Gmail, Drive, Sheets, Docs, Calendar, Tasks  
 **Cost:** Free tier covers most training needs  
-**Website:** https://console.cloud.google.com/
+**Website:** https://console.cloud.google.com/  
+**n8n Integration:** ✅ **Official Google Service Account credential** (supports all Google services)
 
 ### Setup Steps:
 
@@ -145,7 +155,8 @@ Private Key: [From JSON file - the entire key including headers]
 
 **Purpose:** Real-time web search for AI agents  
 **Cost:** Free tier: 1,000 searches/month  
-**Website:** https://tavily.com/
+**Website:** https://tavily.com/  
+**n8n Integration:** ❌ **Requires HTTP Request node** (no official n8n node)
 
 ### Setup Steps:
 
@@ -184,7 +195,8 @@ Body: {
 
 **Purpose:** AI-powered search and research  
 **Cost:** Free tier: 5 searches/day, Pro: $20/month  
-**Website:** https://www.perplexity.ai/
+**Website:** https://www.perplexity.ai/  
+**n8n Integration:** ❌ **Requires HTTP Request node** (no official n8n node)
 
 ### Setup Steps:
 
@@ -213,8 +225,9 @@ Headers:
 ## Firecrawl
 
 **Purpose:** Web scraping and content extraction  
-**Cost:** Free tier: 500 pages/month  
-**Website:** https://www.firecrawl.dev/
+**Cost:** Free tier: 500 pages/month, Hobby: $16/month (3,000 credits), Standard: $83/month (100,000 credits)  
+**Website:** https://www.firecrawl.dev/  
+**n8n Integration:** ❌ **Requires HTTP Request node** (no official n8n node)
 
 ### Setup Steps:
 
@@ -226,7 +239,7 @@ Headers:
 2. **Get API Key**
    - Go to dashboard
    - Navigate to "API Keys"
-   - Copy the API key
+   - Copy the API key (starts with `fc-`)
 
 ### n8n Configuration:
 ```
@@ -239,13 +252,69 @@ Headers:
   - Value: application/json
 ```
 
+### Usage Details:
+- **Base URL:** https://api.firecrawl.dev
+- **Credit Usage:** 1 credit per page for scrape/crawl, 1 credit per call for map, 1 credit per result for search
+- **Features:** Handles JavaScript, dynamic content, authentication flows, returns markdown/JSON/HTML
+
+---
+
+## BatchData
+
+**Purpose:** Property data, owner information, and lead generation for real estate  
+**Cost:** Pay-as-you-go pricing (no subscription required)  
+**Website:** https://batchdata.com/  
+**n8n Integration:** ❌ **Requires HTTP Request node** (no official n8n node)
+
+### Setup Steps:
+
+1. **Create Account**
+   - Go to https://batchdata.com/
+   - Click "Talk to an Expert" or sign up
+   - Complete registration
+
+2. **Get API Key**
+   - Access your dashboard at https://app.batchdata.com/
+   - Navigate to API settings
+   - Generate and copy your API key
+
+3. **Review Documentation**
+   - Visit https://developer.batchdata.com/
+   - Review API endpoints and data dictionary
+   - Plan your data requirements
+
+### n8n Configuration:
+```
+Credential Type: HTTP Request (Generic)
+Authentication: None
+Headers:
+  - Name: Authorization
+  - Value: Bearer [Your BatchData API key]
+  - Name: Content-Type
+  - Value: application/json
+```
+
+### Available Data Services:
+- **Property Enrichment:** 300+ property data points including ownership history, characteristics, mortgage details
+- **Contact Enrichment + Skip Tracing:** Accurate contact details and phone/email verification
+- **Property Search API:** Advanced filtering and nested queries for lead generation
+- **Phone Number Verification:** Validate phone numbers for compliance and accuracy
+- **CRM Enrichment:** Automatic data synchronization with existing CRM systems
+
+### Usage Examples:
+- Lead generation based on property criteria (foreclosure status, equity, location)
+- Property verification and due diligence
+- Contact information discovery and validation
+- Market analysis and investment opportunity identification
+
 ---
 
 ## Telegram Bot
 
 **Purpose:** Create chatbots and notifications  
 **Cost:** Free  
-**Setup:** Through Telegram app
+**Setup:** Through Telegram app  
+**n8n Integration:** ✅ **Official Telegram node** (comprehensive operations support)
 
 ### Setup Steps:
 
@@ -266,6 +335,12 @@ Headers:
 Credential Type: Telegram
 Access Token: [Your bot token from BotFather]
 ```
+
+### Available Operations:
+- **Chat Operations:** Manage chat members, settings, and permissions
+- **Message Operations:** Send/receive text, media, and files
+- **Callback Operations:** Handle inline keyboard interactions
+- **File Operations:** Upload and download files
 
 ---
 
@@ -358,15 +433,16 @@ Access Token: [Your bot token from BotFather]
 
 ## Quick Reference Summary
 
-| Service | Purpose | Free Tier | API Key Location |
-|---------|---------|-----------|------------------|
-| OpenRouter | AI Models | Pay-per-use | Dashboard > Keys |
-| Pinecone | Vector DB | 100K vectors | Dashboard > API Keys |
-| Google Cloud | Workspace APIs | Generous limits | Service Account JSON |
-| Tavily | Web Search | 1K searches/month | Dashboard |
-| Perplexity | AI Search | 5 searches/day | Settings > API |
-| Firecrawl | Web Scraping | 500 pages/month | Dashboard > API Keys |
-| Telegram | Bot Platform | Free | @BotFather |
+| Service | Purpose | Free Tier | API Key Location | n8n Integration |
+|---------|---------|-----------|------------------|-----------------|
+| OpenRouter | AI Models | Pay-per-use | Dashboard > Keys | ✅ |
+| Pinecone | Vector DB | 100K vectors | Dashboard > API Keys | ✅ |
+| Google Cloud | Workspace APIs | Generous limits | Service Account JSON | ✅ |
+| Tavily | Web Search | 1K searches/month | Dashboard | ❌ |
+| Perplexity | AI Search | 5 searches/day | Settings > API | ❌ |
+| Firecrawl | Web Scraping | 500 pages/month | Dashboard > API Keys | ❌ |
+| BatchData | Property Data | Pay-as-you-go | API Settings | ❌ |
+| Telegram | Bot Platform | Free | @BotFather | ✅ |
 
 ### Essential URLs:
 - **OpenRouter:** https://openrouter.ai/keys
@@ -375,6 +451,7 @@ Access Token: [Your bot token from BotFather]
 - **Tavily:** https://app.tavily.com/
 - **Perplexity:** https://www.perplexity.ai/settings/api
 - **Firecrawl:** https://www.firecrawl.dev/app
+- **BatchData:** https://app.batchdata.com/
 
 ---
 
