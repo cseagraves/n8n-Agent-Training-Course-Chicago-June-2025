@@ -174,22 +174,23 @@ This workshop will include several hands-on sessions where we build practical, r
 2. **"n8n Fundamentals for Real Estate"** (20 slides)
 
 ### Complete Resource Library
-**All resources are available in the `/resources/` folder:**
+**All resources are available in the [resources folder](resources/README.md):**
 
 #### 🎓 Learning Materials
-- 📄 **AI-Agents-Real-Estate-Primer.md** - Comprehensive introduction to AI agents in real estate
-- 📊 **Real-Estate-AI-Use-Cases.md** - 16 practical applications with demonstrable ROI
-- 💡 **Real-Estate-Prompting-Best-Practices.md** - Advanced prompting techniques using REAL framework
-- 📝 **Step-by-Step-Workflow-Building-Guide.md** - Hands-on guide for 5 core n8n projects
+- 📄 [**AI-Agents-Real-Estate-Primer.md**](resources/AI-Agents-Real-Estate-Primer.md) - Comprehensive introduction to AI agents in real estate
+- 📊 [**Real-Estate-AI-Use-Cases.md**](resources/Real-Estate-AI-Use-Cases.md) - 16 practical applications with demonstrable ROI
+- 💡 [**Real-Estate-Prompting-Best-Practices.md**](resources/Real-Estate-Prompting-Best-Practices.md) - Advanced prompting techniques using REAL framework
+- 📝 [**Step-by-Step-Workflow-Building-Guide.md**](resources/Step-by-Step-Workflow-Building-Guide.md) - Hands-on guide for 5 core n8n projects
 
 #### 🔧 Setup & Configuration
-- 🔑 **API-Configuration-Cheat-Sheet.md** - Detailed setup guide for all required services
-- 📋 **Pre-Course-Setup-Checklist.md** - Complete preparation checklist for workshop success
-- 🔧 **Troubleshooting-Quick-Reference-Card.md** - Emergency fixes and common solutions
+- 🔑 [**API-Configuration-Cheat-Sheet.md**](resources/API-Configuration-Cheat-Sheet.md) - Detailed setup guide for all required services
+- 📋 [**Pre-Course-Setup-Checklist.md**](resources/Pre-Course-Setup-Checklist.md) - Complete preparation checklist for workshop success
+- 🔧 [**Troubleshooting-Quick-Reference-Card.md**](resources/Troubleshooting-Quick-Reference-Card.md) - Emergency fixes and common solutions
+- 🤖 [**n8n-assistant-system-prompt.md**](resources/n8n-assistant-system-prompt.md) - System prompt for n8n Multi-Agent Workflow Architect
 
 #### 📈 Business Implementation
-- 📈 **ROI-Tracking-Template.md** - Comprehensive ROI measurement and optimization framework
-- 🔒 **Security-Compliance-Guidelines.md** - Essential security practices for real estate data protection
+- 📈 [**ROI-Tracking-Template.md**](resources/ROI-Tracking-Template.md) - Comprehensive ROI measurement and optimization framework
+- 🔒 [**Security-Compliance-Guidelines.md**](resources/Security-Compliance-Guidelines.md) - Essential security practices for real estate data protection
 
 ---
 
@@ -251,7 +252,7 @@ After completing this intensive workshop, you'll have built a strong foundation 
 - ✅ API connections and integrations
 - ✅ Implementation strategies for your business
 
-⚠️ **IMPORTANT:** Complete all technical setup before the workshop to maximize your hands-on learning time!
+⚠️ **IMPORTANT:** Complete all technical setup before the workshop to maximize your hands-on learning time! Follow the [Pre-Course-Setup-Checklist.md](resources/Pre-Course-Setup-Checklist.md) for detailed instructions.
 
 ---
 
