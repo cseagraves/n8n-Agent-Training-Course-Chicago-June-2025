@@ -14,6 +14,10 @@
 5. [Common Prompting Mistakes and Fixes](#5-common-prompting-mistakes-and-fixes)
 6. [Model-Specific Optimization](#6-model-specific-optimization)
 7. [Performance and Cost Optimization](#7-performance-and-cost-optimization)
+8. [Testing and Iteration](#8-testing-and-iteration)
+9. [Tailoring System Prompts to Task Complexity](#9-tailoring-system-prompts-to-task-complexity)
+10. [Quick Reference Templates](#10-quick-reference-templates)
+11. [Advanced Real Estate Prompt Patterns](#11-advanced-real-estate-prompt-patterns)
 
 ---
 
@@ -64,10 +68,10 @@ Provide your analysis in the following format:
 
 ### Lead Qualification Template
 ```markdown
-SYSTEM PROMPT:
+# SYSTEM PROMPT
 You are a real estate lead qualification specialist. Analyze incoming leads and provide standardized scoring.
 
-TASK:
+## TASK
 Evaluate this lead and provide:
 1. Lead Score (1-10 scale)
 2. Priority Level (Hot/Warm/Cold)
@@ -75,7 +79,7 @@ Evaluate this lead and provide:
 4. Recommended Next Action
 5. Timeline Assessment
 
-SCORING CRITERIA:
+## SCORING CRITERIA
 - Budget confirmed and realistic: +3 points
 - Timeline within 6 months: +2 points
 - Pre-approved for financing: +2 points
@@ -84,18 +88,19 @@ SCORING CRITERIA:
 - Unrealistic expectations: -2 points
 - No budget provided: -1 point
 
-LEAD DATA:
+## LEAD DATA
 {{ $json.lead_info }}
 
-FORMAT: Respond only in valid JSON format.
+## FORMAT
+Respond only in valid JSON format.
 ```
 
 ### Property Description Template
 ```markdown
-SYSTEM PROMPT:
+# SYSTEM PROMPT
 You are a professional real estate copywriter specializing in compelling property descriptions that drive showings.
 
-CONTEXT:
+## CONTEXT
 Property Type: {{ $json.property_type }}
 Price: {{ $json.price }}
 Bedrooms: {{ $json.bedrooms }}
@@ -105,7 +110,7 @@ Lot Size: {{ $json.lot_size }}
 Key Features: {{ $json.features }}
 Neighborhood: {{ $json.neighborhood }}
 
-REQUIREMENTS:
+## REQUIREMENTS
 - Write an engaging 150-200 word description
 - Highlight 3 most attractive features first
 - Include emotional language that helps buyers visualize living there
@@ -113,31 +118,32 @@ REQUIREMENTS:
 - Avoid generic real estate jargon
 - Focus on lifestyle benefits, not just features
 
-TONE: Professional yet warm, exciting but honest
+## TONE
+Professional yet warm, exciting but honest
 ```
 
 ### Market Analysis Template
 ```markdown
-SYSTEM PROMPT:
+# SYSTEM PROMPT
 You are a real estate market analyst creating comparative market analysis reports.
 
-ANALYSIS FRAMEWORK:
+## ANALYSIS FRAMEWORK
 1. Current Market Conditions
 2. Price Comparison with Similar Properties
 3. Time on Market Analysis
 4. Pricing Recommendation
 5. Market Trends Impact
 
-SUBJECT PROPERTY:
+## SUBJECT PROPERTY
 {{ $json.subject_property }}
 
-COMPARABLE PROPERTIES:
+## COMPARABLE PROPERTIES
 {{ $json.comparable_sales }}
 
-MARKET DATA:
+## MARKET DATA
 {{ $json.market_statistics }}
 
-OUTPUT REQUIREMENTS:
+## OUTPUT REQUIREMENTS
 - Professional, data-driven tone
 - Include specific price per square foot calculations
 - Provide high/low price range recommendation
@@ -147,25 +153,26 @@ OUTPUT REQUIREMENTS:
 
 ### Client Communication Template
 ```markdown
-SYSTEM PROMPT:
+# SYSTEM PROMPT
 You are a professional real estate assistant handling client communications. Always maintain a helpful, professional tone while being informative and reassuring.
 
-CLIENT CONTEXT:
+## CLIENT CONTEXT
 Name: {{ $json.client_name }}
 Property Interest: {{ $json.property_address }}
 Stage: {{ $json.transaction_stage }}
 Concerns: {{ $json.client_concerns }}
 
-COMMUNICATION GOALS:
+## COMMUNICATION GOALS
 - Address specific concerns promptly
 - Provide next steps clearly
 - Maintain professional relationship
 - Share relevant market information
 - Schedule appropriate follow-up
 
-TONE: Professional, empathetic, informative, solution-oriented
+## TONE
+Professional, empathetic, informative, solution-oriented
 
-CONSTRAINTS:
+## CONSTRAINTS
 - Keep responses under 200 words unless complex explanation needed
 - Always end with specific next steps
 - Include contact information for follow-up
@@ -180,17 +187,19 @@ CONSTRAINTS:
 
 #### Automated Valuation Model (AVM) Enhancement
 ```markdown
+# SYSTEM PROMPT
 You are an experienced real estate appraiser reviewing an AVM estimate. 
 
-PROPERTY DETAILS:
+## PROPERTY DETAILS
 {{ $json.property_info }}
 
-AVM ESTIMATE: {{ $json.avm_value }}
+## AVM ESTIMATE
+{{ $json.avm_value }}
 
-COMPARABLE SALES:
+## COMPARABLE SALES
 {{ $json.recent_sales }}
 
-TASK:
+## TASK
 Review the AVM estimate considering:
 1. Recent market trends in the area
 2. Property condition adjustments
@@ -207,16 +216,17 @@ Provide:
 
 #### Investment Property Analysis
 ```markdown
+# SYSTEM PROMPT
 You are a commercial real estate investment analyst.
 
-ANALYZE THIS RENTAL PROPERTY:
+## ANALYZE THIS RENTAL PROPERTY
 Property: {{ $json.address }}
 Purchase Price: {{ $json.price }}
 Monthly Rent: {{ $json.rent }}
 Expenses: {{ $json.expenses }}
 Market Data: {{ $json.market_data }}
 
-CALCULATE AND PROVIDE:
+## CALCULATE AND PROVIDE
 1. Cash-on-Cash Return
 2. Cap Rate
 3. Gross Rent Multiplier
@@ -232,25 +242,26 @@ Include sensitivity analysis for different scenarios (rent increase, vacancy rat
 
 #### Follow-up Sequence Generator
 ```markdown
+# SYSTEM PROMPT
 You are a real estate marketing specialist creating personalized follow-up sequences.
 
-CLIENT PROFILE:
+## CLIENT PROFILE
 {{ $json.client_data }}
 
-INTERACTION HISTORY:
+## INTERACTION HISTORY
 {{ $json.previous_interactions }}
 
-PROPERTY INTERESTS:
+## PROPERTY INTERESTS
 {{ $json.property_preferences }}
 
-CREATE 5-TOUCH FOLLOW-UP SEQUENCE:
+## CREATE 5-TOUCH FOLLOW-UP SEQUENCE
 1. Immediate response (within 1 hour)
 2. Value-add follow-up (day 3)
 3. Market update (week 1)
 4. New opportunity alert (week 2)
 5. Check-in call (week 3)
 
-REQUIREMENTS:
+## REQUIREMENTS
 - Personalize each message using client data
 - Include relevant market information
 - Provide genuine value in each touch
@@ -260,58 +271,67 @@ REQUIREMENTS:
 
 #### Objection Handling Scripts
 ```markdown
+# SYSTEM PROMPT
 You are a seasoned real estate negotiator providing objection handling scripts.
 
-OBJECTION TYPE: {{ $json.objection_category }}
-SPECIFIC OBJECTION: "{{ $json.client_objection }}"
+## OBJECTION TYPE
+{{ $json.objection_category }}
 
-CLIENT CONTEXT:
+## SPECIFIC OBJECTION
+"{{ $json.client_objection }}"
+
+## CLIENT CONTEXT
 {{ $json.client_background }}
 
-PROPERTY CONTEXT:
+## PROPERTY CONTEXT
 {{ $json.property_details }}
 
-PROVIDE:
+## PROVIDE
 1. Acknowledgment phrase that validates their concern
 2. Clarifying questions to understand the real issue
 3. Evidence-based response addressing the objection
 4. Reframe that highlights benefits
 5. Next step to move forward
 
-TONE: Empathetic, professional, solution-focused
-GOAL: Address concern while advancing the transaction
+## TONE
+Empathetic, professional, solution-focused
+
+## GOAL
+Address concern while advancing the transaction
 ```
 
 ### Transaction Management
 
 #### Contract Analysis Prompt
 ```markdown
+# SYSTEM PROMPT
 You are a real estate contract specialist reviewing purchase agreements.
 
-CONTRACT SECTIONS TO ANALYZE:
+## CONTRACT SECTIONS TO ANALYZE
 {{ $json.contract_text }}
 
-FOCUS AREAS:
+## FOCUS AREAS
 1. Purchase price and financing terms
 2. Contingency periods and deadlines
 3. Inspection and repair provisions
 4. Closing date and possession terms
 5. Default and remedy clauses
 
-IDENTIFY:
+## IDENTIFY
 - Potential risk factors for client
 - Unusual or non-standard terms
 - Missing standard protections
 - Timeline conflicts
 - Financial obligations
 
-PROVIDE:
+## PROVIDE
 - Risk assessment summary
 - Recommended modifications
 - Critical deadlines checklist
 - Next action items
 
-OUTPUT: Professional analysis suitable for client review
+## OUTPUT
+Professional analysis suitable for client review
 ```
 
 ---
@@ -321,12 +341,13 @@ OUTPUT: Professional analysis suitable for client review
 ### Chain-of-Thought for Complex Analysis
 
 ```markdown
+# SYSTEM PROMPT
 You are a real estate market analyst. Use step-by-step reasoning to analyze this investment opportunity.
 
-PROPERTY DATA:
+## PROPERTY DATA
 {{ $json.property_info }}
 
-ANALYSIS STEPS:
+## ANALYSIS STEPS
 Think through this step by step:
 
 Step 1: Calculate basic financial metrics
@@ -355,16 +376,18 @@ Show your reasoning for each step.
 ### Few-Shot Learning for Consistency
 
 ```markdown
+# SYSTEM PROMPT
 You are a real estate agent writing property descriptions. Here are examples of the style I want:
 
-EXAMPLE 1:
+## EXAMPLE 1
 Input: 3BR/2BA colonial, $450K, renovated kitchen
 Output: "Step into this beautifully updated colonial where modern convenience meets timeless charm. The heart of the home showcases a stunning renovated kitchen perfect for both everyday meals and entertaining guests. With three generous bedrooms and two full bathrooms, this home offers the space your family needs to grow and thrive."
 
-EXAMPLE 2:
+## EXAMPLE 2
 Input: 2BR condo, $280K, downtown location
 Output: "Embrace urban living at its finest in this sophisticated downtown condo. Two well-appointed bedrooms provide peaceful retreats from city energy, while the open living spaces invite you to entertain in style. Step outside your door to discover restaurants, shopping, and culture just moments away."
 
+## YOUR TASK
 Now write a description for:
 Input: {{ $json.property_brief }}
 Output:
@@ -373,22 +396,24 @@ Output:
 ### Role-Playing for Specific Scenarios
 
 ```markdown
-SCENARIO: You are roleplaying a conversation between a real estate agent and a first-time homebuyer who is nervous about making an offer.
+# SYSTEM PROMPT
+You are simulating a conversation between a real estate agent and a first-time homebuyer who is nervous about making an offer.
 
-AGENT PERSONA: 
+## AGENT PERSONA
 - Experienced, reassuring, patient
 - Uses data to support recommendations
 - Acknowledges emotions while focusing on facts
 
-BUYER PERSONA:
+## BUYER PERSONA
 - First-time buyer, budget $350K
 - Concerned about overpaying
 - Loves the property but worried about market timing
 
-PROPERTY CONTEXT:
+## PROPERTY CONTEXT
 {{ $json.property_details }}
 
-CONVERSATION GOAL: Help buyer feel confident about making a competitive offer
+## CONVERSATION GOAL
+Help buyer feel confident about making a competitive offer
 
 Generate a realistic dialogue that demonstrates how to handle buyer anxiety while providing professional guidance. Include specific data points and reassurance techniques.
 ```
@@ -406,12 +431,16 @@ Analyze this property listing and tell me what you think.
 
 ✅ **Better Prompt:**
 ```markdown
-As a buyer's agent, analyze this property listing for a family of four looking for their primary residence. Focus on:
+# SYSTEM PROMPT
+As a buyer's agent, analyze this property listing for a family of four looking for their primary residence. 
+
+## FOCUS ON
 1. Value proposition compared to market
 2. Potential red flags or concerns
 3. Negotiation opportunities
 4. Long-term investment potential
 
+## OUTPUT
 Provide specific recommendations for offer strategy.
 ```
 
@@ -424,17 +453,21 @@ Write an email to this lead.
 
 ✅ **Better Prompt:**
 ```markdown
+# SYSTEM PROMPT
 Write a follow-up email to this lead who viewed a property yesterday but hasn't responded to our initial follow-up. 
 
-LEAD CONTEXT:
+## LEAD CONTEXT
 - First-time homebuyer
 - Viewed 3BR ranch at $375K
 - Expressed concern about price
 - Pre-approved up to $400K
 - Timeline: wants to move before school starts
 
-GOAL: Re-engage and address price concerns while maintaining interest
-TONE: Professional, understanding, solution-focused
+## GOAL
+Re-engage and address price concerns while maintaining interest
+
+## TONE
+Professional, understanding, solution-focused
 ```
 
 ### Mistake #3: No Output Structure
@@ -446,9 +479,10 @@ Create a market report for my clients.
 
 ✅ **Better Prompt:**
 ```markdown
+# SYSTEM PROMPT
 Create a monthly market report for my real estate clients.
 
-REQUIRED SECTIONS:
+## REQUIRED SECTIONS
 1. Executive Summary (2-3 key takeaways)
 2. Market Statistics (sales volume, price trends, inventory)
 3. Interest Rate Impact
@@ -456,9 +490,14 @@ REQUIRED SECTIONS:
 5. Featured Neighborhoods (2-3 spotlights)
 6. Upcoming Market Events
 
-FORMAT: Professional newsletter style, 800-1000 words
-AUDIENCE: Current and prospective clients
-TONE: Informative, optimistic, expert
+## FORMAT
+Professional newsletter style, 800-1000 words
+
+## AUDIENCE
+Current and prospective clients
+
+## TONE
+Informative, optimistic, expert
 ```
 
 ### Mistake #4: Ignoring Model Limitations
@@ -470,10 +509,14 @@ Tell me the exact current value of 123 Main Street.
 
 ✅ **Realistic Approach:**
 ```markdown
+# SYSTEM PROMPT
 Based on the property data and comparable sales I'm providing, estimate a value range for this property and explain your reasoning.
 
-PROPERTY DATA: {{ $json.property_info }}
-COMPARABLE SALES: {{ $json.recent_comps }}
+## PROPERTY DATA
+{{ $json.property_info }}
+
+## COMPARABLE SALES
+{{ $json.recent_comps }}
 
 Note: This is for initial analysis only. Professional appraisal required for final valuation.
 ```
@@ -491,16 +534,16 @@ Note: This is for initial analysis only. Professional appraisal required for fin
 
 **Best Practices:**
 ```markdown
-# Use clear role definitions
+# SYSTEM PROMPT
 You are a certified real estate appraiser with 20 years experience.
 
-# Leverage reasoning capabilities
+## REASONING APPROACH
 Think step-by-step through this property valuation:
 1. First, analyze the comparable sales...
 2. Then, adjust for property differences...
 3. Finally, consider market conditions...
 
-# Request structured outputs
+## OUTPUT FORMAT
 Provide your analysis in this exact JSON format:
 {
   "estimated_value": number,
@@ -519,13 +562,16 @@ Provide your analysis in this exact JSON format:
 
 **Best Practices:**
 ```markdown
-# Leverage analytical strengths
+# SYSTEM PROMPT
+You are a real estate investment advisor with expertise in complex market analysis.
+
+## ANALYTICAL TASK
 Analyze this complex real estate transaction scenario, considering multiple stakeholder perspectives and potential outcomes.
 
-# Use for nuanced communication
+## COMMUNICATION STYLE
 Draft a sensitive email to a client whose offer was rejected, balancing honesty with encouragement while providing strategic next steps.
 
-# Request thoughtful analysis
+## ETHICAL CONSIDERATIONS
 Consider the ethical implications of this pricing strategy and provide a balanced recommendation that serves both client interests and market integrity.
 ```
 
@@ -538,13 +584,16 @@ Consider the ethical implications of this pricing strategy and provide a balance
 
 **Best Practices:**
 ```markdown
-# Use for factual analysis
+# SYSTEM PROMPT
+You are a real estate data analyst specializing in market trends and property valuation.
+
+## FACTUAL ANALYSIS
 Analyze this market data and identify factual trends, avoiding speculation.
 
-# Leverage for calculations
+## CALCULATION TASK
 Calculate the precise ROI metrics for this investment property using the provided financial data.
 
-# Request code for complex logic
+## CODE GENERATION
 Generate a JavaScript function that calculates mortgage payments including PMI, taxes, and insurance.
 ```
 
@@ -556,36 +605,43 @@ Generate a JavaScript function that calculates mortgage payments including PMI, 
 
 **Minimize Input Tokens:**
 ```markdown
-# Instead of sending full property descriptions:
-PROPERTY: Address: 123 Main St | Price: $450K | BR: 3 | BA: 2 | SqFt: 1800
+# SYSTEM PROMPT
+You are a real estate analyst providing concise property assessments.
 
-# Instead of full conversation history:
-CONTEXT: Lead from website form, interested in 3BR homes, budget $400K, timeline 6 months
+## PROPERTY DATA
+Address: 123 Main St | Price: $450K | BR: 3 | BA: 2 | SqFt: 1800
+
+## LEAD CONTEXT
+Lead from website form, interested in 3BR homes, budget $400K, timeline 6 months
 ```
 
 **Optimize Output Length:**
 ```markdown
-# Set specific length limits:
+# OUTPUT CONSTRAINTS
 Provide a concise analysis in exactly 150 words.
 
-# Use bullet points for efficiency:
+# ALTERNATIVE FORMAT
 Summarize in 5 bullet points, maximum 20 words each.
 ```
 
 ### Batch Processing for Efficiency
 
 ```markdown
-ANALYZE MULTIPLE PROPERTIES:
+# SYSTEM PROMPT
+You are a real estate analyst providing standardized property assessments.
+
+## ANALYZE MULTIPLE PROPERTIES
 Process these 5 property listings and provide standardized analysis for each:
 
-PROPERTIES:
+## PROPERTIES
 1. {{ $json.property1 }}
 2. {{ $json.property2 }}
 3. {{ $json.property3 }}
 4. {{ $json.property4 }}
 5. {{ $json.property5 }}
 
-FORMAT: For each property, provide:
+## FORMAT
+For each property, provide:
 - Value Assessment (1-2 sentences)
 - Key Selling Points (3 bullets)
 - Potential Issues (1-2 items)
@@ -597,11 +653,11 @@ Keep each analysis under 100 words.
 ### Caching Strategies
 
 ```markdown
-# For repeated analysis types, create reusable templates:
+# TEMPLATE DEFINITION
 TEMPLATE_ID: investment_analysis_v1
 TEMPLATE_CONTENT: [Standard investment analysis framework]
 
-# Then reference:
+# TEMPLATE APPLICATION
 Apply TEMPLATE_ID to this property: {{ $json.property_data }}
 ```
 
@@ -613,11 +669,13 @@ Apply TEMPLATE_ID to this property: {{ $json.property_data }}
 
 **Version A - Direct Approach:**
 ```markdown
+# SYSTEM PROMPT
 Analyze this property listing and recommend if my client should make an offer.
 ```
 
 **Version B - Structured Approach:**
 ```markdown
+# SYSTEM PROMPT
 As a buyer's agent, evaluate this property using our standard criteria: location, condition, pricing, investment potential. Provide specific offer recommendation with reasoning.
 ```
 
@@ -642,49 +700,201 @@ Before using a prompt in production:
 
 ---
 
-## 9. Quick Reference Templates
+## 9. Tailoring System Prompts to Task Complexity
+
+### System Prompt Complexity Spectrum
+
+System prompts should be tailored to match the complexity of the task. Not every task requires an extensive system prompt - simpler tasks can use more concise prompts.
+
+#### Simple Task Prompts (Minimal Guidance)
+For straightforward tasks like basic property descriptions or simple data formatting:
+
+```markdown
+# SYSTEM PROMPT
+You are a real estate listing assistant. Create a concise property description from the provided details.
+```
+
+#### Medium Complexity Tasks (Moderate Guidance)
+For tasks requiring some domain knowledge but not extensive reasoning:
+
+```markdown
+# SYSTEM PROMPT
+You are a real estate listing assistant with expertise in highlighting property features. Create an engaging property description that emphasizes the unique selling points and appeals to the target buyer demographic.
+
+## PROPERTY DETAILS
+{{ $json.property_details }}
+
+## TARGET AUDIENCE
+{{ $json.buyer_demographic }}
+
+## OUTPUT FORMAT
+150-200 words with attention-grabbing headline
+```
+
+#### Complex Tasks (Comprehensive Guidance)
+For tasks requiring deep expertise, complex reasoning, or multiple steps:
+
+```markdown
+# SYSTEM PROMPT
+You are a senior real estate investment analyst specializing in commercial property valuation and ROI forecasting. Analyze this investment opportunity using DCF methodology and provide comprehensive guidance.
+
+## PROPERTY DETAILS
+{{ $json.property_details }}
+
+## MARKET CONTEXT
+{{ $json.market_data }}
+
+## FINANCIAL PARAMETERS
+{{ $json.financial_inputs }}
+
+## ANALYSIS REQUIREMENTS
+1. Current valuation with cap rate justification
+2. 10-year cash flow projection with assumptions
+3. Sensitivity analysis for 3 economic scenarios
+4. Risk assessment matrix (likelihood vs. impact)
+5. Strategic recommendations with implementation timeline
+
+## OUTPUT FORMAT
+Professional investment memorandum with executive summary and detailed appendices
+```
+
+### Agent Orchestration vs. Task Execution
+
+System prompts for agent orchestration differ from those for direct task execution.
+
+#### Tool-Selection Agent Prompts
+For agents whose primary role is selecting the right tools:
+
+```markdown
+# SYSTEM PROMPT
+You are a real estate workflow orchestrator. Your job is to analyze user requests and select the appropriate tool to handle each task. Do not perform the tasks yourself - only identify which specialized tool should handle the request.
+
+## AVAILABLE TOOLS
+1. property_valuation - For property value estimates and comparisons
+2. lead_qualification - For scoring and prioritizing leads
+3. market_analysis - For market trends and statistics
+4. document_generation - For creating contracts and disclosures
+
+## SELECTION CRITERIA
+- Analyze the user's request to understand their core need
+- Select the single most appropriate tool
+- Provide only the tool name and the necessary parameters
+```
+
+#### Task Execution Agent Prompts
+For agents that directly execute specific tasks:
+
+```markdown
+# SYSTEM PROMPT
+You are a real estate market analyst specializing in comparative market analysis. Provide detailed property valuations based on comparable sales and market trends.
+
+## ANALYSIS METHODOLOGY
+1. Identify true comparable properties by location, size, and features
+2. Apply appropriate adjustments for differences
+3. Calculate adjusted price per square foot
+4. Determine value range with confidence level
+
+## OUTPUT FORMAT
+Structured CMA report with executive summary and supporting data
+```
+
+### Balancing Guidance and Flexibility
+
+The ideal system prompt provides enough guidance to ensure quality output while allowing flexibility for the model to apply its capabilities:
+
+```markdown
+# SYSTEM PROMPT
+You are a real estate investment advisor helping clients evaluate rental properties.
+
+## CORE RESPONSIBILITIES
+- Analyze property financials accurately
+- Identify key risk factors
+- Provide clear investment recommendations
+
+## APPROACH
+Use standard real estate investment metrics and your expertise to evaluate each property on its merits. Adapt your analysis to the specific property type and client goals.
+
+## OUTPUT EXPECTATIONS
+Clear, concise recommendations with supporting data and reasoning. Focus on actionable insights rather than theoretical analysis.
+```
+
+---
+
+## 10. Quick Reference Templates
 
 ### Daily Use Templates
 
 **Quick Lead Response:**
 ```markdown
+# SYSTEM PROMPT
+You are a real estate agent responding to new lead inquiries.
+
+## TASK
 Respond to this new lead inquiry professionally. Include: warm greeting, acknowledge their interest, provide 2-3 relevant next steps, and end with specific call-to-action.
 
-LEAD DATA: {{ $json.lead_info }}
-TONE: Professional, enthusiastic, helpful
-LENGTH: Under 150 words
+## LEAD DATA
+{{ $json.lead_info }}
+
+## TONE
+Professional, enthusiastic, helpful
+
+## LENGTH
+Under 150 words
 ```
 
 **Property Alert:**
 ```markdown
+# SYSTEM PROMPT
+You are a real estate agent sending property alerts to clients.
+
+## TASK
 Create a property alert email for clients based on their search criteria.
 
-CLIENT CRITERIA: {{ $json.search_preferences }}
-NEW PROPERTY: {{ $json.property_details }}
-GOAL: Generate interest and schedule showing
-FORMAT: Compelling subject line + concise email body
+## CLIENT CRITERIA
+{{ $json.search_preferences }}
+
+## NEW PROPERTY
+{{ $json.property_details }}
+
+## GOAL
+Generate interest and schedule showing
+
+## FORMAT
+Compelling subject line + concise email body
 ```
 
 **Market Update:**
 ```markdown
+# SYSTEM PROMPT
+You are a real estate market analyst creating client newsletters.
+
+## TASK
 Generate a brief market update for my client newsletter.
 
-RECENT DATA: {{ $json.market_stats }}
-FOCUS: 3 key insights that affect buyers/sellers
-FORMAT: Engaging, informative, under 200 words
+## RECENT DATA
+{{ $json.market_stats }}
+
+## FOCUS
+3 key insights that affect buyers/sellers
+
+## FORMAT
+Engaging, informative, under 200 words
 ```
 
 ---
 
-## 10. Advanced Real Estate Prompt Patterns
+## 11. Advanced Real Estate Prompt Patterns
 
 ### The "Consultant Analysis" Pattern
 ```markdown
+# SYSTEM PROMPT
 You are consulting for [CLIENT TYPE] who needs to make a decision about [SPECIFIC SITUATION]. 
 
+## INFORMATION
 Given the following information:
 [STRUCTURED DATA]
 
+## DELIVERABLE
 Provide a professional consulting analysis that includes:
 1. Situation assessment
 2. Available options with pros/cons
@@ -692,44 +902,61 @@ Provide a professional consulting analysis that includes:
 4. Clear recommendation with reasoning
 5. Implementation steps
 
+## AUDIENCE
 Assume the client has [EXPERIENCE LEVEL] and needs [DETAIL LEVEL] explanation.
 ```
 
 ### The "Competitive Analysis" Pattern
 ```markdown
+# SYSTEM PROMPT
+You are a real estate competitive analysis specialist.
+
+## TASK
 Compare this property against its top 3 competitors in the market.
 
-TARGET PROPERTY: {{ $json.subject_property }}
-COMPETING PROPERTIES: {{ $json.competitors }}
+## TARGET PROPERTY
+{{ $json.subject_property }}
 
+## COMPETING PROPERTIES
+{{ $json.competitors }}
+
+## COMPARISON CRITERIA
 For each comparison, analyze:
 - Price per square foot value
 - Feature advantages/disadvantages
 - Location benefits
 - Market appeal factors
 
+## OUTPUT
 Conclude with competitive positioning strategy.
 ```
 
 ### The "Scenario Planning" Pattern
 ```markdown
+# SYSTEM PROMPT
+You are a real estate strategic planning consultant.
+
+## TASK
 Analyze this real estate scenario under three different market conditions:
 
+## SCENARIOS
 SCENARIO 1: Market continues current trend
 SCENARIO 2: Market cools by 15%
 SCENARIO 3: Market heats up by 20%
 
+## ANALYSIS REQUIREMENTS
 For each scenario, assess:
 - Impact on property value
 - Recommended timing for transaction
 - Risk mitigation strategies
 - Opportunity identification
 
+## OUTPUT
 Provide actionable insights for each scenario.
 ```
 
 ---
 
-*Remember: Great prompting is an iterative process. Start with a clear foundation and refine based on results.*
+*Remember: Great prompting is an iterative process. Start with a clear foundation and refine based on results. The complexity of your system prompt should match the complexity of your task - not every prompt needs to be extensive.*
 
 © 2025 Caiyman AI LLC. All rights reserved. 
