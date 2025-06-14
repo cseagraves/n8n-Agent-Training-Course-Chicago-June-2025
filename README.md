@@ -172,7 +172,6 @@ This workshop will include several hands-on sessions where we build practical, r
 ### PowerPoint Presentations
 1. **"AI Agents: The Real Estate Revolution"** (15 slides)
 2. **"n8n Fundamentals for Real Estate"** (20 slides)
-3. **"ROI Case Studies in Real Estate AI"** (10 slides)
 
 ### Complete Resource Library
 **All resources are available in the `/resources/` folder:**
