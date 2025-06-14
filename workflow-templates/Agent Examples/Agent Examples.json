@@ -1,0 +1,846 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# Basic AI Agent Template\n\nThis is the simplest AI agent template with:\n- Workflow trigger for execution\n- Session ID generation\n- Window Buffer Memory for context retention\n- LLM integration (GPT-4.1-mini via OpenRouter)\n- Think tool for reasoning\n- AI Agent node with customizable system prompt\n\nIdeal for simple Q&A, basic decision-making, and single-purpose agents.",
+        "height": 496,
+        "width": 329,
+        "color": {}
+      },
+      "name": "Basic Agent Template Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        20
+      ],
+      "id": "7f2b0e3a-fc83-4b5c-b667-f351a43a1ca1"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        440,
+        360
+      ],
+      "id": "5ee81cf6-38a5-4974-963c-4c2d9c82f190",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -680,
+        1280
+      ],
+      "id": "c8714963-09b8-4086-9bb5-2bd201c90899",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "description": "Use the **think** tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        600,
+        360
+      ],
+      "id": "bf14887b-3abe-4c45-8fc2-2ad7feca9f25",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f8e4f48-01dd-4d64-aa65-8424954c4e2b",
+              "name": "sessionId",
+              "value": "={{ Math.floor(Math.random() * 100000) + 1 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        140
+      ],
+      "id": "09d28c21-cb46-4695-ac86-42775d1fc2bf",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        260,
+        360
+      ],
+      "id": "c30bccd5-7119-4c40-98a0-6956340d4071",
+      "name": "gpt-4.1-mini",
+      "credentials": {
+        "openRouterApi": {
+          "id": "72mF2DZvmuIMyDu5",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=________________________\n# Input Query:\n{{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=# System Prompt  >>>template - make sure to construct and write a robust system prompt here<<<\n\nYou are an AI agent specialized...\n\n\n## Role\nYou are an expert...\n\n\n## Tools:\n\n## Important:\nFirst step is to use the **think** tool to plan your steps. You should use your tools numerous times and iterate. \n\n## Core Capabilities\n- **\"Name of Tool 1\"**: --> description\n- **\"Name of Tool 2\"**: --> description\n... continue with all tools\n\n\n## Task Strategy Guidelines\n\n## Example Workflow\n\n## Final Reminders\nUse the **think** tool to think about something. <\"Add other final reminders here\">\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        340,
+        140
+      ],
+      "id": "cd18157c-706e-4e26-8c1f-4f12510d8a49",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "# AI Agent with Structured Output\n\nBuilds on the basic template but adds structured output capabilities:\n- Same core components as basic template\n- Adds Output Parser node for structured JSON responses\n- Forces AI to return data in a specific schema format\n- Enables consistent, machine-readable outputs\n\nIdeal for data extraction, categorization tasks, and integration with other systems that expect structured data.",
+        "height": 496,
+        "width": 329,
+        "color": "#4CAF50"
+      },
+      "name": "Structured Output Template Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        660
+      ],
+      "id": "c29dd97c-7f35-4a57-b166-5f71ed94ba37"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        1000
+      ],
+      "id": "47388bcc-4da7-49e6-9beb-7c4ce6c3dcaa",
+      "name": "Window Buffer Memory 2"
+    },
+    {
+      "parameters": {
+        "description": "Use the **think** tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        560,
+        1000
+      ],
+      "id": "0642b425-55ac-48c7-817c-53baf803a5e0",
+      "name": "Think 2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f8e4f48-01dd-4d64-aa65-8424954c4e2c",
+              "name": "sessionId",
+              "value": "={{ Math.floor(Math.random() * 100000) + 1 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        780
+      ],
+      "id": "f96331fe-d703-4c4e-a164-e873193edb38",
+      "name": "Edit Fields 2"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        240,
+        1000
+      ],
+      "id": "f3bdb080-c41c-46b2-8b19-ac4ed6871e44",
+      "name": "gpt-4.1-mini 2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "72mF2DZvmuIMyDu5",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=________________________\n# Input Query:\n{{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# System Prompt  >>>template - make sure to construct and write a robust system prompt here<<<\n\nYou are an AI agent specialized...\n\n\n## Role\nYou are an expert...\n\n\n## Tools:\n- **Think Tool**: Use this tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.\n\n## Important:\nFirst step is to use the **think** tool to plan your steps. You should use your tools numerous times and iterate. \n\n\n\n\n## Structed Output\nAlso structure your output like this example with the main message and then three main points regarding the main message:\n{\n\t\"message\": \"message\",\n\t\"three main points\": [\"point one\", \"point two\", \"point three\"]\n}\n\n\n\n## Final Reminders\nUse the **think** tool to think about something. <\"Add other final reminders here\">\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        780
+      ],
+      "id": "8d940039-efc8-4a4e-9482-36edb310e4d4",
+      "name": "AI Agent 2"
+    },
+    {
+      "parameters": {
+        "content": "# Advanced AI Agent with HTTP Tools & Structured Output\n\nComprehensive agent template with external data access:\n- Core components from previous templates\n- Multiple HTTP request tools for external data access\n- Structured output for consistent data formatting\n- Tavily Search for web research\n- Firecrawl for web content extraction\n\nIdeal for research agents, content analysis, web data extraction, and complex decision-making workflows that require external information.",
+        "height": 496,
+        "width": 349,
+        "color": "#FF9800"
+      },
+      "name": "Advanced Agent with HTTP Tools Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        1320
+      ],
+      "id": "657183a7-7ed1-44d0-be16-f08254af876e"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        220,
+        1640
+      ],
+      "id": "9674c275-bf6b-46d5-bd36-18012cdc11bf",
+      "name": "Window Buffer Memory 3"
+    },
+    {
+      "parameters": {
+        "description": "Use the **think** tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        380,
+        1640
+      ],
+      "id": "ccb270fc-8b2a-4a21-9c47-2933814db72c",
+      "name": "Think 3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f8e4f48-01dd-4d64-aa65-8424954c4e2d",
+              "name": "sessionId",
+              "value": "={{ Math.floor(Math.random() * 100000) + 1 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        1420
+      ],
+      "id": "211b5174-1a49-48fa-8e17-9ffe07f0914b",
+      "name": "Edit Fields 3"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Extract the contents from a website URL using Firecrawl. Provide the URL to scrape and receive clean markdown content from the webpage.",
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $fromAI('url', 'The URL to scrape and extract content from', 'string') }}\",\n  \"formats\": [\n    \"markdown\"\n  ],\n  \"onlyMainContent\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        1640
+      ],
+      "id": "30fbcafd-a7e3-4099-b350-2efb22646016",
+      "name": "Extract with Firecrawl",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "TPcndSkdpkbo1dlu",
+          "name": "Firecrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        60,
+        1640
+      ],
+      "id": "db453282-7912-4e75-8132-a951823fe5b5",
+      "name": "gpt-4.1-mini 3",
+      "credentials": {
+        "openRouterApi": {
+          "id": "72mF2DZvmuIMyDu5",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=________________________\n# Input Query:\n{{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# System Prompt \n\n## Role\nYou are a helpful assistant\n\n\n## Tools:\n- **Tavily Search Tool**: Use this tool to search for a url and analyze information about AI resources\n- **Extract With Fire Crawl Tool**: Extract the contents from a website URL using Firecrawl. Provide the URL to scrape and receive clean markdown content from the webpage.\n- **Think Tool**: Use this tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.\n\n## Important:\nFirst step is to use the **think** tool to plan your steps. You should use your tools numerous times and iterate. \n\n\n## Task Strategy Guidelines\n\n\n\n## Structed Output\nAlso structure your output like this example with the main message and then the URLs of three most relavent sources your cited for the main message:\n{\n\t\"message\": \"message\",\n\t\"three citations\": [\"URL one\", \"URL two\", \"URL three\"]\n}\n\n\n\n## Final Reminders\nUse the **think** tool to think about something. <\"Add other final reminders here\">\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        1420
+      ],
+      "id": "c4d0134e-2afd-47ee-b680-75cd07d96b75",
+      "name": "AI Agent 3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        500
+      ],
+      "id": "a7bf1b8f-771a-4943-b960-94e779f1d980",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -680,
+        700
+      ],
+      "id": "7185b6ee-c924-4489-8fa2-617b9daec2aa",
+      "name": "When chat message received",
+      "webhookId": "96df91db-73d8-4a75-ad05-a4ef5dd865da"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 496,
+        "width": 989,
+        "color": 4
+      },
+      "name": "Basic Agent Template Info1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1320
+      ],
+      "id": "4a972eaa-6797-4743-bd23-dc6b9379564f"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 496,
+        "width": 989,
+        "color": 4
+      },
+      "name": "Basic Agent Template Info2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        660
+      ],
+      "id": "fe94967e-4767-402a-b92c-44db09c2f708"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 496,
+        "width": 989,
+        "color": 4
+      },
+      "name": "Basic Agent Template Info3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ],
+      "id": "5a112c94-87ed-4993-9bf9-fd3cbec6c006"
+    },
+    {
+      "parameters": {
+        "content": "# Triggers",
+        "height": 1116,
+        "width": 569,
+        "color": 5
+      },
+      "name": "Basic Agent Template Info4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        380
+      ],
+      "id": "b00b8924-c17c-463f-a6da-b8d1f01a2b0a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b62e5795-f628-4b13-8c4c-17a4e332cd8f",
+              "name": "chatInput",
+              "value": "what is an ai agent?",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        500
+      ],
+      "id": "060ae7c0-fdc6-4a8f-842b-2d8b8bd15bb4",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        900
+      ],
+      "id": "352caac3-8db7-451c-91ac-36b6aefe498d",
+      "name": "Telegram n8n-Agent-Training-Course-bot",
+      "webhookId": "0450d874-a77f-4324-b850-a42a73203ba9",
+      "credentials": {
+        "telegramApi": {
+          "id": "CO8QzwHOtSt69sOG",
+          "name": "n8n-Agent-Training-Course-bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b62e5795-f628-4b13-8c4c-17a4e332cd8f",
+              "name": "chatInput",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        900
+      ],
+      "id": "e2bacad3-ad6d-4327-9954-294861253c4a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "chatId": "=",
+        "text": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        1100
+      ],
+      "id": "77ef2bc1-f62e-49bc-a635-3ba21616a474",
+      "name": "Telegram",
+      "webhookId": "7f6939c7-968d-4093-80e9-c1503bf8c33b",
+      "credentials": {
+        "telegramApi": {
+          "id": "CO8QzwHOtSt69sOG",
+          "name": "n8n-Agent-Training-Course-bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"message\": \"message\",\n\t\"three main points\": [\"point one\", \"point two\", \"point three\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        1000
+      ],
+      "id": "06e22bf4-284a-4dec-ab68-01220404f15f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"message\": \"message\",\n\t\"three citations\": [\"URL one\", \"URL two\", \"URL three\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        1640
+      ],
+      "id": "7f465fe4-c108-49e2-8f64-010a5181b040",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use this tool to search for a url and analyze information about AI resources",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"query\": \"{searchTerm}\",\n    \"search_depth\": \"basic\",\n    \"include_answer\": true,\n    \"include_raw_content\": false,\n    \"max_results\": 5\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "searchTerm",
+              "description": "The URL or information about the AI resource to analyze",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        1640
+      ],
+      "id": "e6265ea0-4d43-4607-a79c-df5efc65ae49",
+      "name": "Tavily Search Tool1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "FeDx4JX3eeKXVMM1",
+          "name": "Supabase Service Role Key - Caiyman.ai"
+        },
+        "httpHeaderAuth": {
+          "id": "IRV4S8FpLS3xIEpH",
+          "name": "Tavily"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        []
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4.1-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Window Buffer Memory 2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent 2",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think 2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent 2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields 2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4.1-mini 2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent 2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory 3": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think 3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields 3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract with Firecrawl": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4.1-mini 3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram n8n-Agent-Training-Course-bot": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        []
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent 2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Search Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent 3",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  }
+}

@@ -1,0 +1,1006 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "rag-orec-contracts-data-lake-small-embeddings",
+          "mode": "list",
+          "cachedResultName": "rag-orec-contracts-data-lake-small-embeddings"
+        },
+        "options": {
+          "pineconeNamespace": "rag-orec-contracts-data-lake-v1"
+        }
+      },
+      "id": "dcae8c8c-51f7-4b71-a8ac-4954aef9d56b",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        480,
+        -1100
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "RnSidXQOXP24CyxY",
+          "name": "PineconeApi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "binaryMode": "specificField",
+        "options": {}
+      },
+      "id": "d122237c-64b4-47fb-ad39-aa6295eef141",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        580,
+        -920
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chunkSize": 800,
+        "chunkOverlap": 100,
+        "options": {}
+      },
+      "id": "3fd430ce-ed9b-4195-87e8-9b2173770e05",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        660,
+        -740
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id }}"
+        },
+        "options": {
+          "fileName": "={{ $json.name }}"
+        }
+      },
+      "id": "d9b695ff-6f53-429e-9cf1-8a32ee3fff45",
+      "name": "Download File From Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        200,
+        -1000
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HNhK8H5Lq7CD4IXH",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "17x-JzvQLLX6MtNpCIxzggol92oSKxU11",
+          "mode": "list",
+          "cachedResultName": "RAG_OREC_Contracts_Data_Lake",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/17x-JzvQLLX6MtNpCIxzggol92oSKxU11"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "id": "d07c7b76-23a2-4db4-a4ec-49149faa6cb4",
+      "name": "Google Drive File Updated",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "position": [
+        -20,
+        -900
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HNhK8H5Lq7CD4IXH",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "17x-JzvQLLX6MtNpCIxzggol92oSKxU11",
+          "mode": "list",
+          "cachedResultName": "RAG_OREC_Contracts_Data_Lake",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/17x-JzvQLLX6MtNpCIxzggol92oSKxU11"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "id": "25452433-aace-4cc5-a713-37316734abd6",
+      "name": "Google Drive File Created",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "position": [
+        -20,
+        -1100
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HNhK8H5Lq7CD4IXH",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 📁 Document Ingestion Pipeline\n\nAutomatically processes OKRC contract documents when files are created or updated in Google Drive, chunks them, and stores embeddings in Pinecone for RAG retrieval.",
+        "height": 680,
+        "width": 1040,
+        "color": 4
+      },
+      "id": "dd5fe017-a249-4ccf-846c-a128e0ea22ef",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -120,
+        -1260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ Setup Instructions\n\n1. **Google Cloud Project & APIs:**\n   * Create new GCP project at console.cloud.google.com\n   * Enable Vertex AI API & Google Drive API\n   * Set up OAuth2 consent screen\n2. **OpenAI API Key:**\n   * Get API key from OpenAI Developer Platform\n   * Add billing method for API usage\n3. **Pinecone Account:**\n   * Create free account at pinecone.io\n   * Get API key from dashboard\n   * Create index: `rag-orec-contracts-data-lake-small-embeddings`\n   * Use dimension: 1536 (OpenAI embeddings)\n4. **Google Drive:**\n   * Create dedicated folder for OKRC contracts\n   * Note the folder ID from the URL\n5. **n8n Credentials:**\n   * Configure: Google Drive OAuth2, OpenAI API, Pinecone API\n   * Test each credential connection\n6. **Configure Workflow:**\n   * Update Drive trigger folder ID & Pinecone index settings\n   * Activate workflow after testing",
+        "height": 680,
+        "width": 480
+      },
+      "id": "cd772730-6e73-4594-b5bb-f7a8722e62c1",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -620,
+        -1260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        -920
+      ],
+      "id": "2c543d08-36d1-4d0c-9f53-ea3c9fb7a34b",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "rwAxfkY2r3aftMdo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "rag-orec-contracts-data-lake-small-embeddings",
+          "mode": "list",
+          "cachedResultName": "rag-orec-contracts-data-lake-small-embeddings"
+        },
+        "options": {
+          "pineconeNamespace": "rag-orec-contracts-data-lake-v1"
+        }
+      },
+      "id": "7431763c-3286-4716-81b9-479a01e68e37",
+      "name": "Pinecone Vector Store (Retrieval)",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        480,
+        200
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "RnSidXQOXP24CyxY",
+          "name": "PineconeApi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 4
+      },
+      "id": "78ab74a8-2b45-4125-8dc0-174193fb31cf",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        460,
+        0
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        200
+      ],
+      "id": "78b6f205-c94b-4cdf-ad3a-de84ecd8a643",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "rwAxfkY2r3aftMdo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        340
+      ],
+      "id": "8b6e0b5e-2bfa-4d5a-92c4-812d81f4f8d9",
+      "name": "Embeddings OpenAI1 (retrieval)",
+      "credentials": {
+        "openAiApi": {
+          "id": "rwAxfkY2r3aftMdo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -580,
+        -260
+      ],
+      "id": "15714b66-d03a-4535-b5cb-b80e0d69d5f8",
+      "name": "Telegram Trigger",
+      "webhookId": "4862e142-fcc3-44d2-9862-22cc4cdb0741",
+      "credentials": {
+        "telegramApi": {
+          "id": "lWpyWWa8cgEFA7RP",
+          "name": "Telegram n8n RAG AI Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1000,
+        -260
+      ],
+      "id": "1b16e395-adf2-459c-b93c-45078bbec2dc",
+      "name": "Telegram",
+      "webhookId": "2f5ed02b-2a10-4a94-a6bd-6f2bf346f02c",
+      "credentials": {
+        "telegramApi": {
+          "id": "lWpyWWa8cgEFA7RP",
+          "name": "Telegram n8n RAG AI Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe7ecc99-e1e8-4a5e-bdd6-6fce9757b234",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "968d384b-4916-4ce9-b149-186599ca6edb",
+              "name": "sessionId",
+              "value": "={{ $json.message.from.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "885049ca-39fe-486a-8740-06e1f8ee32d8",
+      "name": "Set 'Text'",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "08410976-af3c-428e-b9dc-fa24c8d721f2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8c844924-b2ed-48b0-935c-c66a8fd0c778",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "aca3a37c-0c70-4424-9aa3-7b5f136bc84e",
+                    "leftValue": "={{ $json.body.chatInput }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "66c3df1e-c350-4899-992b-b5e8b741a0f2",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -340,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "id": "c8cba8ec-1b65-471d-9b60-2819d83e21c3",
+      "name": "Download File",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        -440
+      ],
+      "webhookId": "e78a94a3-36ff-4073-88e0-be087cdc9512",
+      "credentials": {
+        "telegramApi": {
+          "id": "DuGcvNXx2OdE2mfh",
+          "name": "RAG_Agent_OREC_Contracts_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "1a806e87-30fd-4ed9-8b94-afa46c8bca28",
+      "name": "Transcribe",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        100,
+        -440
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "rwAxfkY2r3aftMdo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "RAG_OREC_Contracts_Data_Lake",
+        "description": "Retrieve information from any Oklahoma Real Estate Commission Real Estate Contract"
+      },
+      "id": "49589b8c-af02-4896-bf10-a6055d81853c",
+      "name": "Vector Store Tool - RAG OREC Contracts Data Lake",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        580,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "# System Prompt for Oklahoma Real Estate Contracts RAG Agent\n\nYou are a knowledgeable AI assistant specializing in Oklahoma real estate contracts. Your purpose is to provide accurate information based on Oklahoma Real Estate Commission documents in your knowledge base.\n\n## Core Capabilities & Tools\n\n- **Vector Store Tool - RAG OREC Contracts Data Lake**: Access to all Oklahoma real estate contracts\n- **Google Drive File Search**: Find specific contract files\n- **Google Drive File Download**: Generate download links for contracts\n\n## Required Workflow for EVERY Query\n\n1. ALWAYS start by using the **Vector Store Tool** to retrieve relevant information\n2. THEN use the **Google Drive File Search** tool with these search strategies:\n   - Start with a SINGLE WORD search term: Just \"mineral\" (not \"mineral rights\")\n   - Use the most basic category words possible: \"land\", \"sale\", \"lease\", \"buyer\", \"seller\", \"affidavit\"\n   - NEVER use multi-word search terms unless single words yield too many results\n   - If no results from one word, try a DIFFERENT single word (not variations of the same concept)\n   - ALWAYS make at least 3 separate searches with different basic terms before concluding nothing exists\n   - Examples: \n     * Search for \"mineral\" only (not \"mineral rights\" or \"mineral ownership\")\n     * Search for \"affidavit\" only (not \"buyer affidavit\")\n     * Search for \"buyer\" only (not \"buyer agreement\")\n   - Remember that file names may contain spaces or special formatting that affects search results\n3. ALWAYS use the **Google Drive File Download** tool for the most relevant document(s)\n4. Formulate your answer based on both vector store data and retrieved documents\n\n## Guidelines for Responses\n \n- Provide precise, factual information based solely on the official documents in your knowledge base\n- Structure your responses in a clear, organized manner with appropriate headings when beneficial\n- When quoting specific contract language, clearly indicate the source document and section\n- When explaining complex legal or contractual concepts, break them down into simpler terms while maintaining accuracy\n- For questions that might have changed over time, reference the most recent contract version in your database\n- Always include the specific file name of any contract or document that is relevant to the user's query\n- ALWAYS conclude your response with a \"Document Access\" section that contains:\n  1. The exact file name of the relevant contract/form\n  2. TWO separate links for EACH document:\n     a. FIRST: A viewing link to see the document on Google Drive (labeled \"View Document\")\n     b. SECOND: A download link to download the document (labeled \"Download Document\")\n  3. A clear statement like: \"You can access the [Document Name] using these links: [VIEW LINK] | [DOWNLOAD LINK]\"\n- NEVER skip providing both types of links - this is MANDATORY for EVERY response about contracts or forms\n- NEVER state that you can provide links - instead, ALWAYS include the actual links automatically\n\n## Limitations\n\n- Only provide information from official Oklahoma Real Estate Commission documents\n- State clearly if information isn't found: \"I cannot find this information in the available documents\"\n- Do not speculate on legal interpretations beyond document content\n- Clarify you're not providing legal advice\n- Request clarification for ambiguous questions\n- Remember file names may not match expected names; focus on content relevance\n\nYour goal is to be a reliable resource for Oklahoma real estate contract information with high standards of precision and helpfulness.",
+          "maxIterations": 20,
+          "returnIntermediateSteps": false
+        }
+      },
+      "id": "4ebf9392-e332-4629-ae99-c077786d456c",
+      "name": "RAG Chatbot OKRC Contracts",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        580,
+        -260
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "limit": 50,
+        "queryString": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Query', `Use broad and simple keywords to search.`, 'string') }}",
+        "returnAll": "={{ $fromAI('Return_All', ``, 'boolean') }}",
+        "filter": {
+          "driveId": {
+            "__rl": true,
+            "value": "My Drive",
+            "mode": "list",
+            "cachedResultName": "My Drive",
+            "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "17x-JzvQLLX6MtNpCIxzggol92oSKxU11",
+            "mode": "list",
+            "cachedResultName": "RAG_OREC_Contracts_Data_Lake",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/17x-JzvQLLX6MtNpCIxzggol92oSKxU11"
+          }
+        },
+        "options": {
+          "fields": [
+            "*",
+            "exportLinks",
+            "id",
+            "name",
+            "permissions",
+            "shared",
+            "webViewLink",
+            "kind",
+            "mimeType"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        880,
+        0
+      ],
+      "id": "a940f1a1-4b4d-46fb-9460-0f69cf7ba5d1",
+      "name": "Google Drive File Search",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HNhK8H5Lq7CD4IXH",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('File', ``, 'string') }}",
+          "mode": "id"
+        },
+        "options": {
+          "fileName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('File_Name', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "93fbf530-b8d1-47fb-aa45-fa8f5772097d",
+      "name": "Google Drive File Download",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "HNhK8H5Lq7CD4IXH",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "277547f8-8d73-43af-b9bf-ff96c416629e",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -1140
+      ],
+      "id": "3ffdb641-dca0-4cfe-858e-e8b00f908977",
+      "name": "Webhook",
+      "webhookId": "277547f8-8d73-43af-b9bf-ff96c416629e",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        -940
+      ],
+      "id": "855b56b2-f453-4e0c-947f-c91764e74f41",
+      "name": "Respond to Webhook",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe7ecc99-e1e8-4a5e-bdd6-6fce9757b234",
+              "name": "text",
+              "value": "={{ $json.body.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "cab46a0c-4792-4ca7-b06d-9c0bd8ce47e9",
+              "name": "sessionId",
+              "value": "={{ $json.body.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "88c3551d-b1f7-4ac4-af81-2111751b55d9",
+      "name": "Set 'Text'1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 12
+      },
+      "id": "8d6c12a2-0db8-4a9a-a903-24ca099f00e5",
+      "name": "Window Buffer Memory - telegram",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        1060,
+        -740
+      ],
+      "typeVersion": 1.3,
+      "disabled": true
+    },
+    {
+      "parameters": {
+                  "content": "## 📱 Telegram Bot Interface\n\nPrimary user interface through Telegram bot for mobile and desktop access. Handles text messages and voice transcription for contract questions.",
+        "height": 680,
+        "width": 340,
+        "color": 7
+      },
+      "id": "3a460944-4fbe-4b8f-b7b7-64d357fc1668",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        -1260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-2.5-flash-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "d0d8dd31-8718-4fc4-b961-0018af5ce8e1",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "72mF2DZvmuIMyDu5",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+                  "content": "## 🤖 RAG Chatbot Interface\n\nMain AI agent that answers questions about OKRC contracts using retrieved context from the vector database and conversation memory. Uses Telegram as the primary interface for user interactions.\n\nFor more AI agents and consulting, visit [caiyman.ai](https://caiyman.ai)",
+        "height": 1060,
+        "width": 1920,
+        "color": 6
+      },
+      "id": "636ceaf8-4956-4a23-8a0e-8a2c22eeb660",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        -560
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File From Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive File Updated": {
+      "main": [
+        [
+          {
+            "node": "Download File From Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive File Created": {
+      "main": [
+        [
+          {
+            "node": "Download File From Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store (Retrieval)": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool - RAG OREC Contracts Data Lake",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vector Store Tool - RAG OREC Contracts Data Lake",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1 (retrieval)": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store (Retrieval)",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set 'Text'": {
+      "main": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set 'Text'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set 'Text'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe": {
+      "main": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool - RAG OREC Contracts Data Lake": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG Chatbot OKRC Contracts": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive File Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive File Download": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Set 'Text'1": {
+      "main": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Chatbot OKRC Contracts",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateId": "2753",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  }
+}

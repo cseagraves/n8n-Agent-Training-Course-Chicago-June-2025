@@ -1,0 +1,476 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "client-support",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "60781239-7c5f-48db-90a5-11e781f9ca47",
+      "name": "Webhook - Client Inquiry",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        40
+      ],
+      "webhookId": "client-support-webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ebf2e5b4-8a3c-4e83-9ef6-8e5934c33250",
+      "name": "Extract Client Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "prompt": {
+          "messages": [
+            {
+              "content": "=Client Name: {{ $json.client_name }}\nInquiry Type: {{ $json.inquiry_type }}\nMessage: {{ $json.message }}\nEmail: {{ $json.client_email }}\n\nPlease provide a helpful response to this client inquiry."
+            },
+            {
+              "role": "system",
+              "content": "=You are a helpful real estate assistant for [YOUR BUSINESS NAME]. Your role is to provide immediate, professional support to clients with real estate questions. Keep responses concise, helpful, and encouraging. Always offer to connect them with a human agent for complex matters.\n\nBusiness Context:\n- We specialize in residential real estate in [YOUR MARKET AREA]\n- Our team has over [X] years of experience\n- We offer buying, selling, and investment services\n- Contact: [YOUR EMAIL] or [YOUR PHONE]\n\nResponse Guidelines:\n- Be warm and professional\n- Provide specific next steps when possible\n- Acknowledge their inquiry type and urgency\n- Offer to schedule a consultation\n- Include contact information for follow-up"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "c15ab796-80dc-42b6-957b-53b7a5c15084",
+      "name": "AI Response Generator",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -60
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "SUg6sldBk4kwJkxt",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "prompt": {
+          "messages": [
+            {
+              "content": "=URGENT INQUIRY:\nClient: {{ $json.client_name }}\nEmail: {{ $json.client_email }}\nMessage: {{ $json.message }}\n\nProvide immediate assistance response."
+            },
+            {
+              "role": "=system",
+              "content": "You are an urgent response assistant for a real estate business. The client has indicated this is urgent or an emergency. Provide immediate, direct assistance and ensure they know how to reach someone immediately.\n\nResponse should:\n- Acknowledge the urgency\n- Provide immediate contact information\n- Offer specific next steps\n- Be reassuring but direct\n- Include emergency contact if available"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "4f488429-8edf-4cbd-9583-f93e19478dbf",
+      "name": "Urgent Response Generator",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        140
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "SUg6sldBk4kwJkxt",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0fed5c11-1f47-466c-b218-d37a009887b0",
+      "name": "Format Standard Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -60,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0a82ccb7-a88b-4fc2-9227-3b15aed48faf",
+      "name": "Format Urgent Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -60,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "8ae4354a-1e7c-4751-a1b6-70627380cd87",
+      "name": "Merge Responses",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        160,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "7faf4495-aec9-478b-9a67-01650d47f4b0",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        380,
+        180
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1v3tPmT8GT3k9TKt",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": {
+          "status": "success",
+          "message": "Thank you for your inquiry! We've sent a response to your email and will follow up personally within 24 hours.",
+          "response_type": "={{ $json.response_type }}",
+          "timestamp": "={{ $now }}"
+        },
+        "options": {}
+      },
+      "id": "5ec1310b-1db3-4634-bfdf-c4586ade5552",
+      "name": "Send Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        600,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "🚨 URGENT CLIENT INQUIRY 🚨\n\nName: {{ $('Extract Client Data').item.json.client_name }}\nEmail: {{ $('Extract Client Data').item.json.client_email }}\nType: {{ $('Extract Client Data').item.json.inquiry_type }}\n\nMessage: {{ $('Extract Client Data').item.json.message }}\n\nAutomatic response sent. Please follow up ASAP!",
+        "additionalFields": {}
+      },
+      "id": "7b496d88-e3b8-4dd3-844f-a93e38e38904",
+      "name": "Urgent Alert to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        160,
+        280
+      ],
+      "webhookId": "eeee4a4e-fa2a-495c-b775-c4bc1b39f978",
+      "credentials": {
+        "telegramApi": {
+          "id": "CO8QzwHOtSt69sOG",
+          "name": "n8n-Agent-Training-Course-bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "subject": "=Re: Your Real Estate Inquiry - {{ $('Extract Client Data').item.json.inquiry_type }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        380,
+        -140
+      ],
+      "id": "2c7de1c9-e326-4b0f-942c-b3fe19a43c7d",
+      "name": "Gmail",
+      "webhookId": "a8eabdc2-28dc-4bd4-98f9-9fd6b60e7106",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "iLWcRkPmRZDfVkEt",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "urgent",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "urgent",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "emergency",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "emergency",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "immediate",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "immediate",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "asap",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "asap",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "help",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "help",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "problem",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "problem",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "issue",
+              "leftValue": "={{ $json.message.toLowerCase() }}",
+              "rightValue": "issue",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "d64d47c0-91fa-4783-8b4b-0d784333be6f",
+      "name": "Check Urgency Level1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -940,
+        260
+      ],
+      "id": "968747c5-bf4f-4302-b196-e21e877b82df",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "iLWcRkPmRZDfVkEt",
+          "name": "Gmail account 3"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook - Client Inquiry": {
+      "main": [
+        [
+          {
+            "node": "Extract Client Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Client Data": {
+      "main": [
+        [
+          {
+            "node": "Check Urgency Level1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Response Generator": {
+      "main": [
+        [
+          {
+            "node": "Format Standard Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Urgent Response Generator": {
+      "main": [
+        [
+          {
+            "node": "Format Urgent Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Standard Response": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Urgent Response": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Urgent Alert to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Responses": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Webhook Response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Urgency Level1": {
+      "main": [
+        [
+          {
+            "node": "AI Response Generator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Urgent Response Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  }
+}
