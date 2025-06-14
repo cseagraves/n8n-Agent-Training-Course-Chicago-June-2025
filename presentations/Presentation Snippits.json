@@ -1,0 +1,385 @@
+{
+  "name": "Real Estate AI Presentation Diagrams",
+  "nodes": [
+    {
+      "parameters": {
+        "value": "AI-Agents-Real-Estate-Revolution: Lead Flow Diagram"
+      },
+      "id": "leadFlowNote",
+      "name": "Lead Flow Diagram",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [100, 100]
+    },
+    {
+      "parameters": {},
+      "id": "webhook1",
+      "name": "Webhook (New Lead)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {},
+      "id": "aiAgent1",
+      "name": "AI Agent (Score Lead)",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [180, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "rules": [{
+            "value1": "={{ $json.score }}",
+            "operation": ">=",
+            "value2": "80"
+          }]
+        }
+      },
+      "id": "if1",
+      "name": "IF (Qualified?)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [360, 0]
+    },
+    {
+      "parameters": {},
+      "id": "set1",
+      "name": "Set (Assign to Agent)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [540, -40]
+    },
+    {
+      "parameters": {},
+      "id": "email1",
+      "name": "Send Nurture Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [540, 40]
+    },
+    {
+      "parameters": {
+        "value": "AI-Agents-Real-Estate-Revolution: Impact Metrics Visualization"
+      },
+      "id": "impactMetricsNote",
+      "name": "Impact Metrics Visualization",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [900, 100]
+    },
+    {
+      "parameters": {},
+      "id": "aiAgent2",
+      "name": "AI Agent",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [0, 200]
+    },
+    {
+      "parameters": {},
+      "id": "chatModel1",
+      "name": "Chat Model",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [180, 160]
+    },
+    {
+      "parameters": {},
+      "id": "vectorStore1",
+      "name": "Vector Store",
+      "type": "n8n-nodes-base.vectorStore",
+      "typeVersion": 1,
+      "position": [180, 240]
+    },
+    {
+      "parameters": {},
+      "id": "function1",
+      "name": "Function (Calculate Metrics)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [0, 400]
+    },
+    {
+      "parameters": {},
+      "id": "set2",
+      "name": "Set (Output Metrics)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [180, 400]
+    },
+    {
+      "parameters": {
+        "value": "n8n-Fundamentals-Real-Estate: n8n Interface"
+      },
+      "id": "n8nInterfaceNote",
+      "name": "n8n Interface",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [100, 400]
+    },
+    {
+      "parameters": {},
+      "id": "triggerNode",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 500]
+    },
+    {
+      "parameters": {},
+      "id": "setNode",
+      "name": "Set Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [250, 500]
+    },
+    {
+      "parameters": {},
+      "id": "emailNode",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [400, 500]
+    },
+    {
+      "parameters": {
+        "value": "n8n-Fundamentals-Real-Estate: Connection Types Diagram"
+      },
+      "id": "connTypesNote",
+      "name": "Connection Types Diagram",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {},
+      "id": "mainNode",
+      "name": "Webhook (Main)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {},
+      "id": "aiNode",
+      "name": "Chat Model (AI)",
+      "type": "n8n-nodes-base.chatModel",
+      "typeVersion": 1,
+      "position": [1050, 450]
+    },
+    {
+      "parameters": {},
+      "id": "memoryNode",
+      "name": "Vector Store (Memory)",
+      "type": "n8n-nodes-base.vectorStore",
+      "typeVersion": 1,
+      "position": [1050, 550]
+    },
+    {
+      "parameters": {},
+      "id": "toolsNode",
+      "name": "Function (Tools)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1200, 500]
+    },
+    {
+      "parameters": {
+        "value": "n8n-Fundamentals-Real-Estate: AI Node Setup"
+      },
+      "id": "aiSetupNote",
+      "name": "AI Node Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [100, 700]
+    },
+    {
+      "parameters": {},
+      "id": "aiAgentSetup",
+      "name": "AI Agent",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [250, 800]
+    },
+    {
+      "parameters": {},
+      "id": "chatModelSetup",
+      "name": "Chat Model",
+      "type": "n8n-nodes-base.chatModel",
+      "typeVersion": 1,
+      "position": [400, 750]
+    },
+    {
+      "parameters": {},
+      "id": "vectorStoreSetup",
+      "name": "Vector Store",
+      "type": "n8n-nodes-base.vectorStore",
+      "typeVersion": 1,
+      "position": [400, 850]
+    },
+    {
+      "parameters": {},
+      "id": "toolSetup",
+      "name": "Function (Tool)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [550, 800]
+    },
+    {
+      "parameters": {
+        "value": "ROI-Case-Studies-Real-Estate-AI: ROI Timeline Chart"
+      },
+      "id": "roiTimelineNote",
+      "name": "ROI Timeline Chart",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [900, 700]
+    },
+    {
+      "parameters": {},
+      "id": "setupNode",
+      "name": "Set (Setup: Month 1)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [900, 800]
+    },
+    {
+      "parameters": {},
+      "id": "firstRoiNode",
+      "name": "Set (First ROI: Month 2-3)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1050, 800]
+    },
+    {
+      "parameters": {},
+      "id": "compoundNode",
+      "name": "Set (Compound Gains: Month 6+)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1200, 800]
+    }
+  ],
+  "connections": {
+    "webhook1": {"main": [[{"node": "aiAgent1", "type": "main", "index": 0}]]},
+    "aiAgent1": {"main": [[{"node": "if1", "type": "main", "index": 0}]]},
+    "if1": {
+      "main": [
+        [{"node": "set1", "type": "main", "index": 0}],
+        [{"node": "email1", "type": "main", "index": 0}]
+      ]
+    },
+    "aiAgent2": {"main": [[{"node": "chatModel1", "type": "main", "index": 0}, {"node": "vectorStore1", "type": "main", "index": 0}]]},
+    "function1": {"main": [[{"node": "set2", "type": "main", "index": 0}]] },
+    "triggerNode": {
+      "main": [
+        [
+          {
+            "node": "setNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setNode": {
+      "main": [
+        [
+          {
+            "node": "emailNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mainNode": {
+      "main": [
+        [
+          {
+            "node": "aiNode",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "memoryNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aiNode": {
+      "main": [
+        [
+          {
+            "node": "toolsNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memoryNode": {
+      "main": [
+        [
+          {
+            "node": "toolsNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aiAgentSetup": {
+      "main": [
+        [
+          {
+            "node": "chatModelSetup",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "vectorStoreSetup",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "toolSetup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setupNode": {
+      "main": [
+        [
+          {
+            "node": "firstRoiNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstRoiNode": {
+      "main": [
+        [
+          {
+            "node": "compoundNode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "417b0a8b2a10d0a50938a93dd6b8dd01385b21d758ab43693102c5df3493c401"
+  }
+}

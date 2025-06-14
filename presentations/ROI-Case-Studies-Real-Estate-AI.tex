@@ -1,0 +1,339 @@
+\documentclass{beamer}
+
+\usetheme{Frankfurt}
+
+\setbeamerfont{caption}{size=\tiny}
+
+\input{../Caiyman AI Private/Overleaf LaTeX Presentations/Template/preamble}
+
+% Customize the footer (footline) template
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}Dr. Cayman Seagraves (Caiyman AI)
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}ROI Case Studies in Real Estate AI
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}%
+            \usebeamerfont{page number in head/foot}n8n Workshop, 2025 \hfill \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+        \end{beamercolorbox}%
+    }%
+    \vskip0pt%
+}
+
+% Add your company/university logo here
+\logo{\includegraphics[height=.8cm]{../Caiyman AI Private/Overleaf LaTeX Presentations/Images/Stacked TU blue and gold (1).png}}
+
+\author{Dr. Cayman Seagraves, Caiyman AI}
+\date{June 14th, 2025 - n8n AI Agent Workshop}
+
+\title{ROI Case Studies in Real Estate AI}
+
+\begin{document}
+
+% Title page
+{
+\setbeamertemplate{headline}{\vskip-\headheight}
+\begin{frame}
+    \titlepage
+\end{frame}
+}
+
+% Slide 2: Outline
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 1 – MEASURING AI ROI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Measuring ROI}
+
+% Slide 3
+\begin{frame}{The ROI Formula for AI Agents}
+  \Large
+  \centering
+  \textbf{ROI = $\frac{\text{(Gain from Investment - Cost of Investment)}}{\text{Cost of Investment}} \times 100$}
+  
+  \vspace{0.5cm}
+  
+  \normalsize
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Gains Include:}
+      \begin{itemize}
+        \item Time savings
+        \item Revenue increases
+        \item Cost reductions
+        \item Quality improvements
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Costs Include:}
+      \begin{itemize}
+        \item Platform fees (\$20-50/mo)
+        \item API costs (\$10-30/mo)
+        \item Setup time
+        \item Training investment
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 2 – CASE STUDIES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Case Studies}
+
+% Slide 4: Case Study 1
+\begin{frame}{Case Study 1: Lead Response Automation}
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{The Challenge:}
+      \begin{itemize}
+        \item Solo agent with 50+ leads/month
+        \item 5-hour average response time
+        \item 15\% lead conversion rate
+        \item Missing opportunities after hours
+      \end{itemize}
+      
+      \textbf{The Solution:}
+      \begin{itemize}
+        \item n8n webhook + AI agent
+        \item Instant lead qualification
+        \item Personalized auto-response
+        \item Smart routing to calendar
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \begin{block}{Results}
+        \begin{itemize}
+          \item Response: 5 hrs → 2 min
+          \item Conversion: 15\% → 22\%
+          \item Revenue: +\$180K/year
+          \item \textbf{ROI: 1,200\%}
+        \end{itemize}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 5: Case Study 2
+\begin{frame}{Case Study 2: Market Analysis Automation}
+  \textbf{Brokerage Team Challenge:}
+  \begin{itemize}
+    \item 3 analysts spending 20 hrs/week on CMAs
+    \item Inconsistent report quality
+    \item Delayed client deliverables
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{AI Agent Solution:}
+      \begin{itemize}
+        \item Automated data collection
+        \item AI-powered analysis
+        \item Professional report generation
+        \item One-click delivery
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Financial Impact:}
+      \begin{itemize}
+        \item Time: 60 hrs → 5 hrs/week
+        \item Labor savings: \$110K/year
+        \item More deals closed: +15\%
+        \item \textbf{6-week payback}
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% Slide 6: Case Study 3
+\begin{frame}{Case Study 3: 24/7 Client Communication}
+  \small
+  \textbf{Luxury Real Estate Team:}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Implementation:}
+      \begin{itemize}
+        \item AI chat agent on website
+        \item Property Q\&A system
+        \item Appointment scheduling
+        \item Lead qualification
+        \item Multi-language support
+      \end{itemize}
+      
+      \textbf{Investment:}
+      \begin{itemize}
+        \item Setup: 40 hours
+        \item Monthly: \$150 (all services)
+        \item Annual: \$1,800 + time
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Year 1 Results:}
+      \begin{itemize}
+        \item 3,000+ conversations
+        \item 400 qualified leads
+        \item 35 additional closings
+        \item \$525K commission revenue
+        \item Client satisfaction: +35\%
+      \end{itemize}
+      
+      \vspace{0.3cm}
+      \begin{block}{ROI: 2,800\%}
+        \$1.8K → \$525K revenue
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 7: Case Study 4
+\begin{frame}{Case Study 4: Document Processing AI}
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Commercial Real Estate Firm:}
+      \begin{itemize}
+        \item 200+ contracts/month
+        \item Manual review: 2 hrs each
+        \item High error risk
+        \item Compliance concerns
+      \end{itemize}
+      
+      \textbf{RAG-Based Solution:}
+      \begin{itemize}
+        \item Contract upload → AI analysis
+        \item Key terms extraction
+        \item Risk identification
+        \item Compliance checking
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Impact Metrics:}
+      \begin{itemize}
+        \item Review time: 80\% ↓
+        \item Errors caught: 3x more
+        \item Compliance: 100\%
+        \item Staff freed: 2 FTEs
+      \end{itemize}
+      
+      \begin{block}{Annual Savings}
+        \$180,000 in labor costs
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 3 – ROI PATTERNS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ROI Patterns}
+
+% Slide 8
+\begin{frame}{Common ROI Patterns}
+  \begin{columns}[onlytextwidth]
+    \column{0.96\textwidth}
+      \textbf{Quick Wins (1-3 months):}
+      \begin{itemize}
+        \item Lead response automation
+        \item Basic client communication
+        \item Simple data entry tasks
+        \item Email automation
+      \end{itemize}
+      
+      \vspace{0.3cm}
+      \textbf{Medium Term (3-6 months):}
+      \begin{itemize}
+        \item Market analysis tools
+        \item Document processing
+        \item Multi-step workflows
+        \item Integration projects
+      \end{itemize}
+  \end{columns}
+  
+  \vspace{0.3cm}
+  \begin{block}{Long Term (6+ months)}
+    Enterprise-wide AI integration with custom agents and deep system integration
+  \end{block}
+\end{frame}
+
+% Slide 9
+\begin{frame}{Maximizing Your ROI}
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Success Factors:}
+      \begin{enumerate}
+        \item Start with high-impact, simple tasks
+        \item Measure baseline metrics first
+        \item Build incrementally
+        \item Train your team properly
+        \item Monitor and optimize continuously
+      \end{enumerate}
+    
+    \column{0.46\textwidth}
+      \textbf{Common Mistakes:}
+      \begin{itemize}
+        \item Over-engineering initial solutions
+        \item Ignoring change management
+        \item Not tracking metrics
+      \end{itemize}
+      
+      \begin{block}{Remember}
+        The best ROI comes from solving real business problems, not using fancy technology
+      \end{block}
+      
+      \vspace{0.3cm}
+      
+      \begin{block}{Typical Timeline}
+        \begin{itemize}
+          \item Month 1: Setup
+          \item Month 2-3: First ROI
+          \item Month 6+: Compound gains
+        \end{itemize}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 10: Summary and Call to Action
+\begin{frame}{Your ROI Journey Starts Today}
+  \Large
+  \centering
+  \textbf{Real Estate AI ROI is Real and Achievable}
+  
+  \vspace{0.5cm}
+  
+  \normalsize
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Today's Investment:}
+      \begin{itemize}
+        \item 5 hours of training
+        \item \$50-200 monthly costs
+        \item Your commitment to change
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Expected Returns:}
+      \begin{itemize}
+        \item 10-20 hours/week saved
+        \item 20-40\% efficiency gains
+        \item 200-2000\% ROI typical
+      \end{itemize}
+  \end{columns}
+  
+  \vspace{0.5cm}
+  
+  \begin{block}{Action Steps}
+    1. Choose your first use case\\
+    2. Set baseline metrics\\
+    3. Build and deploy\\
+    4. Track your results\\
+    5. Scale what works
+  \end{block}
+  
+  \vspace{0.3cm}
+  \textbf{Questions? Let's discuss your specific ROI potential!}
+\end{frame}
+
+\end{document} 

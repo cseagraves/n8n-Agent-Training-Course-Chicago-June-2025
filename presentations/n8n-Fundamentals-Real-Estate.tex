@@ -1,0 +1,516 @@
+\documentclass{beamer}
+
+\usetheme{Frankfurt}
+
+\setbeamerfont{caption}{size=\tiny}
+
+\input{../Caiyman AI Private/Overleaf LaTeX Presentations/Template/preamble}
+
+% Customize the footer (footline) template
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}Dr. Cayman Seagraves (Caiyman AI)
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}n8n Fundamentals for Real Estate
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}%
+            \usebeamerfont{page number in head/foot}n8n Workshop, 2025 \hfill \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+        \end{beamercolorbox}%
+    }%
+    \vskip0pt%
+}
+
+% Add your company/university logo here
+\logo{\includegraphics[height=.8cm]{../Caiyman AI Private/Overleaf LaTeX Presentations/Images/Stacked TU blue and gold (1).png}}
+
+\author{Dr. Cayman Seagraves, Caiyman AI}
+\date{June 14th, 2025 - n8n AI Agent Workshop}
+
+\title{n8n Fundamentals for Real Estate}
+
+\begin{document}
+
+% Title page
+{
+\setbeamertemplate{headline}{\vskip-\headheight}
+\begin{frame}
+    \titlepage
+\end{frame}
+}
+
+% Outline
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 1 – INTRODUCTION TO n8n
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+% Slide 3
+\begin{frame}{What is n8n?}
+  \begin{columns}[onlytextwidth]
+    \column{0.96\textwidth}
+      \textbf{n8n = "node to node"}
+      \begin{itemize}
+        \item Visual workflow automation platform
+        \item No-code/low-code approach
+        \item Open-source with cloud option
+        \item Built for AI agent development
+      \end{itemize}
+      
+      \vspace{0.3cm}
+      \textbf{Why n8n for Real Estate?}
+      \begin{itemize}
+        \item Connect to any service
+        \item Build complex logic visually
+        \item Deploy AI agents quickly
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% Slide 4
+\begin{frame}{Visual Programming Advantages}
+  \begin{itemize}
+    \item \textbf{See Your Logic:} Workflows are visual flowcharts
+    \item \textbf{Debug Easily:} Watch data flow through nodes
+    \item \textbf{Collaborate Better:} Non-technical team members can understand
+    \item \textbf{Iterate Quickly:} Change logic without coding
+  \end{itemize}
+  
+  \vspace{0.5cm}
+  
+  \begin{block}{Real Estate Benefit}
+    Build and modify automations as your business needs change—no developer required
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 2 – CORE CONCEPTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Core Concepts}
+
+% Slide 5
+\begin{frame}{Nodes: The Building Blocks}
+  \footnotesize
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{What are Nodes?}
+      \begin{itemize}
+        \item Individual workflow steps
+        \item Each performs specific action
+        \item Connect to form workflows
+      \end{itemize}
+      
+      \textbf{Node Categories:}
+      \begin{itemize}
+        \item \textbf{Trigger:} Start workflows
+        \item \textbf{Regular:} Process data
+        \item \textbf{AI:} LLM interactions
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \begin{block}{Real Estate Examples}
+        \begin{itemize}
+          \item Webhook: New lead arrives
+          \item HTTP Request: Check MLS
+          \item AI Agent: Analyze property
+          \item Email: Send to client
+        \end{itemize}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 6
+\begin{frame}{Connections and Data Flow}
+  \begin{columns}[onlytextwidth]
+    \column{0.96\textwidth}
+      \textbf{Connection Types:}
+      \begin{itemize}
+        \item \textcolor{blue}{Main}: Primary data flow
+        \item \textcolor{green}{AI}: Model connections
+        \item \textcolor{orange}{Memory}: Context storage
+        \item \textcolor{purple}{Tools}: Agent capabilities
+      \end{itemize}
+      
+      \vspace{0.3cm}
+      \textbf{Data Structure:}
+      \begin{itemize}
+        \item JSON format
+        \item Items = individual records
+        \item Access with expressions
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% Slide 7
+\begin{frame}{Variables and Data Types}
+  \textbf{Working with Data in n8n:}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Common Data Types:}
+      \begin{itemize}
+        \item String: "123 Main St"
+        \item Number: 450000
+        \item Boolean: true/false
+        \item Object: \{property: data\}
+        \item Array: [item1, item2]
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Expressions:}
+      \begin{itemize}
+        \item \texttt{\{\{ \$json.price \}\}}
+        \item \texttt{\{\{ \$now \}\}}
+        \item \texttt{\{\{ \$('NodeName').item.json \}\}}
+      \end{itemize}
+  \end{columns}
+  
+  \vspace{0.3cm}
+  \begin{block}{Pro Tip}
+    Use expressions to dynamically reference data from any previous node
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 3 – ESSENTIAL NODES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Essential Nodes}
+
+% Slide 8
+\begin{frame}{Trigger Nodes}
+  \begin{itemize}
+    \item \textbf{Webhook:} Receive data from websites, CRMs
+    \item \textbf{Schedule:} Run at specific times (daily reports)
+    \item \textbf{Email Trigger:} Process incoming emails
+    \item \textbf{Google Sheets:} Monitor new rows
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{block}{Example Use Case}
+        Webhook receives new lead from website form → triggers qualification workflow
+      \end{block}
+    
+    \column{0.46\textwidth}
+      \begin{block}{Best Practice}
+        Always test triggers with sample data before going live
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 9
+\begin{frame}{AI and LLM Nodes}
+  \begin{columns}[onlytextwidth]
+    \column{0.96\textwidth}
+      \textbf{Key AI Nodes:}
+      \begin{itemize}
+        \item \textbf{AI Agent:} Autonomous task execution
+        \item \textbf{Chat Model:} LLM interactions
+        \item \textbf{Vector Store:} Document memory
+        \item \textbf{Tool nodes:} Give agents capabilities
+      \end{itemize}
+      
+      \vspace{0.3cm}
+      \textbf{Configuration:}
+      \begin{itemize}
+        \item Connect to OpenRouter
+        \item Set system prompts
+        \item Define tools/functions
+      \end{itemize}
+  \end{columns}
+  
+  \begin{block}{Key Benefit}
+    Complete AI agent infrastructure with minimal setup
+  \end{block}
+\end{frame}
+
+% Slide 10
+\begin{frame}{Data Processing Nodes}
+  \small
+  \begin{itemize}
+    \item \textbf{Set:} Structure and clean data
+    \item \textbf{IF:} Conditional logic branching
+    \item \textbf{Switch:} Multiple path routing
+    \item \textbf{Function:} Custom JavaScript logic
+    \item \textbf{Merge:} Combine data streams
+  \end{itemize}
+  
+  \begin{block}{Real Estate Example}
+    IF node checks lead budget: High-value → senior agent, Standard → team pool
+  \end{block}
+\end{frame}
+
+% Slide 11
+\begin{frame}{Integration Nodes}
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Communication:}
+      \begin{itemize}
+        \item Gmail/Email
+        \item Slack
+        \item SMS (Twilio)
+        \item Calendar
+      \end{itemize}
+      
+      \textbf{Data Storage:}
+      \begin{itemize}
+        \item Google Sheets
+        \item Databases
+        \item CRM systems
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{External Services:}
+      \begin{itemize}
+        \item HTTP Request (APIs)
+        \item Webhook
+        \item FTP/SFTP
+        \item Cloud storage
+      \end{itemize}
+      
+      \begin{block}{Tip}
+        Use HTTP Request for any service without a dedicated node
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 4 – BUILDING YOUR FIRST WORKFLOW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{First Workflow}
+
+% Slide 12
+\begin{frame}{Workflow Planning}
+  \textbf{Before You Build:}
+  \begin{enumerate}
+    \item Define the goal clearly
+    \item Map out the steps
+    \item Identify data sources
+    \item Plan decision points
+    \item Consider error handling
+  \end{enumerate}
+  
+  \vspace{0.3cm}
+  
+  \begin{block}{Example: Lead Response Workflow}
+    Goal: Respond to new leads within 5 minutes with personalized information
+  \end{block}
+\end{frame}
+
+% Slide 13
+\begin{frame}{Step-by-Step: Lead Response Agent}
+  \footnotesize
+  \begin{enumerate}
+    \item \textbf{Webhook Trigger:} Receive lead data
+    \item \textbf{Set Node:} Clean and structure data
+    \item \textbf{AI Agent:} Analyze lead and generate response
+    \item \textbf{IF Node:} Check lead quality
+    \item \textbf{Email Node:} Send personalized response
+    \item \textbf{Google Sheets:} Log interaction
+  \end{enumerate}
+  
+  \vspace{0.3cm}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.48\textwidth}
+      \begin{block}{Data Flow}
+        Raw lead → Structured data → AI analysis → Action
+      \end{block}
+    
+    \column{0.48\textwidth}
+      \begin{block}{Time to Build}
+        Complete workflow: 15-20 minutes
+      </block}
+  \end{columns}
+\end{frame}
+
+% Slide 14
+\begin{frame}{Testing and Debugging}
+  \begin{itemize}
+    \item \textbf{Manual Execution:} Test step by step
+    \item \textbf{Sample Data:} Use realistic test cases
+    \item \textbf{Error Handling:} Add try/catch logic
+    \item \textbf{Logging:} Track execution flow
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Debug Tools:}
+      \begin{itemize}
+        \item Node output inspection
+        \item Execution logs
+        \item Data pinning
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Common Issues:}
+      \begin{itemize}
+        \item Missing credentials
+        \item Data format errors
+        \item API rate limits
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 5 – ADVANCED FEATURES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advanced Features}
+
+% Slide 15
+\begin{frame}{Sub-workflows and Modularity}
+  \begin{itemize}
+    \item \textbf{Sub-workflows:} Reusable workflow components
+    \item \textbf{Benefits:}
+      \begin{itemize}
+        \item Organize complex logic
+        \item Reuse common patterns
+        \item Easier maintenance
+        \item Team collaboration
+      \end{itemize}
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  
+  \begin{block}{Real Estate Example}
+    Create a "Property Analysis" sub-workflow used by multiple main workflows
+  \end{block}
+\end{frame}
+
+% Slide 16
+\begin{frame}{Error Handling and Reliability}
+  \textbf{Building Robust Workflows:}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Error Handling:}
+      \begin{itemize}
+        \item Error Trigger node
+        \item Try/Catch patterns
+        \item Fallback paths
+        \item Notification alerts
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \textbf{Best Practices:}
+      \begin{itemize}
+        \item Always plan for failures
+        \item Log errors for review
+        \item Implement retries
+        \item Monitor execution
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% Slide 17
+\begin{frame}{Memory and Context Management}
+  \begin{itemize}
+    \item \textbf{Short-term Memory:} Within workflow execution
+    \item \textbf{Long-term Memory:} Across executions
+    \item \textbf{Vector Stores:} Semantic document memory
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{block}{Implementation}
+        \begin{itemize}
+          \item Redis for fast access
+          \item Pinecone for documents
+          \item Database for structured
+        \end{itemize}
+      \end{block}
+    
+    \column{0.46\textwidth}
+      \begin{block}{Use Cases}
+        \begin{itemize}
+          \item Client preferences
+          \item Conversation history
+          \item Market knowledge
+        \end{itemize}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 6 – BEST PRACTICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Best Practices}
+
+% Slide 18
+\begin{frame}{Workflow Design Principles}
+  \begin{enumerate}
+    \item \textbf{Keep It Simple:} Start small, iterate
+    \item \textbf{Document Everything:} Use notes and descriptions
+    \item \textbf{Test Thoroughly:} Edge cases matter
+    \item \textbf{Monitor Performance:} Track execution times
+    \item \textbf{Version Control:} Export and backup workflows
+  \end{enumerate}
+  
+  \vspace{0.3cm}
+  
+  \begin{block}{Golden Rule}
+    A workflow that works 99\% of the time will fail eventually—plan for it
+  \end{block}
+\end{frame}
+
+% Slide 19
+\begin{frame}{Security Considerations}
+  \begin{columns}[onlytextwidth]
+    \column{0.46\textwidth}
+      \textbf{Protect Your Data:}
+      \begin{itemize}
+        \item Use n8n credentials system
+        \item Never hardcode API keys
+        \item Implement access controls
+        \item Encrypt sensitive data
+        \item Regular security audits
+      \end{itemize}
+      
+      \textbf{Compliance:}
+      \begin{itemize}
+        \item Real estate regulations
+        \item Data privacy laws
+        \item Fair housing rules
+      \end{itemize}
+    
+    \column{0.46\textwidth}
+      \begin{block}{Remember}
+        You're handling client PII and financial data—security is non-negotiable
+      \end{block}
+  \end{columns}
+\end{frame}
+
+% Slide 20: Summary
+\begin{frame}{Key Takeaways}
+  \begin{itemize}
+    \item \textbf{n8n makes AI accessible:} No coding required
+    \item \textbf{Visual development:} See and understand your logic
+    \item \textbf{Powerful integrations:} Connect everything
+    \item \textbf{Start simple:} Build confidence with basic workflows
+    \item \textbf{Think modular:} Reuse successful patterns
+  \end{itemize}
+  
+  \vspace{0.5cm}
+  
+  \begin{block}{Your Next Steps}
+    1. Complete setup checklist\\
+    2. Build your first workflow\\
+    3. Test with real data\\
+    4. Deploy and monitor\\
+    5. Iterate and improve
+  \end{block}
+\end{frame}
+
+\end{document} 
